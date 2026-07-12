@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Spezi
+import SpeziHealthKit
 import SwiftUI
 
 
@@ -53,9 +55,13 @@ struct NutritionAnalysisSheet: View {
                 EmptyView()
             }
         }
+        .id(model.workflowState)
+        .transition(.opacity.combined(with: .move(edge: .bottom)))
+        .animation(.smooth, value: model.workflowState)
         .presentationDetents([.medium, .large], selection: $selectedDetent)
         .presentationDragIndicator(.visible)
-        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(32)
+        .presentationBackground(.regularMaterial)
         .interactiveDismissDisabled(model.workflowState == .capturing || model.workflowState == .analyzing)
         .onChange(of: model.workflowState) {
             guard model.workflowState == .result || model.workflowState == .saved else {
@@ -68,6 +74,46 @@ struct NutritionAnalysisSheet: View {
                     selectedDetent = .large
                 }
             }
+        }
+    }
+}
+
+
+#Preview("Nutrition Sheet Progress") {
+    @Previewable @State var model = CaptureFeatureModel(previewWorkflowState: .analyzing)
+    @Previewable @State var configuration = ExperienceConfiguration.preview(
+        glassesSource: .simulatedGlasses,
+        analysisSource: .sampleAnalysis
+    )
+
+    NutritionAnalysisSheet(
+        model: model,
+        configuration: configuration,
+        retryAction: {},
+        closeAction: {}
+    )
+}
+
+
+#Preview("Nutrition Sheet Result") {
+    @Previewable @State var model = CaptureFeatureModel(
+        previewWorkflowState: .result,
+        analysis: .cheeseSpaetzleFixture
+    )
+    @Previewable @State var configuration = ExperienceConfiguration.preview(
+        glassesSource: .simulatedGlasses,
+        analysisSource: .sampleAnalysis
+    )
+
+    NutritionAnalysisSheet(
+        model: model,
+        configuration: configuration,
+        retryAction: {},
+        closeAction: {}
+    )
+    .previewWith(standard: NutriSightStandard()) {
+        SpeziHealthKit.HealthKit {
+            RequestWriteAccess(quantity: NutritionHealthKitTypes.writable)
         }
     }
 }

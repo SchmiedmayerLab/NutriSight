@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: MIT
 //
 
-#if DEBUG
 import Foundation
 
 
@@ -28,4 +27,3 @@ extension ExperienceConfiguration {
         return configuration
     }
 }
-#endif

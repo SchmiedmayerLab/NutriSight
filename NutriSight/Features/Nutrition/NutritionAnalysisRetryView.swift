@@ -22,22 +22,39 @@ struct NutritionAnalysisRetryView: View {
                 systemImage: "arrow.trianglehead.2.clockwise.rotate.90",
                 description: Text(.analysisNeedsAnotherTryDescription)
             )
-            HStack {
-                Button(.retake, systemImage: "camera", action: retakeAction)
-                    .buttonStyle(.glass)
-                    .accessibilityIdentifier("retake-photo")
-                AsyncButton(.tryAnalysisAgain, state: $viewState, action: retryAction)
-                    .buttonStyle(.glassProminent)
-                    .accessibilityIdentifier("retry-analysis")
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 12) {
+                    actionButtons
+                }
+                VStack(spacing: 10) {
+                    actionButtons
+                }
             }
             .controlSize(.large)
         }
         .padding()
     }
+
+    @ViewBuilder private var actionButtons: some View {
+        Button(action: retakeAction) {
+            Label(.retake, systemImage: "camera")
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.glass)
+        .accessibilityIdentifier("retake-photo")
+
+        AsyncButton(state: $viewState, action: retryAction) {
+            Text(.tryAnalysisAgain)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.glassProminent)
+        .accessibilityIdentifier("retry-analysis")
+    }
 }
 
 
-#if DEBUG
 #Preview("Analysis Retry") {
     @Previewable @State var viewState: ViewState = .idle
 
@@ -47,4 +64,3 @@ struct NutritionAnalysisRetryView: View {
         retakeAction: {}
     )
 }
-#endif

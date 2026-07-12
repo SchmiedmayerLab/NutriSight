@@ -40,18 +40,23 @@ struct WelcomeOnboardingView: View {
                 )
             ])
         } footer: {
-            OnboardingActionsView(.getStarted) {
+            Button {
                 path.nextStep()
+            } label: {
+                Text(.getStarted)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
             }
+            .buttonStyle(.glassProminent)
+            .controlSize(.large)
             .accessibilityIdentifier("welcome-continue")
         }
-        .navigationTitle(.appTitle)
+        .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 
-#if DEBUG
 #Preview("Welcome") {
     @Previewable @State var didComplete = false
     @Previewable @State var path = ManagedNavigationStack.Path()
@@ -60,4 +65,3 @@ struct WelcomeOnboardingView: View {
         WelcomeOnboardingView()
     }
 }
-#endif

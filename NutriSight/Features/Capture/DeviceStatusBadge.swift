@@ -23,9 +23,7 @@ struct DeviceStatusBadge: View {
 }
 
 
-#if DEBUG
-#Preview("Device Status") {
-    DeviceStatusBadge(state: .streaming)
+#Preview("Device Status", arguments: WearablesCameraState.allCases) { state in
+    DeviceStatusBadge(state: state)
         .padding()
 }
-#endif

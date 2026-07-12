@@ -14,23 +14,40 @@ struct FoodItemsView: View {
 
     var body: some View {
         ForEach(items) { item in
-            LabeledContent {
-                Text(item.estimatedPortion)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: true)
-            } label: {
-                Text(item.name)
-                    .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: true)
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .firstTextBaseline, spacing: 16) {
+                    itemName(item.name)
+                    Spacer(minLength: 12)
+                    portion(item.estimatedPortion)
+                        .multilineTextAlignment(.trailing)
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
+                    itemName(item.name)
+                    portion(item.estimatedPortion)
+                }
             }
             .accessibilityElement(children: .combine)
         }
     }
+
+    private func itemName(_ name: String) -> some View {
+        Text(name)
+            .font(.body)
+            .lineLimit(nil)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func portion(_ portion: String) -> some View {
+        Text(portion)
+            .font(.body)
+            .foregroundStyle(.secondary)
+            .lineLimit(nil)
+            .fixedSize(horizontal: false, vertical: true)
+    }
 }
 
 
-#if DEBUG
 #Preview("Detected Foods") {
     List {
         Section(.foods) {
@@ -38,4 +55,3 @@ struct FoodItemsView: View {
         }
     }
 }
-#endif

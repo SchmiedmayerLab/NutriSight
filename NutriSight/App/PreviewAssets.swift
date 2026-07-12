@@ -6,16 +6,30 @@
 // SPDX-License-Identifier: MIT
 //
 
-#if DEBUG
 import UIKit
+
+
+private final class PreviewAssetsBundleToken {}
 
 
 enum PreviewAssets {
     static var cheeseSpaetzle: UIImage? {
-        guard let url = Bundle.main.url(forResource: "CheeseSpaetzle", withExtension: "jpg") else {
+        guard let url = resourceBundles.lazy.compactMap({ bundle in
+            bundle.url(forResource: "CheeseSpaetzle", withExtension: "jpg")
+        }).first else {
             return nil
         }
-        return UIImage(contentsOfFile: url.path())
+        guard let data = try? Data(contentsOf: url) else {
+            return nil
+        }
+        return UIImage(data: data)
+    }
+
+    static var cheeseSpaetzleData: Data? {
+        cheeseSpaetzle?.jpegData(compressionQuality: 0.9)
+    }
+
+    private static var resourceBundles: [Bundle] {
+        [Bundle.main, Bundle(for: PreviewAssetsBundleToken.self)] + Bundle.allBundles
     }
 }
-#endif

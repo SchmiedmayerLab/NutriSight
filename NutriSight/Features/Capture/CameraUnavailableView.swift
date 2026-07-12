@@ -23,16 +23,8 @@ struct CameraUnavailableView: View {
 }
 
 
-#if DEBUG
-#Preview("No Glasses") {
-    CameraUnavailableView(state: .noDevice)
+#Preview("Camera Unavailable", arguments: [WearablesCameraState.noDevice, .paused]) { state in
+    CameraUnavailableView(state: state)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.black)
 }
-
-#Preview("Camera Paused") {
-    CameraUnavailableView(state: .paused)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.black)
-}
-#endif

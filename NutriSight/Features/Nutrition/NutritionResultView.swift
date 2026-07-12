@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Spezi
 import SpeziHealthKit
 import SpeziViews
 import SwiftUI
@@ -21,45 +22,59 @@ struct NutritionResultView: View {
 
     var body: some View {
         List {
-            NutritionResultHeaderView(analysis: analysis, capturedImage: capturedImage)
-                .listRowBackground(Color.clear)
-
-            Section {
-                FoodItemsView(items: analysis.items)
-            } header: {
-                sectionHeader(.foods)
-            }
-
-            Section {
-                NutrientListView(nutrients: analysis.nutrients)
-            } header: {
-                sectionHeader(.estimatedNutrition)
-            }
-
-            if !analysis.caveats.isEmpty {
-                Section {
-                    ForEach(analysis.caveats, id: \.self) { caveat in
-                        Label(caveat, systemImage: "exclamationmark.triangle")
-                            .foregroundStyle(.secondary)
-                            .lineLimit(nil)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                } header: {
-                    sectionHeader(.beforeYouSave)
-                }
-            }
+            resultSections
         }
         .listStyle(.insetGrouped)
+        .listSectionSpacing(.compact)
         .scrollContentBackground(.hidden)
         .background(.regularMaterial)
-        .safeAreaInset(edge: .bottom) {
+    }
+
+    @ViewBuilder private var resultSections: some View {
+        NutritionResultHeaderView(analysis: analysis, capturedImage: capturedImage)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 4, trailing: 20))
+
+        Section {
+            FoodItemsView(items: analysis.items)
+        } header: {
+            sectionHeader(.foods)
+        }
+
+        Section {
+            NutrientListView(nutrients: analysis.nutrients)
+        } header: {
+            sectionHeader(.estimatedNutrition)
+        }
+
+        if !analysis.caveats.isEmpty {
+            Section {
+                ForEach(analysis.caveats, id: \.self) { caveat in
+                    Label(caveat, systemImage: "exclamationmark.triangle")
+                        .foregroundStyle(.secondary)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            } header: {
+                sectionHeader(.beforeYouSave)
+            }
+        }
+
+        actionsSection
+    }
+
+    private var actionsSection: some View {
+        Section {
             NutritionResultActionsView(
                 model: model,
                 configuration: configuration,
                 saveAction: save,
                 analyzeAnotherAction: closeAction
             )
-            .padding()
+            .padding(.vertical, 8)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 24, trailing: 20))
+            .listRowSeparator(.hidden)
         }
     }
 
@@ -75,6 +90,31 @@ struct NutritionResultView: View {
             try await model.save(using: MockNutritionHealthStore())
         } else {
             try await model.save(using: HealthKitNutritionStore(healthKit: healthKit))
+        }
+    }
+}
+
+
+#Preview("Nutrition Result") {
+    @Previewable @State var model = CaptureFeatureModel(
+        previewWorkflowState: .result,
+        analysis: .cheeseSpaetzleFixture
+    )
+    @Previewable @State var configuration = ExperienceConfiguration.preview(
+        glassesSource: .simulatedGlasses,
+        analysisSource: .sampleAnalysis
+    )
+
+    NutritionResultView(
+        model: model,
+        configuration: configuration,
+        analysis: .cheeseSpaetzleFixture,
+        capturedImage: PreviewAssets.cheeseSpaetzle,
+        closeAction: {}
+    )
+    .previewWith(standard: NutriSightStandard()) {
+        SpeziHealthKit.HealthKit {
+            RequestWriteAccess(quantity: NutritionHealthKitTypes.writable)
         }
     }
 }

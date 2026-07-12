@@ -14,18 +14,19 @@ struct MetaDeveloperConsoleLink: View {
         if let consoleURL = MetaMusePlatformDefinition.platformDeveloperConsoleUrl {
             Link(destination: consoleURL) {
                 Label(.openMetaDeveloperConsole, systemImage: "safari")
+                    .multilineTextAlignment(.center)
             }
-            .buttonStyle(.bordered)
+            .buttonStyle(.glass)
+            .controlSize(.large)
             .tint(.primary)
+            .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier("meta-developer-console")
         }
     }
 }
 
 
-#if DEBUG
 #Preview("Meta Developer Link") {
     MetaDeveloperConsoleLink()
         .padding()
 }
-#endif

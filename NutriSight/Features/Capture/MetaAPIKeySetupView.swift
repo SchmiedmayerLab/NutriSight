@@ -6,9 +6,11 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Spezi
 import SpeziKeychainStorage
 import SpeziLLMOpenAI
 import SpeziOnboarding
+import SpeziViews
 import SwiftUI
 
 
@@ -17,40 +19,60 @@ struct MetaAPIKeySetupView: View {
     @Environment(KeychainStorage.self) private var keychainStorage
 
     @State private var apiKey = ""
+    @State private var viewState: ViewState = .idle
 
     var body: some View {
         NavigationStack {
             OnboardingView {
-                OnboardingTitleView(title: .metaApiKey, subtitle: .metaApiKeySubtitle)
+                OnboardingHeroView(systemImage: "key.fill", title: .metaApiKey, subtitle: .metaApiKeySubtitle)
             } content: {
-                VStack(spacing: 20) {
-                    SecureField(.metaApiKeyPrompt, text: $apiKey)
-                        .textFieldStyle(.roundedBorder)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .accessibilityIdentifier("meta-api-key-field")
-
-                    Text(.metaApiKeyFootnote)
-                        .font(.footnote)
-
-                    MetaDeveloperConsoleLink()
-                }
+                setupContent
             } footer: {
-                OnboardingActionsView(.saveApiKey, action: save)
-                    .disabled(apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                    .accessibilityIdentifier("save-api-key")
+                footer
             }
             .navigationTitle(.museSpark)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(.close, systemImage: "xmark", action: dismiss.callAsFunction)
-                        .accessibilityIdentifier("close-api-key")
-                }
+                closeToolbarItem
             }
             .task {
                 loadStoredAPIKey()
             }
+        }
+    }
+
+    private var setupContent: some View {
+        VStack(spacing: 20) {
+            SecureField(.metaApiKeyPrompt, text: $apiKey)
+                .textFieldStyle(.roundedBorder)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .accessibilityIdentifier("meta-api-key-field")
+
+            Text(.metaApiKeyFootnote)
+                .font(.footnote)
+
+            MetaDeveloperConsoleLink()
+        }
+    }
+
+    private var footer: some View {
+        AsyncButton(state: $viewState, action: save) {
+            Text(.saveApiKey)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.glassProminent)
+        .controlSize(.large)
+        .disabled(apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        .accessibilityIdentifier("save-api-key")
+        .viewStateAlert(state: $viewState)
+    }
+
+    private var closeToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button(.close, systemImage: "xmark", action: dismiss.callAsFunction)
+                .accessibilityIdentifier("close-api-key")
         }
     }
 
@@ -76,4 +98,12 @@ struct MetaAPIKeySetupView: View {
         )
         dismiss()
     }
+}
+
+
+#Preview("Meta API Key Setup") {
+    MetaAPIKeySetupView()
+        .previewWith {
+            KeychainStorage()
+        }
 }

@@ -347,3 +347,12 @@ extension WearablesCamera {
         state = .paused
     }
 }
+
+
+extension WearablesCamera {
+    convenience init(previewImage: UIImage?, state: WearablesCameraState = .streaming) {
+        self.init()
+        self.previewImage = previewImage
+        self.state = state
+    }
+}

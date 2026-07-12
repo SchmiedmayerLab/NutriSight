@@ -18,7 +18,7 @@ struct CaptureScreen: View {
     @State private var presentsNutritionSheet = false
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        ZStack(alignment: .top) {
             Color.black
                 .ignoresSafeArea()
             CameraPreviewCard(
@@ -38,7 +38,10 @@ struct CaptureScreen: View {
         }
         .navigationTitle(.appTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .cameraStatusBarColorScheme()
         .sheet(isPresented: $presentsNutritionSheet, onDismiss: model.retake) {
             NutritionAnalysisSheet(
                 model: model,
@@ -86,5 +89,17 @@ struct CaptureScreen: View {
 
     private func closeNutritionSheet() {
         presentsNutritionSheet = false
+    }
+}
+
+
+extension View {
+    @ViewBuilder
+    fileprivate func cameraStatusBarColorScheme() -> some View {
+        if #available(iOS 27.0, *) {
+            toolbarColorScheme(.dark, for: .statusBar)
+        } else {
+            self
+        }
     }
 }

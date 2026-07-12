@@ -9,41 +9,73 @@
 import SwiftUI
 
 
+private struct OnboardingHeroPreview: Identifiable {
+    static let allCases = [
+        OnboardingHeroPreview(
+            id: "welcome",
+            systemImage: "camera.viewfinder",
+            title: .welcomeTitle,
+            subtitle: .welcomeSubtitle
+        ),
+        OnboardingHeroPreview(
+            id: "analysis",
+            systemImage: "sparkles.rectangle.stack",
+            title: .analysisSetupTitle,
+            subtitle: .analysisSetupSubtitle
+        ),
+        OnboardingHeroPreview(
+            id: "glasses",
+            systemImage: "eyeglasses",
+            title: .glassesSetupTitle,
+            subtitle: .glassesSetupSubtitle
+        )
+    ]
+
+    let id: String
+    let systemImage: String
+    let title: LocalizedStringResource
+    let subtitle: LocalizedStringResource
+}
+
+
 struct OnboardingHeroView: View {
     let systemImage: String
     let title: LocalizedStringResource
     let subtitle: LocalizedStringResource
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 20) {
             Image(systemName: systemImage)
-                .font(.largeTitle.scaled(by: 1.45))
+                .font(.system(size: 38, weight: .semibold))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(.tint)
-                .frame(width: 88, height: 88)
+                .frame(width: 84, height: 84)
                 .background(.tint.opacity(0.12), in: .circle)
                 .accessibilityHidden(true)
-            Text(title)
-                .font(.largeTitle)
-                .bold()
-                .multilineTextAlignment(.center)
-                .accessibilityHeading(.h1)
-            Text(subtitle)
-                .multilineTextAlignment(.center)
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text(title)
+                    .font(.largeTitle.bold())
+                    .multilineTextAlignment(.leading)
+                    .accessibilityHeading(.h1)
+                Text(subtitle)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.leading)
+            }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
+        .padding(.top, 12)
+        .padding(.bottom, 22)
     }
 }
 
 
-#if DEBUG
-#Preview("Onboarding Hero") {
+#Preview("Onboarding Heroes", arguments: OnboardingHeroPreview.allCases) { preview in
     OnboardingHeroView(
-        systemImage: "camera.viewfinder",
-        title: .welcomeTitle,
-        subtitle: .welcomeSubtitle
+        systemImage: preview.systemImage,
+        title: preview.title,
+        subtitle: preview.subtitle
     )
     .padding()
 }
-#endif

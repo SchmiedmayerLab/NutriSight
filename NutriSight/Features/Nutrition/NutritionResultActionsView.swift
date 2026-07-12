@@ -17,32 +17,37 @@ struct NutritionResultActionsView: View {
     let analyzeAnotherAction: () -> Void
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 10) {
             if model.workflowState == .saved {
-                Label(
-                    configuration.preventsAppleHealthWrite
-                        ? .simulatedSaveComplete
-                        : .savedToAppleHealth,
-                    systemImage: "checkmark.circle.fill"
-                )
+                HStack(spacing: 8) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .accessibilityHidden(true)
+                    Text(configuration.preventsAppleHealthWrite ? .simulatedSaveComplete : .savedToAppleHealth)
+                }
                 .font(.headline)
                 .padding()
-                .glassEffect(.regular, in: .capsule)
+                .frame(maxWidth: .infinity)
+                .glassEffect(.regular, in: .rect(cornerRadius: 18))
+                .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("health-save-confirmation")
             } else {
-                AsyncButton(
-                    .save,
-                    state: $model.viewState,
-                    action: saveAction
-                )
+                AsyncButton(state: $model.viewState, action: saveAction) {
+                    Text(.save)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                }
                 .buttonStyle(.glassProminent)
                 .controlSize(.large)
                 .accessibilityIdentifier("save-health")
             }
-            Button(.analyzeAnotherMeal, systemImage: "camera", action: analyzeAnotherAction)
-                .buttonStyle(.glass)
-                .controlSize(.large)
-                .accessibilityIdentifier("analyze-another")
+            Button(action: analyzeAnotherAction) {
+                Label(.analyzeAnotherMeal, systemImage: "camera")
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.glass)
+            .controlSize(.large)
+            .accessibilityIdentifier("analyze-another")
         }
     }
 }

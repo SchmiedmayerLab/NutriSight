@@ -14,13 +14,14 @@ struct NutritionResultHeaderView: View {
     let capturedImage: UIImage?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             if let capturedImage {
                 Image(uiImage: capturedImage)
                     .resizable()
                     .scaledToFill()
                     .frame(maxWidth: .infinity)
-                    .aspectRatio(16.0 / 9.0, contentMode: .fit)
+                    .aspectRatio(4.0 / 3.0, contentMode: .fill)
+                    .clipped()
                     .clipShape(.rect(cornerRadius: 18))
                     .accessibilityLabel(.capturedMealPhoto)
             }
@@ -44,12 +45,12 @@ struct NutritionResultHeaderView: View {
             .accessibilityLabel(.modelConfidence)
             .accessibilityValue(Text(analysis.confidence, format: .percent.precision(.fractionLength(0))))
         }
-        .padding(.vertical)
+        .padding(.top, 8)
+        .padding(.bottom, 2)
     }
 }
 
 
-#if DEBUG
 #Preview("Nutrition Result Header") {
     ScrollView {
         NutritionResultHeaderView(
@@ -59,4 +60,3 @@ struct NutritionResultHeaderView: View {
         .padding()
     }
 }
-#endif

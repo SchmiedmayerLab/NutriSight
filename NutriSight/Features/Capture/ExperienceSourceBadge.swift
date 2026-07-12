@@ -24,9 +24,7 @@ struct ExperienceSourceBadge: View {
 }
 
 
-#if DEBUG
 #Preview("Sample Analysis Badge") {
     ExperienceSourceBadge(title: .sampleAnalysis, systemImage: "wand.and.stars")
         .padding()
 }
-#endif

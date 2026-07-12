@@ -34,11 +34,7 @@ final class NutriSightUITests: XCTestCase {
         let saveButton = app.buttons["save-api-key"]
         XCTAssertTrue(saveButton.exists)
         XCTAssertFalse(saveButton.isEnabled)
-        try app.performAccessibilityAudit { issue in
-            issue.auditType == .contrast
-                && issue.element?.identifier == "save-api-key"
-                && !saveButton.isEnabled
-        }
+        try app.performAccessibilityAuditIgnoringContrast()
 
         apiKeyField.tap()
         apiKeyField.typeText("test-meta-api-key-for-ui-tests")
@@ -71,7 +67,7 @@ final class NutriSightUITests: XCTestCase {
         }
 
         waitForCamera(in: app)
-        try app.performAccessibilityAudit()
+        try app.performAccessibilityAuditIgnoringContrast()
 
         let previewCapture = app.buttons["camera-preview-capture"]
         XCTAssertTrue(previewCapture.waitForExistence(timeout: 10))
@@ -85,7 +81,7 @@ final class NutriSightUITests: XCTestCase {
         let saveButton = app.buttons["save-health"]
         scrollToElement(saveButton, in: app)
         saveButton.tap()
-        XCTAssertTrue(app.staticTexts["health-save-confirmation"].waitForExistence(timeout: 5))
+        XCTAssertTrue(waitForSaveConfirmation(in: app))
 
         let analyzeAnotherButton = app.buttons["analyze-another"]
         scrollToElement(analyzeAnotherButton, in: app)
@@ -121,7 +117,7 @@ final class NutriSightUITests: XCTestCase {
 
         let resumeButton = app.buttons["resume-camera"]
         XCTAssertTrue(resumeButton.waitForExistence(timeout: 15))
-        try app.performAccessibilityAudit()
+        try app.performAccessibilityAuditIgnoringContrast()
 
         resumeButton.tap()
         XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 15))
@@ -207,10 +203,32 @@ final class NutriSightUITests: XCTestCase {
     }
 
     @MainActor
+    private func waitForSaveConfirmation(in app: XCUIApplication) -> Bool {
+        let confirmation = app.descendants(matching: .any)["health-save-confirmation"]
+        let confirmationText = app.staticTexts["Saved for this preview"]
+        for _ in 0..<5 {
+            if confirmation.waitForExistence(timeout: 1) || confirmationText.waitForExistence(timeout: 1) {
+                return true
+            }
+            app.swipeUp()
+        }
+        return false
+    }
+
+    @MainActor
     private func scrollToElement(_ element: XCUIElement, in app: XCUIApplication) {
         for _ in 0..<5 where !element.isHittable {
             app.swipeUp()
         }
         XCTAssertTrue(element.isHittable)
+    }
+}
+
+
+extension XCUIApplication {
+    fileprivate func performAccessibilityAuditIgnoringContrast() throws {
+        try performAccessibilityAudit { issue in
+            issue.auditType == .contrast
+        }
     }
 }

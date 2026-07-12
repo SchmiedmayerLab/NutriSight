@@ -20,7 +20,6 @@ struct NutrientListView: View {
 }
 
 
-#if DEBUG
 #Preview("Estimated Nutrition") {
     List {
         Section(.estimatedNutrition) {
@@ -28,4 +27,3 @@ struct NutrientListView: View {
         }
     }
 }
-#endif

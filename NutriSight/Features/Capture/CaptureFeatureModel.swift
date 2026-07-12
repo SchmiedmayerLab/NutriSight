@@ -117,3 +117,19 @@ final class CaptureFeatureModel {
         viewState = .idle
     }
 }
+
+
+extension CaptureFeatureModel {
+    convenience init(
+        previewWorkflowState workflowState: CaptureWorkflowState,
+        analysis: NutritionAnalysis? = nil,
+        capturedImageData: Data? = PreviewAssets.cheeseSpaetzleData
+    ) {
+        self.init()
+        if let capturedImageData {
+            try? receiveCapturedPhoto(capturedImageData)
+        }
+        self.analysis = analysis
+        self.workflowState = workflowState
+    }
+}

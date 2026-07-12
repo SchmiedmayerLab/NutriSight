@@ -14,7 +14,7 @@ struct CameraStatusOverlay: View {
     let configuration: ExperienceConfiguration
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .center, spacing: 8) {
             DeviceStatusBadge(state: cameraState)
             if configuration.usesSimulatedGlasses {
                 ExperienceSourceBadge(title: .simulatedGlasses, systemImage: "eyeglasses")
@@ -23,17 +23,18 @@ struct CameraStatusOverlay: View {
                 ExperienceSourceBadge(title: .sampleAnalysis, systemImage: "wand.and.stars")
             }
         }
+        .multilineTextAlignment(.center)
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
+        .frame(maxWidth: 320, alignment: .center)
         .glassEffect(.regular, in: .rect(cornerRadius: 20))
         .fixedSize(horizontal: false, vertical: true)
     }
 }
 
 
-#if DEBUG
 #Preview("Simulated Camera Status") {
-    ZStack(alignment: .topLeading) {
+    ZStack(alignment: .top) {
         Image(uiImage: PreviewAssets.cheeseSpaetzle ?? UIImage())
             .resizable()
             .scaledToFill()
@@ -46,4 +47,3 @@ struct CameraStatusOverlay: View {
         .padding()
     }
 }
-#endif

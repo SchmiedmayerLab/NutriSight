@@ -52,3 +52,42 @@ struct CameraPreviewCard: View {
             .accessibilityIdentifier(capturedImage == nil ? "live-camera-image" : "camera-preview")
     }
 }
+
+
+#Preview("Camera Preview Crop Alignment") {
+    @Previewable @State var viewState: ViewState = .idle
+    let previewImage = PreviewAssets.cheeseSpaetzle
+
+    VStack(spacing: 0) {
+        CameraPreviewCard(
+            camera: WearablesCamera(previewImage: previewImage),
+            capturedImage: nil,
+            viewState: $viewState,
+            captureAction: {}
+        )
+        .overlay(alignment: .topLeading) {
+            previewStateLabel("Live")
+        }
+
+        CameraPreviewCard(
+            camera: WearablesCamera(previewImage: previewImage),
+            capturedImage: previewImage,
+            viewState: $viewState,
+            captureAction: {}
+        )
+        .overlay(alignment: .topLeading) {
+            previewStateLabel("Captured")
+        }
+    }
+    .background(.black)
+}
+
+
+private func previewStateLabel(_ title: String) -> some View {
+    Text(title)
+        .font(.caption.bold())
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .glassEffect(.regular, in: .capsule)
+        .padding()
+}

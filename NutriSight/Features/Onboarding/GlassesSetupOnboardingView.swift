@@ -17,6 +17,8 @@ struct GlassesSetupOnboardingView: View {
     @Environment(ManagedNavigationStack.Path.self) private var path
     @Bindable var configuration: ExperienceConfiguration
 
+    @State private var viewState: ViewState = .idle
+
     var body: some View {
         OnboardingView {
             OnboardingHeroView(
@@ -38,21 +40,35 @@ struct GlassesSetupOnboardingView: View {
                 )
             ])
         } footer: {
-            VStack(spacing: 8) {
-                OnboardingActionsView(
-                    primaryTitle: .pairMetaGlasses,
-                    primaryAction: pairMetaGlasses,
-                    secondaryTitle: .useSimulatedGlasses,
-                    secondaryAction: useSimulatedGlasses
-                )
-                .accessibilityIdentifier("glasses-setup-actions")
+            VStack(spacing: 10) {
+                AsyncButton(state: $viewState, action: pairMetaGlasses) {
+                    Text(.pairMetaGlasses)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glassProminent)
+                .controlSize(.large)
+                .accessibilityIdentifier("pair-meta-glasses")
+
+                AsyncButton(state: $viewState, action: useSimulatedGlasses) {
+                    Text(.useSimulatedGlasses)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glass)
+                .controlSize(.large)
+                .accessibilityIdentifier("use-simulated-glasses")
+
                 Text(.simulatedGlassesExplanation)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
+            .frame(maxWidth: .infinity)
+            .viewStateAlert(state: $viewState)
         }
-        .navigationTitle(.glasses)
+        .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .onOpenURL(perform: handleWearablesURL)
     }
@@ -89,7 +105,6 @@ struct GlassesSetupOnboardingView: View {
 }
 
 
-#if DEBUG
 #Preview("Glasses Setup") {
     @Previewable @State var didComplete = false
     @Previewable @State var path = ManagedNavigationStack.Path()
@@ -98,4 +113,3 @@ struct GlassesSetupOnboardingView: View {
         GlassesSetupOnboardingView(configuration: .preview(analysisSource: .sampleAnalysis))
     }
 }
-#endif

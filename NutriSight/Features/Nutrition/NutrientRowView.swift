@@ -13,26 +13,40 @@ struct NutrientRowView: View {
     let nutrient: NutrientValue
 
     var body: some View {
-        LabeledContent {
-            Text(verbatim: nutrient.kind.formattedAmount(nutrient.amount))
-                .foregroundStyle(.secondary)
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
-        } label: {
-            Text(nutrient.kind.displayName)
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .firstTextBaseline, spacing: 16) {
+                nutrientName
+                Spacer(minLength: 12)
+                amount
+                    .multilineTextAlignment(.trailing)
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                nutrientName
+                amount
+            }
         }
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("nutrient-\(nutrient.kind.rawValue)")
     }
+
+    private var nutrientName: some View {
+        Text(nutrient.kind.displayName)
+            .lineLimit(nil)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var amount: some View {
+        Text(verbatim: nutrient.kind.formattedAmount(nutrient.amount))
+            .foregroundStyle(.secondary)
+            .lineLimit(nil)
+            .fixedSize(horizontal: false, vertical: true)
+    }
 }
 
 
-#if DEBUG
 #Preview("Nutrient Row") {
     List {
         NutrientRowView(nutrient: NutrientValue(kind: .protein, amount: 31))
     }
 }
-#endif

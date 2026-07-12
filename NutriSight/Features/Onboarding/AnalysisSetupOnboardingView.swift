@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Spezi
 import SpeziKeychainStorage
 import SpeziLLMOpenAI
 import SpeziOnboarding
@@ -43,22 +44,36 @@ struct AnalysisSetupOnboardingView: View {
                 MetaDeveloperConsoleLink()
             }
         } footer: {
-            VStack(spacing: 8) {
-                AsyncButton(.continueWithMetaModel, state: $viewState, action: saveAndContinue)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .disabled(apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                    .accessibilityIdentifier("save-api-key")
-                Button(.useSampleAnalysis, action: useSampleAnalysis)
-                    .controlSize(.large)
-                    .accessibilityIdentifier("use-sample-analysis")
+            VStack(spacing: 10) {
+                AsyncButton(state: $viewState, action: saveAndContinue) {
+                    Text(.continueWithMetaModel)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glassProminent)
+                .controlSize(.large)
+                .disabled(apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .accessibilityIdentifier("save-api-key")
+
+                Button(action: useSampleAnalysis) {
+                    Text(.useSampleAnalysis)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glass)
+                .controlSize(.large)
+                .accessibilityIdentifier("use-sample-analysis")
+
                 Text(.sampleAnalysisExplanation)
                     .font(.footnote)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
+            .frame(maxWidth: .infinity)
             .viewStateAlert(state: $viewState)
         }
-        .navigationTitle(.mealAnalysis)
+        .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .task {
             loadStoredAPIKey()
@@ -97,7 +112,6 @@ struct AnalysisSetupOnboardingView: View {
 }
 
 
-#if DEBUG
 #Preview("Analysis Setup") {
     @Previewable @State var didComplete = false
     @Previewable @State var path = ManagedNavigationStack.Path()
@@ -105,6 +119,7 @@ struct AnalysisSetupOnboardingView: View {
     ManagedNavigationStack(didComplete: $didComplete, path: path) {
         AnalysisSetupOnboardingView(configuration: .preview())
     }
-    .environment(KeychainStorage())
+    .previewWith {
+        KeychainStorage()
+    }
 }
-#endif
