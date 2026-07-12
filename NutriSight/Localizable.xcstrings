@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "Allow camera access to capture meals with this iPhone when Meta glasses are not connected." : {
+
+    },
     "ANALYSIS_IN_PROGRESS" : {
       "comment" : "Progress message shown while the meal photo is analyzed.",
       "extractionState" : "manual",
@@ -328,6 +331,9 @@
         }
       }
     },
+    "Cancel Pairing" : {
+
+    },
     "CAPTURE_IN_THE_APP" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -419,13 +425,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Meta AI verbinden"
+            "value" : "Meta-Brille koppeln"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connect Meta AI"
+            "value" : "Pair Meta Glasses"
           }
         }
       }
@@ -922,6 +928,9 @@
           }
         }
       }
+    },
+    "iPhone Camera" : {
+
     },
     "LIVE_CAMERA_PREVIEW" : {
       "extractionState" : "manual",
@@ -1722,6 +1731,9 @@
           }
         }
       }
+    },
+    "Use iPhone Camera" : {
+
     },
     "USE_SAMPLE_ANALYSIS" : {
       "extractionState" : "manual",

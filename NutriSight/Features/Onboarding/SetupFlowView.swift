@@ -21,6 +21,7 @@ struct SetupFlowView: View {
             AnalysisSetupOnboardingView(configuration: configuration)
             GlassesSetupOnboardingView(configuration: configuration)
         }
+        .scrollBounceBehavior(.basedOnSize)
         .onChange(of: didComplete) {
             guard didComplete else {
                 return

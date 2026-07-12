@@ -8,5 +8,6 @@
 
 enum GlassesSource: String, Sendable {
     case metaGlasses
+    case phoneCamera
     case simulatedGlasses
 }

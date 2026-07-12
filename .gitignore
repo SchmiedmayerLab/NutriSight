@@ -12,6 +12,7 @@
 .derivedData
 .build
 !NutriSight.xcodeproj
+Examples/**
 
 # IDE related folders
 .idea

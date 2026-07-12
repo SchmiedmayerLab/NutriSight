@@ -47,6 +47,7 @@
 		A10000000000000000000005 /* Exceptions for "NutriSight" folder in "NutriSight" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Info.plist,
 				Resources/CheeseSpaetzle.jpg.license,
 				Resources/CheeseSpaetzleFeed.mov.license,
 			);
@@ -457,14 +458,18 @@
 				CODE_SIGN_ENTITLEMENTS = NutriSight/NutriSight.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CQRZ4E7K9U;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NutriSight/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NutriSight;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "NutriSight uses Bluetooth to connect to Meta glasses.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NutriSight uses the iPhone camera as a fallback meal camera when Meta glasses are unavailable.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "NutriSight saves nutrition estimates you review to Apple Health.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "NutriSight uses the local network to discover and stream from Meta glasses.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -500,13 +505,18 @@
 				CODE_SIGN_ENTITLEMENTS = NutriSight/NutriSight.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CQRZ4E7K9U;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NutriSight/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NutriSight;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "NutriSight uses Bluetooth to connect to Meta glasses.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NutriSight uses the iPhone camera as a fallback meal camera when Meta glasses are unavailable.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "NutriSight saves nutrition estimates you review to Apple Health.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "NutriSight uses the local network to discover and stream from Meta glasses.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

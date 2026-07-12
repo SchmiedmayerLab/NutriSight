@@ -5,7 +5,6 @@
 //
 // SPDX-License-Identifier: MIT
 //
-import OSLog
 import Spezi
 import SpeziHealthKit
 import SpeziKeychainStorage
@@ -33,14 +32,4 @@ class NutriSightAppDelegate: SpeziAppDelegate {
         }
     }
 
-    override init() {
-        super.init()
-        if let source = ExperienceConfiguration.persistedGlassesSource() {
-            do {
-                try WearablesBootstrap.configure(using: source)
-            } catch {
-                Logger.wearables.error("Unable to configure Meta Wearables: \(error.localizedDescription)")
-            }
-        }
-    }
 }

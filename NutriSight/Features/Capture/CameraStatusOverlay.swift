@@ -19,6 +19,9 @@ struct CameraStatusOverlay: View {
             if configuration.usesSimulatedGlasses {
                 ExperienceSourceBadge(title: .simulatedGlasses, systemImage: "eyeglasses")
             }
+            if configuration.usesPhoneCamera {
+                ExperienceSourceBadge(title: "iPhone Camera", systemImage: "camera")
+            }
             if configuration.usesSampleAnalysis {
                 ExperienceSourceBadge(title: .sampleAnalysis, systemImage: "wand.and.stars")
             }

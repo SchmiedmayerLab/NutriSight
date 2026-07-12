@@ -26,6 +26,7 @@ final class WearablesCamera {
     private var captureContinuation: CheckedContinuation<Data, any Error>?
     private var captureTimeoutTask: Task<Void, Never>?
     private var hasSimulatedPause = false
+    private var phoneCamera: PhoneCamera?
 
     private(set) var state: WearablesCameraState = .notRegistered
     private(set) var deviceName: String?
@@ -35,13 +36,35 @@ final class WearablesCamera {
         providedWearables ?? Wearables.shared
     }
 
-    init(wearables: (any WearablesInterface)? = nil) {
-        self.providedWearables = wearables
+    var canCapture: Bool {
+        state == .streaming || phoneCamera?.isAvailable == true
     }
 
-    func start() {
-        installWearablesListeners()
-        refresh()
+    init(wearables: (any WearablesInterface)? = nil) {
+        self.providedWearables = wearables
+        self.phoneCamera = PhoneCamera { [weak self] image in
+            guard let self, stream?.state != .streaming else {
+                return
+            }
+            previewImage = image
+            state = .streaming
+        }
+    }
+
+    func markMetaGlassesSelected() {
+        state = .notRegistered
+    }
+
+    func start(source: GlassesSource?) {
+        switch source {
+        case .phoneCamera:
+            phoneCamera?.start()
+        case .metaGlasses, .simulatedGlasses:
+            installWearablesListeners()
+            refresh()
+        case nil:
+            break
+        }
     }
 
     func refresh() {
@@ -64,15 +87,7 @@ final class WearablesCamera {
         refresh()
     }
 
-    func connect() async throws {
-        if let stream, stream.state == .streaming {
-            state = .streaming
-            return
-        }
-        guard let device = wearables.devices.first else {
-            throw WearablesCameraError.noDevice
-        }
-
+    func requestCameraPermission() async throws {
         let currentPermission = try await wearables.checkPermissionStatus(.camera)
         let permission = if currentPermission == .granted {
             currentPermission
@@ -82,6 +97,17 @@ final class WearablesCamera {
         guard permission == .granted else {
             throw WearablesCameraError.permissionDenied
         }
+    }
+
+    func connect() async throws {
+        if let stream, stream.state == .streaming {
+            state = .streaming
+            return
+        }
+        guard let device = wearables.devices.first else {
+            throw WearablesCameraError.noDevice
+        }
+        state = .connecting
 
         await stopSession()
         state = .connecting
@@ -102,7 +128,7 @@ final class WearablesCamera {
         } catch let error as WearablesCameraError {
             throw error
         } catch {
-            state = .ready
+            state = .paused
             throw WearablesCameraError.sdk(error.localizedDescription)
         }
     }
@@ -140,7 +166,10 @@ final class WearablesCamera {
 
     func capturePhoto(timeout: Duration = .seconds(20)) async throws -> Data {
         guard let stream, stream.state == .streaming else {
-            throw WearablesCameraError.streamNotReady
+            guard let phoneCamera else {
+                throw WearablesCameraError.streamNotReady
+            }
+            return try await phoneCamera.capturePhoto(timeout: timeout)
         }
         guard captureContinuation == nil else {
             throw WearablesCameraError.captureRejected

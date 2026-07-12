@@ -40,6 +40,22 @@ enum LaunchConfiguration {
         ProcessInfo.processInfo.arguments.contains("--reset-api-key")
     }
 
+    static var allowsSampleAnalysis: Bool {
+        #if targetEnvironment(simulator)
+        true
+        #else
+        false
+        #endif
+    }
+
+    static var allowsSimulatedGlasses: Bool {
+        #if targetEnvironment(simulator)
+        true
+        #else
+        false
+        #endif
+    }
+
     static func markAPIKeyReset() {
         hasResetAPIKey = true
     }

@@ -23,7 +23,7 @@ struct CameraPreviewCard: View {
     var body: some View {
         Group {
             if let displayedImage {
-                if camera.state == .streaming && capturedImage == nil {
+                if camera.canCapture && capturedImage == nil {
                     AsyncButton(state: $viewState, action: captureAction) {
                         previewImage(displayedImage)
                     }

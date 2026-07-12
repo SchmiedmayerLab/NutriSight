@@ -14,6 +14,7 @@ struct CaptureScreen: View {
     @Environment(LLMRunner.self) private var runner
     @Bindable var model: CaptureFeatureModel
     @Bindable var configuration: ExperienceConfiguration
+    let setupGlassesAction: () -> Void
 
     @State private var presentsNutritionSheet = false
 
@@ -33,8 +34,12 @@ struct CaptureScreen: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .safeAreaInset(edge: .bottom) {
-            CameraActionsView(model: model, captureAction: captureAndAnalyze)
-                .padding()
+            CameraActionsView(
+                model: model,
+                captureAction: captureAndAnalyze,
+                setupGlassesAction: setupGlassesAction
+            )
+            .padding()
         }
         .navigationTitle(.appTitle)
         .navigationBarTitleDisplayMode(.inline)

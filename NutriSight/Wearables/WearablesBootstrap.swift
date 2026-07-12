@@ -18,13 +18,22 @@ enum WearablesBootstrap {
 
     static func configure(using source: GlassesSource) throws {
         if let configuredSource {
-            guard configuredSource == source else {
+            if configuredSource == source {
+                return
+            }
+            guard configuredSource == .phoneCamera else {
                 throw WearablesBootstrapError.sourceAlreadySelected
             }
+            self.configuredSource = nil
+        }
+
+        if source == .phoneCamera {
+            configuredSource = source
             return
         }
 
         if source == .simulatedGlasses {
+            precondition(LaunchConfiguration.allowsSimulatedGlasses)
             MockDeviceKit.shared.enable(
                 config: MockDeviceKitConfig(initiallyRegistered: true, initialPermissionsGranted: true)
             )

@@ -20,6 +20,7 @@ struct MetaAPIKeySetupView: View {
 
     @State private var apiKey = ""
     @State private var viewState: ViewState = .idle
+    @FocusState private var apiKeyFieldIsFocused: Bool
 
     var body: some View {
         NavigationStack {
@@ -30,6 +31,12 @@ struct MetaAPIKeySetupView: View {
             } footer: {
                 footer
             }
+            .contentShape(.rect)
+            .onTapGesture {
+                apiKeyFieldIsFocused = false
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollDismissesKeyboard(.interactively)
             .navigationTitle(.museSpark)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -47,6 +54,7 @@ struct MetaAPIKeySetupView: View {
                 .textFieldStyle(.roundedBorder)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
+                .focused($apiKeyFieldIsFocused)
                 .accessibilityIdentifier("meta-api-key-field")
 
             Text(.metaApiKeyFootnote)
@@ -90,9 +98,11 @@ struct MetaAPIKeySetupView: View {
         )?.password) ?? ""
     }
 
-    private func save() throws {
+    private func save() async throws {
+        let trimmedKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        try await MetaMuseAPIKeyValidator.validate(trimmedKey)
         try keychainStorage.store(
-            Credentials(username: MetaMusePlatformDefinition.credentialsUsername, password: apiKey),
+            Credentials(username: MetaMusePlatformDefinition.credentialsUsername, password: trimmedKey),
             for: MetaMusePlatformDefinition.credentialsTag,
             replaceDuplicates: true
         )

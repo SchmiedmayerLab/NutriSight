@@ -13,6 +13,7 @@ import SwiftUI
 struct CameraActionsView: View {
     @Bindable var model: CaptureFeatureModel
     let captureAction: @MainActor () async throws -> Void
+    let setupGlassesAction: () -> Void
 
     var body: some View {
         cameraAction
@@ -22,9 +23,11 @@ struct CameraActionsView: View {
     @ViewBuilder private var cameraAction: some View {
         switch model.camera.state {
         case .notRegistered:
-            AsyncButton(.registerWithMetaAi, state: $model.viewState, action: model.registerWearables)
-                .buttonStyle(.glassProminent)
-                .accessibilityIdentifier("register-wearables")
+            Button(action: setupGlassesAction) {
+                cameraActionLabel(.pairMetaGlasses, systemImage: "eyeglasses")
+            }
+            .buttonStyle(.glassProminent)
+            .accessibilityIdentifier("register-wearables")
         case .noDevice:
             Button(action: model.refreshCamera) {
                 cameraActionLabel(.refreshGlasses, systemImage: "arrow.clockwise")
@@ -33,14 +36,7 @@ struct CameraActionsView: View {
             .buttonBorderShape(.roundedRectangle(radius: 24))
             .accessibilityIdentifier("refresh-glasses")
         case .ready, .connecting:
-            Label {
-                Text(.connectingToGlasses)
-            } icon: {
-                ProgressView()
-            }
-            .padding()
-            .glassEffect(.regular, in: .capsule)
-            .accessibilityIdentifier("camera-connecting")
+            EmptyView()
         case .streaming:
             AsyncButton(state: $model.viewState, action: captureAction) {
                 Label(.takeMealPhoto, systemImage: "camera.fill")

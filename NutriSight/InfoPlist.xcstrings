@@ -25,6 +25,30 @@
         }
       }
     },
+    "NSBluetoothAlwaysUsageDescription" : {
+      "comment" : "Privacy - Bluetooth Always Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "NutriSight uses Bluetooth to connect to Meta glasses."
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "comment" : "Privacy - Camera Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "NutriSight uses the iPhone camera as a fallback meal camera when Meta glasses are unavailable."
+          }
+        }
+      }
+    },
     "NSHealthUpdateUsageDescription" : {
       "comment" : "Privacy prompt explaining why NutriSight writes nutrition data to Apple Health.",
       "extractionState" : "manual",
@@ -39,6 +63,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "NutriSight saves nutrition estimates you review to Apple Health."
+          }
+        }
+      }
+    },
+    "NSLocalNetworkUsageDescription" : {
+      "comment" : "Privacy - Local Network Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "NutriSight uses the local network to discover and stream from Meta glasses."
           }
         }
       }

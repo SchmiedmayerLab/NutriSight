@@ -21,7 +21,7 @@ enum WearablesCameraState: CaseIterable, Equatable, Sendable {
         switch self {
         case .notRegistered: .connectMetaAi
         case .noDevice: .noGlassesFound
-        case .ready: .glassesReady
+        case .ready: .connectingToGlasses
         case .connecting: .cameraConnecting
         case .streaming: .cameraReady
         case .paused: .cameraPaused
@@ -32,7 +32,7 @@ enum WearablesCameraState: CaseIterable, Equatable, Sendable {
         switch self {
         case .notRegistered: .cameraNotRegisteredDetail
         case .noDevice: .cameraNoDeviceDetail
-        case .ready: .glassesReadyDetail
+        case .ready: .cameraConnectingDetail
         case .connecting: .cameraConnectingDetail
         case .streaming: .cameraReadyDetail
         case .paused: .cameraPausedDetail

@@ -20,21 +20,56 @@ final class CaptureFeatureModel {
     private(set) var capturedImageData: Data?
     private(set) var capturedImage: UIImage?
     private(set) var analysis: NutritionAnalysis?
+    private var glassesSource: GlassesSource?
+    private var isConnectingCamera = false
     var viewState: ViewState = .idle
 
     init(camera: WearablesCamera = WearablesCamera()) {
         self.camera = camera
     }
 
-    func start() {
-        camera.start()
+    func start(source: GlassesSource?) {
+        glassesSource = source
+        switch source {
+        case .metaGlasses:
+            do {
+                try configureMetaGlassesIfNeeded()
+                camera.start(source: source)
+            } catch let error as any LocalizedError {
+                viewState = .error(error)
+                camera.markMetaGlassesSelected()
+            } catch {
+                viewState = .error(WearablesCameraError.sdk(error.localizedDescription))
+                camera.markMetaGlassesSelected()
+            }
+        case .simulatedGlasses:
+            try? WearablesBootstrap.configure(using: .simulatedGlasses)
+            camera.start(source: source)
+        case .phoneCamera:
+            try? WearablesBootstrap.configure(using: .phoneCamera)
+            camera.start(source: source)
+        case nil:
+            camera.start(source: source)
+        }
     }
 
     func registerWearables() async throws {
+        try configureMetaGlassesIfNeeded()
+        camera.start(source: .metaGlasses)
         try await camera.register()
     }
 
     func connectCamera() async throws {
+        guard !isConnectingCamera else {
+            return
+        }
+        isConnectingCamera = true
+        defer {
+            isConnectingCamera = false
+        }
+        try configureMetaGlassesIfNeeded()
+        camera.start(source: .metaGlasses)
+        try await camera.requestCameraPermission()
         try await camera.connect()
     }
 
@@ -43,10 +78,15 @@ final class CaptureFeatureModel {
     }
 
     func connectWhenReady() async {
-        guard camera.state == .ready else {
+        guard camera.state == .ready, !isConnectingCamera else {
             return
         }
+        isConnectingCamera = true
+        defer {
+            isConnectingCamera = false
+        }
         do {
+            try await camera.requestCameraPermission()
             try await camera.connect()
         } catch let error as any LocalizedError {
             viewState = .error(error)
@@ -57,6 +97,8 @@ final class CaptureFeatureModel {
 
     func handleWearablesURL(_ url: URL) async {
         do {
+            try configureMetaGlassesIfNeeded()
+            camera.start(source: .metaGlasses)
             try await camera.handle(url)
         } catch let error as any LocalizedError {
             viewState = .error(error)
@@ -115,6 +157,14 @@ final class CaptureFeatureModel {
         analysis = nil
         workflowState = .camera
         viewState = .idle
+    }
+
+    private func configureMetaGlassesIfNeeded() throws {
+        guard glassesSource == .metaGlasses || glassesSource == nil else {
+            return
+        }
+        try WearablesBootstrap.configure(using: .metaGlasses)
+        glassesSource = .metaGlasses
     }
 }
 

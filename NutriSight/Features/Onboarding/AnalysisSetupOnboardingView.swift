@@ -21,6 +21,7 @@ struct AnalysisSetupOnboardingView: View {
 
     @State private var apiKey = ""
     @State private var viewState: ViewState = .idle
+    @FocusState private var apiKeyFieldIsFocused: Bool
 
     var body: some View {
         OnboardingView {
@@ -36,6 +37,7 @@ struct AnalysisSetupOnboardingView: View {
                     .textContentType(.password)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
+                    .focused($apiKeyFieldIsFocused)
                     .accessibilityIdentifier("meta-api-key-field")
                 Label(.apiKeyStoredSecurely, systemImage: "lock.shield")
                     .font(.footnote)
@@ -55,24 +57,32 @@ struct AnalysisSetupOnboardingView: View {
                 .disabled(apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 .accessibilityIdentifier("save-api-key")
 
-                Button(action: useSampleAnalysis) {
-                    Text(.useSampleAnalysis)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.glass)
-                .controlSize(.large)
-                .accessibilityIdentifier("use-sample-analysis")
+                if LaunchConfiguration.allowsSampleAnalysis {
+                    AsyncButton(state: $viewState, action: useSampleAnalysis) {
+                        Text(.useSampleAnalysis)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.glass)
+                    .controlSize(.large)
+                    .accessibilityIdentifier("use-sample-analysis")
 
-                Text(.sampleAnalysisExplanation)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
+                    Text(.sampleAnalysisExplanation)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
             .frame(maxWidth: .infinity)
             .viewStateAlert(state: $viewState)
         }
+        .contentShape(.rect)
+        .onTapGesture {
+            apiKeyFieldIsFocused = false
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .scrollDismissesKeyboard(.interactively)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .task {
@@ -94,8 +104,9 @@ struct AnalysisSetupOnboardingView: View {
         )?.password) ?? ""
     }
 
-    private func saveAndContinue() throws {
+    private func saveAndContinue() async throws {
         let trimmedKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        try await MetaMuseAPIKeyValidator.validate(trimmedKey)
         try keychainStorage.store(
             Credentials(username: MetaMusePlatformDefinition.credentialsUsername, password: trimmedKey),
             for: MetaMusePlatformDefinition.credentialsTag,
@@ -105,7 +116,7 @@ struct AnalysisSetupOnboardingView: View {
         path.nextStep()
     }
 
-    private func useSampleAnalysis() {
+    private func useSampleAnalysis() async {
         configuration.selectAnalysisSource(.sampleAnalysis)
         path.nextStep()
     }

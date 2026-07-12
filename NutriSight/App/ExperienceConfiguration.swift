@@ -29,6 +29,10 @@ final class ExperienceConfiguration {
         glassesSource == .simulatedGlasses
     }
 
+    var usesPhoneCamera: Bool {
+        glassesSource == .phoneCamera
+    }
+
     var usesSampleAnalysis: Bool {
         analysisSource == .sampleAnalysis
     }
@@ -42,6 +46,7 @@ final class ExperienceConfiguration {
         self.completedOnboarding = defaults.bool(forKey: Key.completedOnboarding)
         self.glassesSource = defaults.string(forKey: Key.glassesSource).flatMap(GlassesSource.init(rawValue:))
         self.analysisSource = defaults.string(forKey: Key.analysisSource).flatMap(AnalysisSource.init(rawValue:))
+        sanitizeUnavailableSources()
 
         if LaunchConfiguration.isUITesting {
             glassesSource = .simulatedGlasses
@@ -53,15 +58,26 @@ final class ExperienceConfiguration {
         if LaunchConfiguration.isUITesting {
             return .simulatedGlasses
         }
-        return defaults.string(forKey: Key.glassesSource).flatMap(GlassesSource.init(rawValue:))
+        let source = defaults.string(forKey: Key.glassesSource).flatMap(GlassesSource.init(rawValue:))
+        guard source != .simulatedGlasses || LaunchConfiguration.allowsSimulatedGlasses else {
+            defaults.removeObject(forKey: Key.glassesSource)
+            return nil
+        }
+        return source
+    }
+
+    static func shouldConfigureMetaGlassesAtLaunch(defaults: UserDefaults = .standard) -> Bool {
+        defaults.bool(forKey: Key.completedOnboarding) && persistedGlassesSource(defaults: defaults) == .metaGlasses
     }
 
     func selectAnalysisSource(_ source: AnalysisSource) {
+        precondition(source != .sampleAnalysis || LaunchConfiguration.allowsSampleAnalysis)
         analysisSource = source
         defaults.set(source.rawValue, forKey: Key.analysisSource)
     }
 
     func selectGlassesSource(_ source: GlassesSource) {
+        precondition(source != .simulatedGlasses || LaunchConfiguration.allowsSimulatedGlasses)
         glassesSource = source
         defaults.set(source.rawValue, forKey: Key.glassesSource)
     }
@@ -70,5 +86,18 @@ final class ExperienceConfiguration {
         precondition(glassesSource != nil && analysisSource != nil)
         completedOnboarding = true
         defaults.set(true, forKey: Key.completedOnboarding)
+    }
+
+    private func sanitizeUnavailableSources() {
+        if analysisSource == .sampleAnalysis && !LaunchConfiguration.allowsSampleAnalysis {
+            analysisSource = nil
+            defaults.removeObject(forKey: Key.analysisSource)
+        }
+        if glassesSource == .simulatedGlasses && !LaunchConfiguration.allowsSimulatedGlasses {
+            glassesSource = nil
+            defaults.removeObject(forKey: Key.glassesSource)
+            completedOnboarding = false
+            defaults.set(false, forKey: Key.completedOnboarding)
+        }
     }
 }
