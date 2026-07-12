@@ -1,3 +1,3 @@
-SPDX-FileCopyrightText: 2014 Hans Braxmeier
+SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
 SPDX-License-Identifier: CC0-1.0
-SPDX-FileComment: Derived HEVC test feed from CheeseSpaetzle.jpg; original source: https://commons.wikimedia.org/wiki/File:Cheese-noodles-609776.jpg
+SPDX-FileComment: Derived exclusively from the AI-generated CheeseSpaetzle.jpg test asset on 2026-07-12. Encoded for glasses-camera simulation as a 540x960, 24 fps, five-second HEVC video.

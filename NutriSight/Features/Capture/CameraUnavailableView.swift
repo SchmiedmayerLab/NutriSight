@@ -23,8 +23,12 @@ struct CameraUnavailableView: View {
 }
 
 
-#Preview("Camera Unavailable", arguments: [WearablesCameraState.noDevice, .paused]) { state in
-    CameraUnavailableView(state: state)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.black)
+#Preview("Camera Unavailable") {
+    VStack {
+        CameraUnavailableView(state: .noDevice)
+        CameraUnavailableView(state: .permissionRequired)
+        CameraUnavailableView(state: .paused)
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(.black)
 }

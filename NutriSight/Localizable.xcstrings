@@ -195,6 +195,210 @@
         }
       }
     },
+    "ALLOW_GLASSES_CAMERA" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brillenkamera erlauben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow Glasses Camera"
+          }
+        }
+      }
+    },
+    "CAMERA_ACCESS" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamerazugriff"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera access"
+          }
+        }
+      }
+    },
+    "CAMERA_ACCESS_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta AI fragt dich separat, ob NutriSight die Kamera deiner Brille verwenden darf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta AI will separately ask whether NutriSight may use your glasses camera."
+          }
+        }
+      }
+    },
+    "CAMERA_PERMISSION_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erlaube den Kamerazugriff, bevor NutriSight den Live-Stream startet."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow camera access before NutriSight starts the live stream."
+          }
+        }
+      }
+    },
+    "CAMERA_PERMISSION_SUBTITLE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kopplung ist abgeschlossen. Als Nächstes benötigt NutriSight Zugriff auf die Kamera deiner Brille."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pairing is complete. Next, NutriSight needs access to your glasses camera."
+          }
+        }
+      }
+    },
+    "CAMERA_PERMISSION_TITLE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brillenkamera erlauben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow the Glasses Camera"
+          }
+        }
+      }
+    },
+    "CAMERA_STARTS_NEXT" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live-Ansicht folgt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live view comes next"
+          }
+        }
+      }
+    },
+    "CAMERA_STARTS_NEXT_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach deiner Erlaubnis öffnet NutriSight die Live-Ansicht und zeigt den Verbindungsstatus der Kamera."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After you allow access, NutriSight opens the live view and shows the camera connection state."
+          }
+        }
+      }
+    },
+    "CONTINUE_TO_CAMERA" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiter zur Kamera"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue to Camera"
+          }
+        }
+      }
+    },
+    "GLASSES_PAIRED" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brille gekoppelt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glasses paired"
+          }
+        }
+      }
+    },
+    "GLASSES_PAIRED_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NutriSight ist jetzt über Meta AI mit deiner Brille verbunden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NutriSight is now connected to your glasses through Meta AI."
+          }
+        }
+      }
+    },
+    "WAITING_FOR_ACTIVE_GLASSES" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warte auf eine aktive Brille. Schalte sie ein und setze sie auf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for active glasses. Turn them on and put them on."
+          }
+        }
+      }
+    },
     "CAMERA_CONNECTING" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -640,6 +844,40 @@
         }
       }
     },
+    "ERROR_DEVICE_UPDATE_REQUIRED" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Brille muss aktualisiert werden, bevor NutriSight ihre Kamera verwenden kann."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The glasses must be updated before NutriSight can use their camera."
+          }
+        }
+      }
+    },
+    "ERROR_INCOMPATIBLE_DEVICE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählte Brille ist mit dieser Version von NutriSight nicht kompatibel."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected glasses are not compatible with this version of NutriSight."
+          }
+        }
+      }
+    },
     "ERROR_NO_DEVICE" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -670,6 +908,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Camera access was not granted for the glasses."
+          }
+        }
+      }
+    },
+    "ERROR_PERMISSION_REQUIRED" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erlaube den Kamerazugriff, bevor du die Brillenkamera startest."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow camera access before starting the glasses camera."
+          }
+        }
+      }
+    },
+    "ERROR_REGISTRATION_REQUIRED" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopple die Meta-Brille, bevor du auf ihre Kamera zugreifst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pair the Meta glasses before accessing their camera."
           }
         }
       }

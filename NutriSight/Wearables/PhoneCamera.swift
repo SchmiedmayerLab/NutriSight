@@ -29,22 +29,23 @@ final class PhoneCamera: NSObject {
         super.init()
     }
 
-    func start() {
+    func start() async throws {
         guard Self.isSupported else {
+            throw WearablesCameraError.streamUnavailable
+        }
+        guard await Self.requestAccess() else {
+            throw WearablesCameraError.permissionDenied
+        }
+        configureIfNeeded()
+        guard isConfigured else {
+            throw WearablesCameraError.streamUnavailable
+        }
+        guard !captureSession.isRunning else {
+            isAvailable = true
             return
         }
-        Task {
-            guard await Self.requestAccess() else {
-                return
-            }
-            configureIfNeeded()
-            guard isConfigured, !captureSession.isRunning else {
-                isAvailable = isConfigured
-                return
-            }
-            captureSession.startRunning()
-            isAvailable = true
-        }
+        captureSession.startRunning()
+        isAvailable = true
     }
 
     func capturePhoto(timeout: Duration = .seconds(20)) async throws -> Data {

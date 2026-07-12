@@ -11,19 +11,19 @@ import SwiftUI
 
 
 struct CameraPreviewCard: View {
-    let camera: WearablesCamera
+    let wearables: WearablesCoordinator
     let capturedImage: UIImage?
     @Binding var viewState: ViewState
     let captureAction: @MainActor () async throws -> Void
 
     private var displayedImage: UIImage? {
-        capturedImage ?? camera.previewImage
+        capturedImage ?? wearables.previewImage
     }
 
     var body: some View {
         Group {
             if let displayedImage {
-                if camera.canCapture && capturedImage == nil {
+                if wearables.canCapture && capturedImage == nil {
                     AsyncButton(state: $viewState, action: captureAction) {
                         previewImage(displayedImage)
                     }
@@ -34,7 +34,7 @@ struct CameraPreviewCard: View {
                     previewImage(displayedImage)
                 }
             } else {
-                CameraUnavailableView(state: camera.state)
+                CameraUnavailableView(state: wearables.state)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .accessibilityIdentifier("camera-preview")
             }
@@ -42,13 +42,11 @@ struct CameraPreviewCard: View {
     }
 
     private func previewImage(_ image: UIImage) -> some View {
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFill()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .clipped()
+        CameraViewfinderImage(
+            image: image,
+            accessibilityLabel: capturedImage == nil ? .liveCameraPreview : .capturedMealPhoto
+        )
             .contentShape(.rect)
-            .accessibilityLabel(capturedImage == nil ? .liveCameraPreview : .capturedMealPhoto)
             .accessibilityIdentifier(capturedImage == nil ? "live-camera-image" : "camera-preview")
     }
 }
@@ -60,7 +58,7 @@ struct CameraPreviewCard: View {
 
     VStack(spacing: 0) {
         CameraPreviewCard(
-            camera: WearablesCamera(previewImage: previewImage),
+            wearables: WearablesCoordinator(previewImage: previewImage),
             capturedImage: nil,
             viewState: $viewState,
             captureAction: {}
@@ -70,7 +68,7 @@ struct CameraPreviewCard: View {
         }
 
         CameraPreviewCard(
-            camera: WearablesCamera(previewImage: previewImage),
+            wearables: WearablesCoordinator(previewImage: previewImage),
             capturedImage: previewImage,
             viewState: $viewState,
             captureAction: {}

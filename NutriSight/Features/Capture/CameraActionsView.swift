@@ -21,7 +21,7 @@ struct CameraActionsView: View {
     }
 
     @ViewBuilder private var cameraAction: some View {
-        switch model.camera.state {
+        switch model.wearables.state {
         case .notRegistered:
             Button(action: setupGlassesAction) {
                 cameraActionLabel(.pairMetaGlasses, systemImage: "eyeglasses")
@@ -35,6 +35,13 @@ struct CameraActionsView: View {
             .buttonStyle(.glassProminent)
             .buttonBorderShape(.roundedRectangle(radius: 24))
             .accessibilityIdentifier("refresh-glasses")
+        case .permissionRequired:
+            Button(action: setupGlassesAction) {
+                cameraActionLabel(.allowGlassesCamera, systemImage: "camera.badge.ellipsis")
+            }
+            .buttonStyle(.glassProminent)
+            .buttonBorderShape(.roundedRectangle(radius: 24))
+            .accessibilityIdentifier("allow-glasses-camera")
         case .ready, .connecting:
             EmptyView()
         case .streaming:

@@ -16,6 +16,7 @@ import UIKit
 class NutriSightAppDelegate: SpeziAppDelegate {
     override var configuration: Configuration {
         Configuration(standard: NutriSightStandard()) {
+            WearablesCoordinator()
             KeychainStorage()
             LLMRunner {
                 MetaMusePlatform(
@@ -31,5 +32,4 @@ class NutriSightAppDelegate: SpeziAppDelegate {
             }
         }
     }
-
 }

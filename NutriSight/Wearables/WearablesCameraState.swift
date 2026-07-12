@@ -12,6 +12,7 @@ import Foundation
 enum WearablesCameraState: CaseIterable, Equatable, Sendable {
     case notRegistered
     case noDevice
+    case permissionRequired
     case ready
     case connecting
     case streaming
@@ -21,6 +22,7 @@ enum WearablesCameraState: CaseIterable, Equatable, Sendable {
         switch self {
         case .notRegistered: .connectMetaAi
         case .noDevice: .noGlassesFound
+        case .permissionRequired: .cameraPermissionTitle
         case .ready: .connectingToGlasses
         case .connecting: .cameraConnecting
         case .streaming: .cameraReady
@@ -32,6 +34,7 @@ enum WearablesCameraState: CaseIterable, Equatable, Sendable {
         switch self {
         case .notRegistered: .cameraNotRegisteredDetail
         case .noDevice: .cameraNoDeviceDetail
+        case .permissionRequired: .cameraPermissionDetail
         case .ready: .cameraConnectingDetail
         case .connecting: .cameraConnectingDetail
         case .streaming: .cameraReadyDetail
@@ -43,6 +46,7 @@ enum WearablesCameraState: CaseIterable, Equatable, Sendable {
         switch self {
         case .notRegistered: "link.badge.plus"
         case .noDevice: "eyeglasses"
+        case .permissionRequired: "camera.badge.ellipsis"
         case .ready: "eyeglasses"
         case .connecting: "antenna.radiowaves.left.and.right"
         case .streaming: "camera.fill"

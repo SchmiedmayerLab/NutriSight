@@ -23,7 +23,11 @@ struct DeviceStatusBadge: View {
 }
 
 
-#Preview("Device Status", arguments: WearablesCameraState.allCases) { state in
-    DeviceStatusBadge(state: state)
-        .padding()
+#Preview("Device Status") {
+    VStack {
+        ForEach(WearablesCameraState.allCases.indices, id: \.self) { index in
+            DeviceStatusBadge(state: WearablesCameraState.allCases[index])
+        }
+    }
+    .padding()
 }

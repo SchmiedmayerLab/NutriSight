@@ -71,11 +71,16 @@ struct OnboardingHeroView: View {
 }
 
 
-#Preview("Onboarding Heroes", arguments: OnboardingHeroPreview.allCases) { preview in
-    OnboardingHeroView(
-        systemImage: preview.systemImage,
-        title: preview.title,
-        subtitle: preview.subtitle
-    )
+#Preview("Onboarding Heroes") {
+    ScrollView {
+        ForEach(OnboardingHeroPreview.allCases.indices, id: \.self) { index in
+            let preview = OnboardingHeroPreview.allCases[index]
+            OnboardingHeroView(
+                systemImage: preview.systemImage,
+                title: preview.title,
+                subtitle: preview.subtitle
+            )
+        }
+    }
     .padding()
 }

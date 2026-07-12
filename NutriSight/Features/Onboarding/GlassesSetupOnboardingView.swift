@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: MIT
 //
 
-import MWDATCore
 import OSLog
 import SpeziOnboarding
 import SpeziViews
@@ -15,10 +14,10 @@ import SwiftUI
 
 struct GlassesSetupOnboardingView: View {
     @Environment(ManagedNavigationStack.Path.self) private var path
+    @Environment(WearablesCoordinator.self) private var wearables
     @Bindable var configuration: ExperienceConfiguration
 
     @State private var viewState: ViewState = .idle
-    @State private var setupCamera = WearablesCamera()
     @State private var isPairing = false
     @State private var pairingTask: Task<Void, Never>?
 
@@ -108,6 +107,12 @@ struct GlassesSetupOnboardingView: View {
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .onOpenURL(perform: handleWearablesURL)
+        .onChange(of: wearables.state) {
+            guard isPairing, wearables.isRegistered else {
+                return
+            }
+            completeMetaGlassesPairing()
+        }
     }
 
     private func startPairing() {
@@ -119,7 +124,7 @@ struct GlassesSetupOnboardingView: View {
         pairingTask = Task {
             do {
                 try await pairMetaGlasses()
-                guard Wearables.shared.registrationState == .registered else {
+                guard wearables.isRegistered else {
                     pairingTask = nil
                     return
                 }
@@ -139,12 +144,11 @@ struct GlassesSetupOnboardingView: View {
     }
 
     private func pairMetaGlasses() async throws {
-        try WearablesBootstrap.configure(using: .metaGlasses)
-        setupCamera.start(source: .metaGlasses)
-        guard Wearables.shared.registrationState != .registered else {
+        try await wearables.selectSource(.metaGlasses)
+        guard !wearables.isRegistered else {
             return
         }
-        try await setupCamera.register()
+        try await wearables.pair()
     }
 
     private func cancelPairing() {
@@ -155,18 +159,22 @@ struct GlassesSetupOnboardingView: View {
     }
 
     private func completeMetaGlassesPairing() {
+        guard isPairing else {
+            return
+        }
         configuration.selectGlassesSource(.metaGlasses)
         isPairing = false
         pairingTask = nil
         path.nextStep()
     }
 
-    private func useSimulatedGlasses() throws {
+    private func useSimulatedGlasses() async throws {
         guard LaunchConfiguration.allowsSimulatedGlasses else {
             return
         }
         configuration.selectGlassesSource(.simulatedGlasses)
-        try WearablesBootstrap.configure(using: .simulatedGlasses)
+        try await wearables.selectSource(.simulatedGlasses)
+        path.nextStep()
         path.nextStep()
     }
 
@@ -178,7 +186,8 @@ struct GlassesSetupOnboardingView: View {
             throw WearablesCameraError.permissionDenied
         }
         configuration.selectGlassesSource(.phoneCamera)
-        try WearablesBootstrap.configure(using: .phoneCamera)
+        try await wearables.selectSource(.phoneCamera)
+        path.nextStep()
         path.nextStep()
     }
 
@@ -190,8 +199,8 @@ struct GlassesSetupOnboardingView: View {
         viewState = .idle
         Task {
             do {
-                try await setupCamera.handle(url)
-                guard Wearables.shared.registrationState == .registered else {
+                try await wearables.handleRegistrationCallback(url)
+                guard wearables.isRegistered else {
                     isPairing = false
                     pairingTask = nil
                     return
@@ -219,5 +228,6 @@ struct GlassesSetupOnboardingView: View {
 
     ManagedNavigationStack(didComplete: $didComplete, path: path) {
         GlassesSetupOnboardingView(configuration: .preview(analysisSource: .sampleAnalysis))
+            .environment(WearablesCoordinator())
     }
 }

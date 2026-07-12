@@ -20,6 +20,7 @@ struct SetupFlowView: View {
             WelcomeOnboardingView()
             AnalysisSetupOnboardingView(configuration: configuration)
             GlassesSetupOnboardingView(configuration: configuration)
+            GlassesCameraPermissionOnboardingView(configuration: configuration)
         }
         .scrollBounceBehavior(.basedOnSize)
         .onChange(of: didComplete) {

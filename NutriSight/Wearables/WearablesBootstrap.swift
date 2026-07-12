@@ -17,6 +17,10 @@ enum WearablesBootstrap {
     private static var configuredSource: GlassesSource?
 
     static func configure(using source: GlassesSource) throws {
+        if source == .phoneCamera {
+            configuredSource = source
+            return
+        }
         if let configuredSource {
             if configuredSource == source {
                 return
@@ -25,11 +29,6 @@ enum WearablesBootstrap {
                 throw WearablesBootstrapError.sourceAlreadySelected
             }
             self.configuredSource = nil
-        }
-
-        if source == .phoneCamera {
-            configuredSource = source
-            return
         }
 
         if source == .simulatedGlasses {

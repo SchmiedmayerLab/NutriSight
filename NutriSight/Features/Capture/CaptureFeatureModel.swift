@@ -14,49 +14,27 @@ import SwiftUI
 @MainActor
 @Observable
 final class CaptureFeatureModel {
-    let camera: WearablesCamera
+    let wearables: WearablesCoordinator
 
     private(set) var workflowState: CaptureWorkflowState = .camera
     private(set) var capturedImageData: Data?
     private(set) var capturedImage: UIImage?
     private(set) var analysis: NutritionAnalysis?
-    private var glassesSource: GlassesSource?
     private var isConnectingCamera = false
     var viewState: ViewState = .idle
 
-    init(camera: WearablesCamera = WearablesCamera()) {
-        self.camera = camera
+    init(wearables: WearablesCoordinator = WearablesCoordinator()) {
+        self.wearables = wearables
     }
 
-    func start(source: GlassesSource?) {
-        glassesSource = source
-        switch source {
-        case .metaGlasses:
-            do {
-                try configureMetaGlassesIfNeeded()
-                camera.start(source: source)
-            } catch let error as any LocalizedError {
-                viewState = .error(error)
-                camera.markMetaGlassesSelected()
-            } catch {
-                viewState = .error(WearablesCameraError.sdk(error.localizedDescription))
-                camera.markMetaGlassesSelected()
-            }
-        case .simulatedGlasses:
-            try? WearablesBootstrap.configure(using: .simulatedGlasses)
-            camera.start(source: source)
-        case .phoneCamera:
-            try? WearablesBootstrap.configure(using: .phoneCamera)
-            camera.start(source: source)
-        case nil:
-            camera.start(source: source)
+    func start(source: GlassesSource?) async {
+        do {
+            try await wearables.selectSource(source)
+        } catch let error as any LocalizedError {
+            viewState = .error(error)
+        } catch {
+            viewState = .error(WearablesCameraError.sdk(error.localizedDescription))
         }
-    }
-
-    func registerWearables() async throws {
-        try configureMetaGlassesIfNeeded()
-        camera.start(source: .metaGlasses)
-        try await camera.register()
     }
 
     func connectCamera() async throws {
@@ -67,18 +45,15 @@ final class CaptureFeatureModel {
         defer {
             isConnectingCamera = false
         }
-        try configureMetaGlassesIfNeeded()
-        camera.start(source: .metaGlasses)
-        try await camera.requestCameraPermission()
-        try await camera.connect()
+        try await wearables.startCamera()
     }
 
     func refreshCamera() {
-        camera.refresh()
+        wearables.refreshDevices()
     }
 
     func connectWhenReady() async {
-        guard camera.state == .ready, !isConnectingCamera else {
+        guard wearables.state == .ready, !isConnectingCamera else {
             return
         }
         isConnectingCamera = true
@@ -86,8 +61,9 @@ final class CaptureFeatureModel {
             isConnectingCamera = false
         }
         do {
-            try await camera.requestCameraPermission()
-            try await camera.connect()
+            try await wearables.startCamera()
+        } catch WearablesCameraError.permissionRequired {
+            return
         } catch let error as any LocalizedError {
             viewState = .error(error)
         } catch {
@@ -97,9 +73,8 @@ final class CaptureFeatureModel {
 
     func handleWearablesURL(_ url: URL) async {
         do {
-            try configureMetaGlassesIfNeeded()
-            camera.start(source: .metaGlasses)
-            try await camera.handle(url)
+            try await wearables.selectSource(.metaGlasses)
+            try await wearables.handleRegistrationCallback(url)
         } catch let error as any LocalizedError {
             viewState = .error(error)
         } catch {
@@ -108,7 +83,7 @@ final class CaptureFeatureModel {
     }
 
     func capture() async throws {
-        try receiveCapturedPhoto(await camera.capturePhoto())
+        try receiveCapturedPhoto(await wearables.capturePhoto())
     }
 
     func beginCapture() {
@@ -157,14 +132,6 @@ final class CaptureFeatureModel {
         analysis = nil
         workflowState = .camera
         viewState = .idle
-    }
-
-    private func configureMetaGlassesIfNeeded() throws {
-        guard glassesSource == .metaGlasses || glassesSource == nil else {
-            return
-        }
-        try WearablesBootstrap.configure(using: .metaGlasses)
-        glassesSource = .metaGlasses
     }
 }
 

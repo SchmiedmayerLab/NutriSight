@@ -23,13 +23,13 @@ struct CaptureScreen: View {
             Color.black
                 .ignoresSafeArea()
             CameraPreviewCard(
-                camera: model.camera,
+                wearables: model.wearables,
                 capturedImage: model.capturedImage,
                 viewState: $model.viewState,
                 captureAction: captureAndAnalyze
             )
             .ignoresSafeArea()
-            CameraStatusOverlay(cameraState: model.camera.state, configuration: configuration)
+            CameraStatusOverlay(cameraState: model.wearables.state, configuration: configuration)
                 .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -46,7 +46,6 @@ struct CaptureScreen: View {
         .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
-        .cameraStatusBarColorScheme()
         .sheet(isPresented: $presentsNutritionSheet, onDismiss: model.retake) {
             NutritionAnalysisSheet(
                 model: model,
@@ -55,7 +54,7 @@ struct CaptureScreen: View {
                 closeAction: closeNutritionSheet
             )
         }
-        .task(id: model.camera.state) {
+        .task(id: model.wearables.state) {
             await model.connectWhenReady()
         }
     }
@@ -94,17 +93,5 @@ struct CaptureScreen: View {
 
     private func closeNutritionSheet() {
         presentsNutritionSheet = false
-    }
-}
-
-
-extension View {
-    @ViewBuilder
-    fileprivate func cameraStatusBarColorScheme() -> some View {
-        if #available(iOS 27.0, *) {
-            toolbarColorScheme(.dark, for: .statusBar)
-        } else {
-            self
-        }
     }
 }

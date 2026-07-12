@@ -10,12 +10,15 @@ import SwiftUI
 
 
 struct ContentView: View {
+    @Environment(WearablesCoordinator.self) private var wearables
     @State private var configuration = ExperienceConfiguration()
 
     var body: some View {
         Group {
-            if configuration.completedOnboarding {
-                CaptureExperienceView(configuration: configuration)
+            if LaunchConfiguration.isTesting && !LaunchConfiguration.isUITesting {
+                Color.clear
+            } else if configuration.completedOnboarding {
+                CaptureExperienceView(configuration: configuration, wearables: wearables)
             } else {
                 SetupFlowView(configuration: configuration)
             }
