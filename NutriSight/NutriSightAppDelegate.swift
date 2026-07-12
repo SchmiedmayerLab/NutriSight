@@ -6,16 +6,12 @@
 // SPDX-License-Identifier: MIT
 //
 
-import SwiftUI
+
+import Spezi
 
 
-struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
+class NutriSightAppDelegate: SpeziAppDelegate {
+    override var configuration: Configuration {
+        Configuration { }
     }
-}
-
-#Preview {
-    ContentView()
 }

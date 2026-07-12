@@ -6,16 +6,12 @@
 // SPDX-License-Identifier: MIT
 //
 
-import SwiftUI
+import Testing
 
 
-struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
+struct NutriSightTests {
+    @Test
+    func example() {
+        #expect(1 + 2 == 3)
     }
-}
-
-#Preview {
-    ContentView()
 }

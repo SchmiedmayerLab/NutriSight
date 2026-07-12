@@ -1,0 +1,56 @@
+#
+# This source file is part of the NutriSight project
+#
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: Build and Test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  reuse_action:
+    name: REUSE Compliance Check
+    uses: SchmiedmayerLab/.github/.github/workflows/reuse.yml@v0.2
+  swiftlint:
+    name: SwiftLint
+    uses: SchmiedmayerLab/.github/.github/workflows/swiftlint.yml@v0.2
+  periphery:
+    name: Periphery
+    uses: SchmiedmayerLab/.github/.github/workflows/periphery.yml@v0.2
+  codeql:
+    name: CodeQL
+    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2
+    with:
+      codeql: true
+    permissions:
+      contents: read
+      security-events: write
+  buildandtest:
+    name: Build and Test
+    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2
+    with:
+      runsonlabels: '["macOS", "self-hosted"]'
+  uploadcoveragereport:
+    name: Upload Coverage Report
+    needs: [buildandtest]
+    uses: SchmiedmayerLab/.github/.github/workflows/coverage.yml@v0.2
+    permissions:
+      actions: read
+      contents: read
+    with:
+      coveragereports: NutriSight.xcresult
+    secrets:
+      token: ${{ secrets.CODECOV_TOKEN }}

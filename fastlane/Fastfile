@@ -1,0 +1,113 @@
+#
+# This source file is part of the NutriSight project
+#
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "5"
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "6"
+  end
+
+  desc "Build and test"
+  lane :test do
+    run_tests(
+      skip_build: true,
+      derived_data_path: ".derivedData",
+      xcargs: [
+        "-skipPackagePluginValidation",
+        "-skipMacroValidation"
+      ],
+      code_coverage: true,
+      devices: [
+        "iPhone 17 Pro"
+      ],
+      force_quit_simulator: true,
+      reset_simulator: true,
+      prelaunch_simulator: false,
+      concurrent_workers: 1,
+      max_concurrent_simulators: 1,
+      destination: options[:destination],
+      result_bundle: true,
+      output_directory: ".",
+      result_bundle_path: "./NutriSight.xcresult"
+    )
+  end
+
+  desc "CodeQL"
+  lane :codeql do
+    build_app(
+      skip_archive: true,
+      skip_codesigning: true,
+      derived_data_path: ".derivedData",
+      xcargs: [
+        "-skipPackagePluginValidation",
+        "-skipMacroValidation"
+      ]
+    )
+  end
+
+  desc "Build app"
+  lane :build do
+    build_app(
+      derived_data_path: ".derivedData",
+      xcargs: [
+        "-skipPackagePluginValidation",
+        "-skipMacroValidation"
+      ],
+      destination: "generic/platform=iOS",
+      output_directory: ".build",
+      archive_path: ".build/NutriSight.xcarchive",
+    )
+    # This is an unfortunate workaround for a bug in fastlane: https://github.com/fastlane/fastlane/pull/21319
+    Dir.chdir("..") do
+      sh(
+        "
+        xcodebuild \
+          -exportArchive \
+          -exportOptionsPlist ./fastlane/ExportOptions.plist \
+          -archivePath ./.build/NutriSight.xcarchive \
+          -exportPath ./.build
+        "
+      )
+    end
+  end
+
+  desc "Sign in to the App Store Connect API"
+  lane :signin do
+    app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_API_KEY_BASE64"],
+      is_key_content_base64: true
+    )
+  end
+
+  desc "Publish a beta release to internal TestFlight testers"
+  lane :beta do
+    signin
+    increment_build_number(
+      {
+        build_number: latest_testflight_build_number + 1
+      }
+    )
+    build
+    commit = last_git_commit
+    upload_to_testflight(
+      ipa: "./.build/NutriSight.ipa",
+      distribute_external: true,
+      groups: [
+        "External Testers"
+      ],
+      submit_beta_review: true,
+      notify_external_testers: true,
+      expire_previous_builds: true,
+      changelog: commit[:message]
+    )
+  end
+end

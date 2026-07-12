@@ -6,8 +6,39 @@
 	objectVersion = 90;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6564905D3002C7A400F1D55F /* Spezi in Frameworks */ = {isa = PBXBuildFile; productRef = 6564905C3002C7A400F1D55F /* Spezi */; };
+		6564905F3002C7A400F1D55F /* SpeziLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 6564905E3002C7A400F1D55F /* SpeziLLM */; };
+		656490613002C7A400F1D55F /* SpeziLLMOpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 656490603002C7A400F1D55F /* SpeziLLMOpenAI */; };
+		656490633002C7A400F1D55F /* SpeziOnboarding in Frameworks */ = {isa = PBXBuildFile; productRef = 656490623002C7A400F1D55F /* SpeziOnboarding */; };
+		656490653002C7A400F1D55F /* SpeziViews in Frameworks */ = {isa = PBXBuildFile; productRef = 656490643002C7A400F1D55F /* SpeziViews */; };
+		656490683002C85000F1D55F /* MWDATCamera in Frameworks */ = {isa = PBXBuildFile; productRef = 656490673002C85000F1D55F /* MWDATCamera */; };
+		6564906A3002C85000F1D55F /* MWDATCore in Frameworks */ = {isa = PBXBuildFile; productRef = 656490693002C85000F1D55F /* MWDATCore */; };
+		6564906C3002C85000F1D55F /* MWDATMockDevice in Frameworks */ = {isa = PBXBuildFile; productRef = 6564906B3002C85000F1D55F /* MWDATMockDevice */; };
+		656490893002C8D300F1D55F /* SpeziHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 656490883002C8D300F1D55F /* SpeziHealthKit */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		656490753002C86900F1D55F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 000000000000000100000000;
+			remoteInfo = NutriSight;
+		};
+		656490823002C87800F1D55F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 000000000000000100000000;
+			remoteInfo = NutriSight;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* NutriSight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutriSight.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		656490713002C86900F1D55F /* NutriSightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NutriSightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6564907E3002C87800F1D55F /* NutriSightUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NutriSightUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +47,39 @@
 			path = NutriSight;
 			sourceTree = "<group>";
 		};
+		656490723002C86900F1D55F /* NutriSightTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NutriSightTests;
+			sourceTree = "<group>";
+		};
+		6564907F3002C87800F1D55F /* NutriSightUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NutriSightUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		000000000000000130000000 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				656490613002C7A400F1D55F /* SpeziLLMOpenAI in Frameworks */,
+				656490893002C8D300F1D55F /* SpeziHealthKit in Frameworks */,
+				656490683002C85000F1D55F /* MWDATCamera in Frameworks */,
+				656490633002C7A400F1D55F /* SpeziOnboarding in Frameworks */,
+				6564905F3002C7A400F1D55F /* SpeziLLM in Frameworks */,
+				656490653002C7A400F1D55F /* SpeziViews in Frameworks */,
+				6564905D3002C7A400F1D55F /* Spezi in Frameworks */,
+				6564906C3002C85000F1D55F /* MWDATMockDevice in Frameworks */,
+				6564906A3002C85000F1D55F /* MWDATCore in Frameworks */,
+			);
+		};
+		6564906E3002C86900F1D55F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		6564907B3002C87800F1D55F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
 			);
@@ -31,6 +91,9 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000010 /* NutriSight */,
+				656490723002C86900F1D55F /* NutriSightTests */,
+				6564907F3002C87800F1D55F /* NutriSightUITests */,
+				656490873002C8D300F1D55F /* Frameworks */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -39,8 +102,17 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000120 /* NutriSight.app */,
+				656490713002C86900F1D55F /* NutriSightTests.xctest */,
+				6564907E3002C87800F1D55F /* NutriSightUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		656490873002C8D300F1D55F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -60,9 +132,62 @@
 				000000000000000000000010 /* NutriSight */,
 			);
 			name = NutriSight;
+			packageProductDependencies = (
+				6564905C3002C7A400F1D55F /* Spezi */,
+				6564905E3002C7A400F1D55F /* SpeziLLM */,
+				656490603002C7A400F1D55F /* SpeziLLMOpenAI */,
+				656490623002C7A400F1D55F /* SpeziOnboarding */,
+				656490643002C7A400F1D55F /* SpeziViews */,
+				656490673002C85000F1D55F /* MWDATCamera */,
+				656490693002C85000F1D55F /* MWDATCore */,
+				6564906B3002C85000F1D55F /* MWDATMockDevice */,
+				656490883002C8D300F1D55F /* SpeziHealthKit */,
+			);
 			productName = MyApp;
 			productReference = 000000000000000000000120 /* NutriSight.app */;
 			productType = "com.apple.product-type.application";
+		};
+		656490703002C86900F1D55F /* NutriSightTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 656490773002C86900F1D55F /* Build configuration list for PBXNativeTarget "NutriSightTests" */;
+			buildPhases = (
+				6564906D3002C86900F1D55F /* Sources */,
+				6564906E3002C86900F1D55F /* Frameworks */,
+				6564906F3002C86900F1D55F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				656490763002C86900F1D55F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				656490723002C86900F1D55F /* NutriSightTests */,
+			);
+			name = NutriSightTests;
+			productName = NutriSightTests;
+			productReference = 656490713002C86900F1D55F /* NutriSightTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6564907D3002C87800F1D55F /* NutriSightUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 656490843002C87800F1D55F /* Build configuration list for PBXNativeTarget "NutriSightUITests" */;
+			buildPhases = (
+				6564907A3002C87800F1D55F /* Sources */,
+				6564907B3002C87800F1D55F /* Frameworks */,
+				6564907C3002C87800F1D55F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				656490833002C87800F1D55F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				6564907F3002C87800F1D55F /* NutriSightUITests */,
+			);
+			name = NutriSightUITests;
+			productName = NutriSightUITests;
+			productReference = 6564907E3002C87800F1D55F /* NutriSightUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -71,11 +196,19 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2630;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					000000000000000100000000 = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					656490703002C86900F1D55F = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 000000000000000100000000;
+					};
+					6564907D3002C87800F1D55F = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 000000000000000100000000;
 					};
 				};
 			};
@@ -88,18 +221,34 @@
 			);
 			mainGroup = 000000000000000000000001;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */,
+				656490663002C85000F1D55F /* XCRemoteSwiftPackageReference "meta-wearables-dat-ios" */,
+			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 000000000000000000000020 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				000000000000000100000000 /* NutriSight */,
+				656490703002C86900F1D55F /* NutriSightTests */,
+				6564907D3002C87800F1D55F /* NutriSightUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		000000000000000140000000 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		6564906F3002C86900F1D55F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		6564907C3002C87800F1D55F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
 			);
@@ -112,7 +261,30 @@
 			files = (
 			);
 		};
+		6564906D3002C86900F1D55F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		6564907A3002C87800F1D55F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		656490763002C86900F1D55F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 000000000000000100000000 /* NutriSight */;
+			targetProxy = 656490753002C86900F1D55F /* PBXContainerItemProxy */;
+		};
+		656490833002C87800F1D55F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 000000000000000100000000 /* NutriSight */;
+			targetProxy = 656490823002C87800F1D55F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		000000000000000011000000 /* Debug configuration for PBXProject "NutriSight" */ = {
@@ -180,6 +352,9 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_STRICT_MEMORY_SAFETY = YES;
+				SWIFT_VERSION = 5.0;
 				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 				XROS_DEPLOYMENT_TARGET = 27.0;
 			};
@@ -242,6 +417,9 @@
 				PROJECT_UNIQUE_VALUE = H8G7DE0W;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_STRICT_MEMORY_SAFETY = YES;
+				SWIFT_VERSION = 5.0;
 				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 				XROS_DEPLOYMENT_TARGET = 27.0;
 			};
@@ -256,6 +434,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = NutriSight;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -269,18 +449,18 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "devplaceholder.$(PROJECT_UNIQUE_VALUE:identifier).$(PRODUCT_NAME:identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.nutrisight;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -293,6 +473,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = NutriSight;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -306,18 +488,119 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "devplaceholder.$(PROJECT_UNIQUE_VALUE:identifier).$(PRODUCT_NAME:identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.nutrisight;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		656490783002C86900F1D55F /* Debug configuration for PBXNativeTarget "NutriSightTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.nutrisight.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NutriSight.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NutriSight";
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Debug;
+		};
+		656490793002C86900F1D55F /* Release configuration for PBXNativeTarget "NutriSightTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.nutrisight.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NutriSight.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NutriSight";
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Release;
+		};
+		656490853002C87800F1D55F /* Debug configuration for PBXNativeTarget "NutriSightUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.nutrisight.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = NutriSight;
+			};
+			name = Debug;
+		};
+		656490863002C87800F1D55F /* Release configuration for PBXNativeTarget "NutriSightUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.nutrisight.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = NutriSight;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -340,7 +623,90 @@
 			);
 			defaultConfigurationName = Release;
 		};
+		656490773002C86900F1D55F /* Build configuration list for PBXNativeTarget "NutriSightTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				656490783002C86900F1D55F /* Debug configuration for PBXNativeTarget "NutriSightTests" */,
+				656490793002C86900F1D55F /* Release configuration for PBXNativeTarget "NutriSightTests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		656490843002C87800F1D55F /* Build configuration list for PBXNativeTarget "NutriSightUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				656490853002C87800F1D55F /* Debug configuration for PBXNativeTarget "NutriSightUITests" */,
+				656490863002C87800F1D55F /* Release configuration for PBXNativeTarget "NutriSightUITests" */,
+			);
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SchmiedmayerLab/Spezi";
+			requirement = {
+				branch = fixBuilds;
+				kind = branch;
+			};
+		};
+		656490663002C85000F1D55F /* XCRemoteSwiftPackageReference "meta-wearables-dat-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/meta-wearables-dat-ios";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.8.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6564905C3002C7A400F1D55F /* Spezi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
+			productName = Spezi;
+		};
+		6564905E3002C7A400F1D55F /* SpeziLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
+			productName = SpeziLLM;
+		};
+		656490603002C7A400F1D55F /* SpeziLLMOpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
+			productName = SpeziLLMOpenAI;
+		};
+		656490623002C7A400F1D55F /* SpeziOnboarding */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
+			productName = SpeziOnboarding;
+		};
+		656490643002C7A400F1D55F /* SpeziViews */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
+			productName = SpeziViews;
+		};
+		656490673002C85000F1D55F /* MWDATCamera */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 656490663002C85000F1D55F /* XCRemoteSwiftPackageReference "meta-wearables-dat-ios" */;
+			productName = MWDATCamera;
+		};
+		656490693002C85000F1D55F /* MWDATCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 656490663002C85000F1D55F /* XCRemoteSwiftPackageReference "meta-wearables-dat-ios" */;
+			productName = MWDATCore;
+		};
+		6564906B3002C85000F1D55F /* MWDATMockDevice */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 656490663002C85000F1D55F /* XCRemoteSwiftPackageReference "meta-wearables-dat-ios" */;
+			productName = MWDATMockDevice;
+		};
+		656490883002C8D300F1D55F /* SpeziHealthKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
+			productName = SpeziHealthKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 000000000000000000000000 /* Project object */;
 }

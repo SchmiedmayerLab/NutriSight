@@ -1,0 +1,32 @@
+#
+# This source file is part of the NutriSight project
+#
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+# Swift Package Manager
+*.xcodeproj
+.swiftpm
+.derivedData
+.build
+!NutriSight.xcodeproj
+
+# IDE related folders
+.idea
+
+# Xcode
+xcuserdata/
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Other files
+.DS_Store
+.env
+
+# Tests
+report.junit
+report.html
+*.xcresult
