@@ -6,12 +6,12 @@
 // SPDX-License-Identifier: MIT
 //
 
-import Testing
 
-
-struct NutriSightTests {
-    @Test
-    func example() {
-        #expect(1 + 2 == 3)
-    }
+enum CaptureWorkflowState: Equatable, Sendable {
+    case camera
+    case capturing
+    case captured
+    case analyzing
+    case result
+    case saved
 }

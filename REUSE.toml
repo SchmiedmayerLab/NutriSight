@@ -1,6 +1,14 @@
 version = 1
 
 [[annotations]]
-path = "NutriSight.xcodeproj/**"
+path = [
+    "NutriSight.xcodeproj/**",
+    "NutriSight.xctestplan",
+    "NutriSight/Assets.xcassets/**",
+    "NutriSight/*.xcstrings",
+    "NutriSight/NutriSight.entitlements",
+    "fastlane/ExportOptions.plist",
+    "fastlane/README.md",
+]
 SPDX-FileCopyrightText = "2026 Stanford University and the project authors (see CONTRIBUTORS.md)"
 SPDX-License-Identifier = "MIT"

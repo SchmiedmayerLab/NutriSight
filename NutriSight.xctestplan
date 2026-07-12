@@ -1,0 +1,47 @@
+{
+  "configurations" : [
+    {
+      "id" : "7C8DBBD0-72CA-4C5A-913B-7712AA20EE34",
+      "name" : "Default",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:NutriSight.xcodeproj",
+          "identifier" : "000000000000000100000000",
+          "name" : "NutriSight"
+        }
+      ]
+    },
+    "environmentVariableEntries" : [
+      {
+        "key" : "NUTRISIGHT_TESTING",
+        "value" : "1"
+      }
+    ]
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:NutriSight.xcodeproj",
+        "identifier" : "656490703002C86900F1D55F",
+        "name" : "NutriSightTests"
+      }
+    },
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:NutriSight.xcodeproj",
+        "identifier" : "6564907D3002C87800F1D55F",
+        "name" : "NutriSightUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -16,6 +16,8 @@
 		6564906A3002C85000F1D55F /* MWDATCore in Frameworks */ = {isa = PBXBuildFile; productRef = 656490693002C85000F1D55F /* MWDATCore */; };
 		6564906C3002C85000F1D55F /* MWDATMockDevice in Frameworks */ = {isa = PBXBuildFile; productRef = 6564906B3002C85000F1D55F /* MWDATMockDevice */; };
 		656490893002C8D300F1D55F /* SpeziHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 656490883002C8D300F1D55F /* SpeziHealthKit */; };
+		A10000000000000000000002 /* SpeziKeychainStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000001 /* SpeziKeychainStorage */; };
+		A10000000000000000000004 /* MWDATMockDeviceTestClient in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000003 /* MWDATMockDeviceTestClient */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,9 +43,23 @@
 		6564907E3002C87800F1D55F /* NutriSightUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NutriSightUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A10000000000000000000005 /* Exceptions for "NutriSight" folder in "NutriSight" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/CheeseSpaetzle.jpg.license,
+				Resources/CheeseSpaetzleFeed.mov.license,
+			);
+			target = 000000000000000100000000 /* NutriSight */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		000000000000000000000010 /* NutriSight */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A10000000000000000000005 /* Exceptions for "NutriSight" folder in "NutriSight" target */,
+			);
 			path = NutriSight;
 			sourceTree = "<group>";
 		};
@@ -63,6 +79,7 @@
 		000000000000000130000000 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				A10000000000000000000002 /* SpeziKeychainStorage in Frameworks */,
 				656490613002C7A400F1D55F /* SpeziLLMOpenAI in Frameworks */,
 				656490893002C8D300F1D55F /* SpeziHealthKit in Frameworks */,
 				656490683002C85000F1D55F /* MWDATCamera in Frameworks */,
@@ -82,6 +99,7 @@
 		6564907B3002C87800F1D55F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				A10000000000000000000004 /* MWDATMockDeviceTestClient in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -142,6 +160,7 @@
 				656490693002C85000F1D55F /* MWDATCore */,
 				6564906B3002C85000F1D55F /* MWDATMockDevice */,
 				656490883002C8D300F1D55F /* SpeziHealthKit */,
+				A10000000000000000000001 /* SpeziKeychainStorage */,
 			);
 			productName = MyApp;
 			productReference = 000000000000000000000120 /* NutriSight.app */;
@@ -185,6 +204,9 @@
 				6564907F3002C87800F1D55F /* NutriSightUITests */,
 			);
 			name = NutriSightUITests;
+			packageProductDependencies = (
+				A10000000000000000000003 /* MWDATMockDeviceTestClient */,
+			);
 			productName = NutriSightUITests;
 			productReference = 6564907E3002C87800F1D55F /* NutriSightUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -217,6 +239,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				de,
 				Base,
 			);
 			mainGroup = 000000000000000000000001;
@@ -293,6 +316,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLETVOS_DEPLOYMENT_TARGET = 27.0;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -342,7 +366,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -354,7 +378,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_STRICT_MEMORY_SAFETY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 				XROS_DEPLOYMENT_TARGET = 27.0;
 			};
@@ -366,6 +390,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLETVOS_DEPLOYMENT_TARGET = 27.0;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -409,7 +434,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -419,7 +444,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_STRICT_MEMORY_SAFETY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 				XROS_DEPLOYMENT_TARGET = 27.0;
 			};
@@ -428,6 +453,8 @@
 		000000000000000111000000 /* Debug configuration for PBXNativeTarget "NutriSight" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NutriSight/NutriSight.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_APP_SANDBOX = YES;
@@ -436,6 +463,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = NutriSight;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "NutriSight saves nutrition estimates you review to Apple Health.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -467,6 +495,8 @@
 		000000000000000112000000 /* Release configuration for PBXNativeTarget "NutriSight" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NutriSight/NutriSight.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_APP_SANDBOX = YES;
@@ -475,6 +505,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = NutriSight;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "NutriSight saves nutrition estimates you review to Apple Health.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -511,7 +542,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.nutrisight.tests;
@@ -537,7 +568,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.nutrisight.tests;
@@ -705,6 +736,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
 			productName = SpeziHealthKit;
+		};
+		A10000000000000000000001 /* SpeziKeychainStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
+			productName = SpeziKeychainStorage;
+		};
+		A10000000000000000000003 /* MWDATMockDeviceTestClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 656490663002C85000F1D55F /* XCRemoteSwiftPackageReference "meta-wearables-dat-ios" */;
+			productName = MWDATMockDeviceTestClient;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

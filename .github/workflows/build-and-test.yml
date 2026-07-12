@@ -23,16 +23,16 @@ permissions:
 jobs:
   reuse_action:
     name: REUSE Compliance Check
-    uses: SchmiedmayerLab/.github/.github/workflows/reuse.yml@v0.2
+    uses: SchmiedmayerLab/.github/.github/workflows/reuse.yml@v0.2.4
   swiftlint:
     name: SwiftLint
-    uses: SchmiedmayerLab/.github/.github/workflows/swiftlint.yml@v0.2
+    uses: SchmiedmayerLab/.github/.github/workflows/swiftlint.yml@v0.2.4
   periphery:
     name: Periphery
-    uses: SchmiedmayerLab/.github/.github/workflows/periphery.yml@v0.2
+    uses: SchmiedmayerLab/.github/.github/workflows/periphery.yml@v0.2.4
   codeql:
     name: CodeQL
-    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2
+    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
     with:
       codeql: true
     permissions:
@@ -40,13 +40,11 @@ jobs:
       security-events: write
   buildandtest:
     name: Build and Test
-    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2
-    with:
-      runsonlabels: '["macOS", "self-hosted"]'
+    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
   uploadcoveragereport:
     name: Upload Coverage Report
     needs: [buildandtest]
-    uses: SchmiedmayerLab/.github/.github/workflows/coverage.yml@v0.2
+    uses: SchmiedmayerLab/.github/.github/workflows/coverage.yml@v0.2.4
     permissions:
       actions: read
       contents: read

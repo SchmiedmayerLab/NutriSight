@@ -10,12 +10,16 @@ import SwiftUI
 
 
 struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
-    }
-}
+    @State private var configuration = ExperienceConfiguration()
 
-#Preview {
-    ContentView()
+    var body: some View {
+        Group {
+            if configuration.completedOnboarding {
+                CaptureExperienceView(configuration: configuration)
+            } else {
+                SetupFlowView(configuration: configuration)
+            }
+        }
+        .tint(.accentColor)
+    }
 }
