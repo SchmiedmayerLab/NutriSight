@@ -42,17 +42,17 @@ jobs:
   #     security-events: write
   buildandtest:
     name: Build and Test
-    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
+    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@49395acf062b297d8f00b2def193b673464c78f5
     with:
       scheme: NutriSight
   uploadcoveragereport:
     name: Upload Coverage Report
     needs: [buildandtest]
-    uses: SchmiedmayerLab/.github/.github/workflows/coverage.yml@b31d05125a44f102f339594c5f90243a29786e81
+    uses: SchmiedmayerLab/.github/.github/workflows/coverage.yml@49395acf062b297d8f00b2def193b673464c78f5
     permissions:
       actions: read
       contents: read
     with:
-      coveragereports: NutriSight.xcresult
+      coveragereports: ${{ needs.buildandtest.outputs.artifact_name }}
     secrets:
       token: ${{ secrets.CODECOV_TOKEN }}
