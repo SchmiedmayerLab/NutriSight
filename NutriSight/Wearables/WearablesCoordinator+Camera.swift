@@ -129,6 +129,19 @@ extension WearablesCoordinator {
         updateState(.paused)
     }
 
+    /// Rebuilds a Meta camera stream after the SDK accepted a capture request without delivering its photo callback.
+    ///
+    /// A timed-out stream cannot be assumed to accept another capture. Keeping this recovery inside the coordinator
+    /// ensures that the next capture request sees a fresh, streaming camera without requiring UI-level SDK handling.
+    func recoverCameraAfterCaptureTimeout() async {
+        guard selectedSource == .metaGlasses || selectedSource == .simulatedGlasses else {
+            return
+        }
+
+        await stopCamera(keepDeviceSession: true)
+        try? await startCamera()
+    }
+
     func stopCamera(keepDeviceSession: Bool) async {
         captureTimeoutTask?.cancel()
         captureTimeoutTask = nil

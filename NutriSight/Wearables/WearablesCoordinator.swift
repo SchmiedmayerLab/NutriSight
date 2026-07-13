@@ -233,6 +233,7 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
                 captureContinuation = nil
                 captureTimeoutTask = nil
                 continuation.resume(throwing: WearablesCameraError.captureTimedOut)
+                await recoverCameraAfterCaptureTimeout()
             }
         }
     }
