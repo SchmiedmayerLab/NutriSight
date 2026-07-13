@@ -76,7 +76,7 @@ final class NutriSightUITests: XCTestCase {
 
         let nutritionTitle = app.staticTexts["nutrition-title"]
         XCTAssertTrue(nutritionTitle.waitForExistence(timeout: 10))
-        XCTAssertTrue(app.buttons["close-nutrition-results"].exists)
+        XCTAssertTrue(app.buttons["close-nutrition-results"].waitForExistence(timeout: 5))
         app.swipeUp()
 
         let saveButton = app.buttons["save-health"]

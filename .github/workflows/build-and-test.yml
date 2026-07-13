@@ -35,12 +35,15 @@ jobs:
     uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
     with:
       codeql: true
+      scheme: NutriSight
     permissions:
       contents: read
       security-events: write
   buildandtest:
     name: Build and Test
     uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
+    with:
+      scheme: NutriSight
   uploadcoveragereport:
     name: Upload Coverage Report
     needs: [buildandtest]
