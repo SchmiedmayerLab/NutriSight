@@ -23,32 +23,36 @@ permissions:
 jobs:
   reuse_action:
     name: REUSE Compliance Check
-    uses: SchmiedmayerLab/.github/.github/workflows/reuse.yml@v0.2.4
+    uses: SchmiedmayerLab/.github/.github/workflows/reuse.yml@v0.2
   swiftlint:
     name: SwiftLint
-    uses: SchmiedmayerLab/.github/.github/workflows/swiftlint.yml@v0.2.4
+    uses: SchmiedmayerLab/.github/.github/workflows/swiftlint.yml@v0.2
   periphery:
     name: Periphery
-    uses: SchmiedmayerLab/.github/.github/workflows/periphery.yml@v0.2.4
-  codeql:
-    name: CodeQL
-    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
-    with:
-      codeql: true
-    permissions:
-      contents: read
-      security-events: write
+    uses: SchmiedmayerLab/.github/.github/workflows/periphery.yml@v0.2
+  # Disabled until https://github.com/github/codeql-action/issues/3978 is addressed.
+  # codeql:
+  #   name: CodeQL
+  #   uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2
+  #   with:
+  #     codeql: true
+  #     scheme: NutriSight
+  #   permissions:
+  #     contents: read
+  #     security-events: write
   buildandtest:
     name: Build and Test
-    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
+    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2
+    with:
+      scheme: NutriSight
   uploadcoveragereport:
     name: Upload Coverage Report
     needs: [buildandtest]
-    uses: SchmiedmayerLab/.github/.github/workflows/coverage.yml@v0.2.4
+    uses: SchmiedmayerLab/.github/.github/workflows/coverage.yml@v0.2
     permissions:
       actions: read
       contents: read
     with:
-      coveragereports: NutriSight.xcresult
+      coveragereports: ${{ needs.buildandtest.outputs.artifact_name }}
     secrets:
       token: ${{ secrets.CODECOV_TOKEN }}

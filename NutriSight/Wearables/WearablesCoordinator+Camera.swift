@@ -12,6 +12,16 @@ import MWDATCore
 
 
 extension WearablesCoordinator {
+    func simulatedUITestCaptureData() -> Data? {
+        guard selectedSource == .simulatedGlasses,
+              LaunchConfiguration.isUITesting,
+              LaunchConfiguration.preparesSimulatedGlasses,
+              let url = Bundle.main.url(forResource: "CheeseSpaetzle", withExtension: "jpg") else {
+            return nil
+        }
+        return try? Data(contentsOf: url)
+    }
+
     func performStartCamera() async throws {
         if selectedSource == .phoneCamera {
             try await phoneCamera?.start()
@@ -127,6 +137,19 @@ extension WearablesCoordinator {
         }
         resumeCameraStart(with: .failure(WearablesCameraError.sdk(description)))
         updateState(.paused)
+    }
+
+    /// Rebuilds a Meta camera stream after the SDK accepted a capture request without delivering its photo callback.
+    ///
+    /// A timed-out stream cannot be assumed to accept another capture. Keeping this recovery inside the coordinator
+    /// ensures that the next capture request sees a fresh, streaming camera without requiring UI-level SDK handling.
+    func recoverCameraAfterCaptureTimeout() async {
+        guard selectedSource == .metaGlasses || selectedSource == .simulatedGlasses else {
+            return
+        }
+
+        await stopCamera(keepDeviceSession: true)
+        try? await startCamera()
     }
 
     func stopCamera(keepDeviceSession: Bool) async {

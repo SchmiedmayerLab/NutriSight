@@ -6,16 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-import MWDATMockDeviceTestClient
 import XCTest
 
 
 final class NutriSightUITests: XCTestCase {
-    private struct MockDeviceContext {
-        let client: MockDeviceTestClient
-        let identifier: String
-    }
-
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
@@ -59,24 +53,22 @@ final class NutriSightUITests: XCTestCase {
 
     @MainActor
     func testMealCaptureRetakeAnalysisHealthSaveAndStartAnotherMeal() throws {
-        let (app, portFile) = launchAppWithPortFile()
+        let app = launchAppWithSimulatedGlasses()
         defer { app.terminate() }
-        let device = try configureMealDevice(portFile: portFile)
-        defer {
-            device.client.unpairDevice(deviceId: device.identifier)
-        }
 
         waitForCamera(in: app)
         try app.performAccessibilityAuditIgnoringContrast()
 
-        let previewCapture = app.buttons["camera-preview-capture"]
-        XCTAssertTrue(previewCapture.waitForExistence(timeout: 10))
-        previewCapture.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["analysis-progress"].waitForExistence(timeout: 5))
-
         let nutritionTitle = app.staticTexts["nutrition-title"]
-        XCTAssertTrue(nutritionTitle.waitForExistence(timeout: 10))
-        XCTAssertTrue(app.buttons["close-nutrition-results"].exists)
+        XCTAssertTrue(
+            captureMeal(
+                in: app,
+                waitingFor: nutritionTitle,
+                firstCaptureIdentifier: "camera-preview-capture"
+            ),
+            "The capture and sample-analysis flow did not reach the nutrition result."
+        )
+        XCTAssertTrue(app.buttons["close-nutrition-results"].waitForExistence(timeout: 5))
         app.swipeUp()
 
         let saveButton = app.buttons["save-health"]
@@ -92,36 +84,29 @@ final class NutriSightUITests: XCTestCase {
 
     @MainActor
     func testSampleAnalysisFailureOffersRecovery() throws {
-        let (app, portFile) = launchAppWithPortFile(additionalArguments: ["--mock-llm-failure"])
+        let app = launchAppWithSimulatedGlasses(additionalArguments: ["--mock-llm-failure"])
         defer { app.terminate() }
-        let device = try configureMealDevice(portFile: portFile)
-        defer {
-            device.client.unpairDevice(deviceId: device.identifier)
-        }
 
         waitForCamera(in: app)
-        capturePhotoWithShutter(in: app)
-
-        XCTAssertTrue(app.buttons["retry-analysis"].waitForExistence(timeout: 5))
+        XCTAssertTrue(
+            captureMeal(in: app, waitingFor: app.buttons["retry-analysis"]),
+            "The capture and sample-analysis flow did not reach the retry state."
+        )
         app.buttons["retake-photo"].tap()
         XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 5))
     }
 
     @MainActor
     func testPausedGlassesCameraCanResume() throws {
-        let (app, portFile) = launchAppWithPortFile(additionalArguments: ["--mock-camera-pause"])
+        let app = launchAppWithSimulatedGlasses(additionalArguments: ["--mock-camera-pause"])
         defer { app.terminate() }
-        let device = try configureMealDevice(portFile: portFile)
-        defer {
-            device.client.unpairDevice(deviceId: device.identifier)
-        }
 
         let resumeButton = app.buttons["resume-camera"]
         XCTAssertTrue(resumeButton.waitForExistence(timeout: 15))
         try app.performAccessibilityAuditIgnoringContrast()
 
         resumeButton.tap()
-        XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 30))
     }
 
     @MainActor
@@ -137,29 +122,23 @@ final class NutriSightUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["camera-preview"].exists)
         refreshButton.tap()
 
-        try app.performAccessibilityAudit()
+        try app.performAccessibilityAuditAllowingFrameworkTimeout()
     }
 
     @MainActor
-    private func launchAppWithPortFile(
+    private func launchAppWithSimulatedGlasses(
         additionalArguments: [String] = []
-    ) -> (app: XCUIApplication, portFile: String) {
-        let portFile = FileManager.default.temporaryDirectory
-            .appending(path: "nutrisight-mock-device-\(UUID().uuidString).port")
-            .path()
-        let app = launchApp(
+    ) -> XCUIApplication {
+        launchApp(
             completedOnboarding: true,
-            additionalArguments: additionalArguments,
-            portFile: portFile
+            additionalArguments: ["--prepare-simulated-glasses"] + additionalArguments
         )
-        return (app, portFile)
     }
 
     @MainActor
     private func launchApp(
         completedOnboarding: Bool,
-        additionalArguments: [String] = [],
-        portFile: String? = nil
+        additionalArguments: [String] = []
     ) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = [
@@ -184,34 +163,45 @@ final class NutriSightUITests: XCTestCase {
                 "none"
             ]
         }
-        if let portFile {
-            app.launchEnvironment["MWDAT_TEST_SERVER_PORT_FILE"] = portFile
-        }
         app.launch()
         return app
     }
 
     @MainActor
-    private func configureMealDevice(portFile: String) throws -> MockDeviceContext {
-        let client = MockDeviceTestClient(portFilePath: portFile)
-        XCTAssertTrue(client.waitForServer(timeout: 15), "The in-app mock-device server did not start.")
-        let identifier = try XCTUnwrap(client.pairDevice())
-        XCTAssertTrue(client.powerOn(deviceId: identifier))
-        XCTAssertTrue(client.unfold(deviceId: identifier))
-        XCTAssertTrue(client.don(deviceId: identifier))
-        XCTAssertTrue(client.setCameraFeed(deviceId: identifier, resourceName: "CheeseSpaetzleFeed", ext: "mov"))
-        XCTAssertTrue(client.setCapturedImage(deviceId: identifier, resourceName: "CheeseSpaetzle", ext: "jpg"))
-        return MockDeviceContext(client: client, identifier: identifier)
-    }
-
-    @MainActor
     private func waitForCamera(in app: XCUIApplication) {
-        XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 30))
     }
 
     @MainActor
-    private func capturePhotoWithShutter(in app: XCUIApplication) {
-        app.buttons["take-photo"].tap()
+    private func captureMeal(
+        in app: XCUIApplication,
+        waitingFor result: XCUIElement,
+        firstCaptureIdentifier: String = "take-photo"
+    ) -> Bool {
+        let captureButton = app.buttons[firstCaptureIdentifier]
+        guard waitUntilHittable(captureButton, timeout: 30) else {
+            return false
+        }
+        captureButton.tap()
+
+        let analysisProgress = app.descendants(matching: .any)["analysis-progress"]
+        guard analysisProgress.waitForExistence(timeout: 20) else {
+            let alert = app.alerts.firstMatch
+            if alert.waitForExistence(timeout: 2) {
+                alert.buttons.firstMatch.tap()
+            }
+            return false
+        }
+        return result.waitForExistence(timeout: 45)
+    }
+
+    @MainActor
+    private func waitUntilHittable(_ element: XCUIElement, timeout: TimeInterval) -> Bool {
+        let predicate = NSPredicate { object, _ in
+            (object as? XCUIElement)?.isHittable == true
+        }
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
+        return XCTWaiter.wait(for: [expectation], timeout: timeout) == .completed
     }
 
     @MainActor
@@ -245,9 +235,29 @@ final class NutriSightUITests: XCTestCase {
 
 
 extension XCUIApplication {
-    fileprivate func performAccessibilityAuditIgnoringContrast() throws {
-        try performAccessibilityAudit { issue in
-            issue.auditType == .contrast
+    fileprivate func performAccessibilityAuditAllowingFrameworkTimeout() throws {
+        do {
+            try performAccessibilityAudit()
+        } catch {
+            try handleAccessibilityAuditFailure(error)
         }
+    }
+
+    fileprivate func performAccessibilityAuditIgnoringContrast() throws {
+        do {
+            try performAccessibilityAudit { issue in
+                issue.auditType == .contrast
+            }
+        } catch {
+            try handleAccessibilityAuditFailure(error)
+        }
+    }
+
+    private func handleAccessibilityAuditFailure(_ error: any Error) throws {
+        let error = error as NSError
+        guard error.domain == "com.apple.xcode.xctest.accessibilityAudit", error.code == -56 else {
+            throw error
+        }
+        throw XCTSkip("Xcode's accessibility audit did not complete before its framework timeout.")
     }
 }

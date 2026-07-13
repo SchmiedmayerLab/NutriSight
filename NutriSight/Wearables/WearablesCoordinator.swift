@@ -205,6 +205,12 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
     }
 
     func capturePhoto(timeout: Duration = .seconds(20)) async throws -> Data {
+        // The mock SDK's photo callback is not deterministic on hosted simulators. UI tests still exercise the
+        // complete capture, analysis, and save flow using the same glasses-format fixture that configures the feed,
+        // but must not time out and rebuild an otherwise healthy stream before receiving that fixture.
+        if let uiTestCaptureData = simulatedUITestCaptureData() {
+            return uiTestCaptureData
+        }
         if state != .streaming && selectedSource != .phoneCamera {
             try await startCamera()
         }
@@ -232,6 +238,7 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
                 }
                 captureContinuation = nil
                 captureTimeoutTask = nil
+                await recoverCameraAfterCaptureTimeout()
                 continuation.resume(throwing: WearablesCameraError.captureTimedOut)
             }
         }

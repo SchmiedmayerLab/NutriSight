@@ -45,15 +45,15 @@ enum WearablesBootstrap {
         } catch {
             throw WearablesBootstrapError.sdk(error.localizedDescription)
         }
-        configuredSource = source
-
-        if source == .simulatedGlasses && !LaunchConfiguration.isUITesting {
+        if source == .simulatedGlasses
+            && (!LaunchConfiguration.isUITesting || LaunchConfiguration.preparesSimulatedGlasses) {
             try prepareSimulatedGlasses()
         }
+        configuredSource = source
 
         #if DEBUG
-        if LaunchConfiguration.isUITesting {
-            let portFilePath = ProcessInfo.processInfo.environment["MWDAT_TEST_SERVER_PORT_FILE"]
+        if LaunchConfiguration.isUITesting,
+           let portFilePath = ProcessInfo.processInfo.environment["MWDAT_TEST_SERVER_PORT_FILE"] {
             Task { @concurrent in
                 do {
                     _ = try await MockDeviceKit.shared.startTestServer(portFilePath: portFilePath)

@@ -10,6 +10,9 @@ SPDX-License-Identifier: MIT
 
 # NutriSight
 
+[![Build and Test](https://github.com/SchmiedmayerLab/NutriSight/actions/workflows/beta-deployment.yml/badge.svg?branch=main)](https://github.com/SchmiedmayerLab/NutriSight/actions/workflows/beta-deployment.yml?query=branch%3Amain)
+[![REUSE status](https://api.reuse.software/badge/github.com/SchmiedmayerLab/NutriSight)](https://api.reuse.software/info/github.com/SchmiedmayerLab/NutriSight)
+
 NutriSight is an iOS prototype that captures a meal from Meta glasses or the iPhone camera, generates a structured nutrition estimate with Meta's Muse Spark model, and lets the user review the estimate before saving supported nutrients to Apple Health.
 
 > [!IMPORTANT]
