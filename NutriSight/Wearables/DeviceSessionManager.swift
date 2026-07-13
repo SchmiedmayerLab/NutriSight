@@ -30,10 +30,6 @@ final class DeviceSessionManager {
     @ObservationIgnored private var sessionStateTask: Task<Void, Never>?
     @ObservationIgnored private var deviceListenerTokens: [any AnyListenerToken] = []
 
-    var hasActiveDevice: Bool {
-        activeDeviceIdentifier != nil
-    }
-
     init(wearables: any WearablesInterface) {
         self.wearables = wearables
         self.deviceSelector = AutoDeviceSelector(wearables: wearables)

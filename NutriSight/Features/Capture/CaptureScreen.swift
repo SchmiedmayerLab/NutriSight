@@ -52,7 +52,7 @@ struct CaptureScreen: View {
         }
         .navigationTitle(.appTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+        .toolbarBackground(.thickMaterial, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .sheet(isPresented: $presentsNutritionSheet, onDismiss: model.retake) {
             NutritionAnalysisSheet(

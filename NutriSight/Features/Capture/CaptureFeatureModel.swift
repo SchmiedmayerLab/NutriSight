@@ -137,6 +137,7 @@ final class CaptureFeatureModel {
 
 
 extension CaptureFeatureModel {
+    // periphery:ignore - Creates states used exclusively by `#Preview` declarations, which Periphery cannot trace.
     convenience init(
         previewWorkflowState workflowState: CaptureWorkflowState,
         analysis: NutritionAnalysis? = nil,

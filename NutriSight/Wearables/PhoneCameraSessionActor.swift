@@ -17,7 +17,8 @@ actor PhoneCameraSessionActor {
     nonisolated let dispatchQueue: DispatchSerialQueue
 
     nonisolated var unownedExecutor: UnownedSerialExecutor {
-        dispatchQueue.asUnownedSerialExecutor()
+        // The actor owns this immutable serial queue for its entire lifetime.
+        unsafe dispatchQueue.asUnownedSerialExecutor()
     }
 
     private init() {

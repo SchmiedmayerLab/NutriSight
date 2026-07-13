@@ -48,26 +48,10 @@ final class ExperienceConfiguration {
         self.analysisSource = defaults.string(forKey: Key.analysisSource).flatMap(AnalysisSource.init(rawValue:))
         sanitizeUnavailableSources()
 
-        if LaunchConfiguration.isUITesting {
+        if LaunchConfiguration.isUITesting && completedOnboarding {
             glassesSource = .simulatedGlasses
             analysisSource = .sampleAnalysis
         }
-    }
-
-    static func persistedGlassesSource(defaults: UserDefaults = .standard) -> GlassesSource? {
-        if LaunchConfiguration.isUITesting {
-            return .simulatedGlasses
-        }
-        let source = defaults.string(forKey: Key.glassesSource).flatMap(GlassesSource.init(rawValue:))
-        guard source != .simulatedGlasses || LaunchConfiguration.allowsSimulatedGlasses else {
-            defaults.removeObject(forKey: Key.glassesSource)
-            return nil
-        }
-        return source
-    }
-
-    static func shouldConfigureMetaGlassesAtLaunch(defaults: UserDefaults = .standard) -> Bool {
-        defaults.bool(forKey: Key.completedOnboarding) && persistedGlassesSource(defaults: defaults) == .metaGlasses
     }
 
     func selectAnalysisSource(_ source: AnalysisSource) {

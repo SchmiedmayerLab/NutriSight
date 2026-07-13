@@ -150,6 +150,7 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
         }
     }
 
+    // periphery:ignore - Public API for clients that expose device-management controls outside this app's UI.
     func unpair() async throws {
         try await ensureMetaSourceSelected()
         try await wearables.startUnregistration()
@@ -309,9 +310,15 @@ extension WearablesCoordinator {
 
 
 extension WearablesCoordinator {
-    convenience init(previewImage: UIImage?, state: WearablesCameraState = .streaming) {
+    // periphery:ignore - Creates states used exclusively by `#Preview` declarations, which Periphery cannot trace.
+    convenience init(
+        previewImage: UIImage?,
+        state: WearablesCameraState = .streaming,
+        source: GlassesSource? = nil
+    ) {
         self.init()
         self.previewImage = previewImage
         self.state = state
+        self.selectedSource = source
     }
 }

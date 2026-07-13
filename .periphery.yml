@@ -9,3 +9,5 @@
 project: NutriSight.xcodeproj
 schemes:
 - NutriSight
+report_exclude:
+- "**/BuildToolPluginIntermediates/**"

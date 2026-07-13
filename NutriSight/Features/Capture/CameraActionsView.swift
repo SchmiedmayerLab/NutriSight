@@ -19,9 +19,21 @@ struct CameraActionsView: View {
     var body: some View {
         cameraAction
             .id(model.wearables.state)
-            .padding(.bottom, model.wearables.state == .streaming ? 64 : 0)
-            .animation(controlAnimation, value: model.wearables.state)
+            .padding(.bottom, captureBottomPadding)
+            .animation(controlAnimation, value: captureBottomPadding)
             .controlSize(.large)
+    }
+
+    private var captureBottomPadding: CGFloat {
+        guard model.wearables.state == .streaming else {
+            return 0
+        }
+        return switch model.wearables.selectedSource {
+        case .phoneCamera, .simulatedGlasses:
+            88
+        case .metaGlasses, nil:
+            64
+        }
     }
 
     private var controlAnimation: Animation {
@@ -112,9 +124,41 @@ struct CameraActionsView: View {
 }
 
 
-#Preview("Camera Action · Capture", traits: .fixedLayout(width: 402, height: 140)) {
+#Preview("Camera Action · Capture", traits: .fixedLayout(width: 402, height: 200)) {
     @Previewable @State var model = CaptureFeatureModel(
-        wearables: WearablesCoordinator(previewImage: PreviewAssets.cheeseSpaetzle, state: .streaming)
+        wearables: WearablesCoordinator(
+            previewImage: PreviewAssets.cheeseSpaetzle,
+            state: .streaming,
+            source: .metaGlasses
+        )
+    )
+
+    CameraActionsView(model: model, captureAction: {}, setupGlassesAction: {})
+        .padding()
+}
+
+
+#Preview("Camera Action · Simulated Glasses", traits: .fixedLayout(width: 402, height: 220)) {
+    @Previewable @State var model = CaptureFeatureModel(
+        wearables: WearablesCoordinator(
+            previewImage: PreviewAssets.cheeseSpaetzle,
+            state: .streaming,
+            source: .simulatedGlasses
+        )
+    )
+
+    CameraActionsView(model: model, captureAction: {}, setupGlassesAction: {})
+        .padding()
+}
+
+
+#Preview("Camera Action · iPhone Camera", traits: .fixedLayout(width: 402, height: 220)) {
+    @Previewable @State var model = CaptureFeatureModel(
+        wearables: WearablesCoordinator(
+            previewImage: PreviewAssets.cheeseSpaetzle,
+            state: .streaming,
+            source: .phoneCamera
+        )
     )
 
     CameraActionsView(model: model, captureAction: {}, setupGlassesAction: {})

@@ -10,16 +10,17 @@ import MWDATCore
 
 
 extension WearablesCoordinator {
-    func openFirmwareUpdate() async throws {
+    private func openFirmwareUpdate() async throws {
         try await ensureMetaSourceSelected()
         try await wearables.openFirmwareUpdate()
     }
 
-    func openGlassesAppUpdate() async throws {
+    private func openGlassesAppUpdate() async throws {
         try await ensureMetaSourceSelected()
         try await wearables.openDATGlassesAppUpdate()
     }
 
+    // periphery:ignore - Public API for clients that present SDK-required update actions.
     func openRequiredUpdate() async throws {
         switch requiredUpdate {
         case .glassesFirmware:

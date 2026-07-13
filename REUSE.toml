@@ -5,6 +5,7 @@ path = [
     "NutriSight.xcodeproj/**",
     "NutriSight.xctestplan",
     "NutriSight/Assets.xcassets/**",
+    "NutriSight/Resources/NutriSight.icon/**",
     "NutriSight/*.xcstrings",
     "NutriSight/NutriSight.entitlements",
     "fastlane/ExportOptions.plist",

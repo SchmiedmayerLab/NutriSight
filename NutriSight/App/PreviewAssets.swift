@@ -12,6 +12,7 @@ import UIKit
 private final class PreviewAssetsBundleToken {}
 
 
+// periphery:ignore - Assets referenced exclusively from `#Preview` declarations, which Periphery cannot currently trace.
 enum PreviewAssets {
     static var cheeseSpaetzle: UIImage? {
         guard let url = resourceBundles.lazy.compactMap({ bundle in

@@ -30,6 +30,10 @@ struct WearablesCoordinatorTests {
             requiredUpdate: nil,
             canCapture: false
         ))
+        #expect(status.deviceName == nil)
+        #expect(status.isRegistered == false)
+        #expect(status.requiredUpdate == nil)
+        #expect(status.canCapture == false)
     }
 
     @Test("Allows safe cleanup before the SDK has been configured")

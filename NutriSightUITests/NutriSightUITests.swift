@@ -167,12 +167,23 @@ final class NutriSightUITests: XCTestCase {
             "--mock-llm",
             "--mock-healthkit",
             "-completedOnboarding",
-            completedOnboarding ? "true" : "false",
-            "-glassesSource",
-            "simulatedGlasses",
-            "-analysisSource",
-            "sampleAnalysis"
+            completedOnboarding ? "true" : "false"
         ] + additionalArguments
+        if completedOnboarding {
+            app.launchArguments += [
+                "-glassesSource",
+                "simulatedGlasses",
+                "-analysisSource",
+                "sampleAnalysis"
+            ]
+        } else {
+            app.launchArguments += [
+                "-glassesSource",
+                "none",
+                "-analysisSource",
+                "none"
+            ]
+        }
         if let portFile {
             app.launchEnvironment["MWDAT_TEST_SERVER_PORT_FILE"] = portFile
         }

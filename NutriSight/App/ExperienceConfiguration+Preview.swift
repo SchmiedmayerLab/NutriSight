@@ -10,6 +10,7 @@ import Foundation
 
 
 extension ExperienceConfiguration {
+    // periphery:ignore - Entry point used from `#Preview` declarations, which Periphery cannot currently trace.
     static func preview(
         glassesSource: GlassesSource? = nil,
         analysisSource: AnalysisSource? = nil
