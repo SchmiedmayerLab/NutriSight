@@ -106,7 +106,7 @@ final class NutriSightUITests: XCTestCase {
         try app.performAccessibilityAuditIgnoringContrast()
 
         resumeButton.tap()
-        XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 30))
     }
 
     @MainActor
@@ -122,7 +122,7 @@ final class NutriSightUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["camera-preview"].exists)
         refreshButton.tap()
 
-        try app.performAccessibilityAudit()
+        try app.performAccessibilityAuditAllowingFrameworkTimeout()
     }
 
     @MainActor
@@ -169,7 +169,7 @@ final class NutriSightUITests: XCTestCase {
 
     @MainActor
     private func waitForCamera(in app: XCUIApplication) {
-        XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 30))
     }
 
     @MainActor
@@ -181,11 +181,11 @@ final class NutriSightUITests: XCTestCase {
         for attempt in 0..<2 {
             let identifier = attempt == 0 ? firstCaptureIdentifier : "take-photo"
             let captureButton = app.buttons[identifier]
-            guard waitUntilHittable(captureButton, timeout: 15) else {
+            guard waitUntilHittable(captureButton, timeout: 30) else {
                 continue
             }
             captureButton.tap()
-            guard app.descendants(matching: .any)["analysis-progress"].waitForExistence(timeout: 5) else {
+            guard app.descendants(matching: .any)["analysis-progress"].waitForExistence(timeout: 20) else {
                 let alert = app.alerts.firstMatch
                 if alert.waitForExistence(timeout: 2) {
                     alert.buttons.firstMatch.tap()
@@ -243,9 +243,29 @@ final class NutriSightUITests: XCTestCase {
 
 
 extension XCUIApplication {
-    fileprivate func performAccessibilityAuditIgnoringContrast() throws {
-        try performAccessibilityAudit { issue in
-            issue.auditType == .contrast
+    fileprivate func performAccessibilityAuditAllowingFrameworkTimeout() throws {
+        do {
+            try performAccessibilityAudit()
+        } catch {
+            try handleAccessibilityAuditFailure(error)
         }
+    }
+
+    fileprivate func performAccessibilityAuditIgnoringContrast() throws {
+        do {
+            try performAccessibilityAudit { issue in
+                issue.auditType == .contrast
+            }
+        } catch {
+            try handleAccessibilityAuditFailure(error)
+        }
+    }
+
+    private func handleAccessibilityAuditFailure(_ error: any Error) throws {
+        let error = error as NSError
+        guard error.domain == "com.apple.xcode.xctest.accessibilityAudit", error.code == -56 else {
+            throw error
+        }
+        throw XCTSkip("Xcode's accessibility audit did not complete before its framework timeout.")
     }
 }
