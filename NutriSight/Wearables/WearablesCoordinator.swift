@@ -217,6 +217,8 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
         guard captureContinuation == nil else {
             throw WearablesCameraError.captureRejected
         }
+        let simulatedCaptureFallbackData = simulatedCaptureFallbackData()
+        let captureTimeout = simulatedCaptureFallbackData == nil ? timeout : .seconds(2)
 
         return try await withCheckedThrowingContinuation { continuation in
             captureContinuation = continuation
@@ -226,12 +228,16 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
                 return
             }
             captureTimeoutTask = Task { [weak self] in
-                try? await Task.sleep(for: timeout)
+                try? await Task.sleep(for: captureTimeout)
                 guard !Task.isCancelled, let self, let continuation = captureContinuation else {
                     return
                 }
                 captureContinuation = nil
                 captureTimeoutTask = nil
+                if let simulatedCaptureFallbackData {
+                    continuation.resume(returning: simulatedCaptureFallbackData)
+                    return
+                }
                 continuation.resume(throwing: WearablesCameraError.captureTimedOut)
                 await recoverCameraAfterCaptureTimeout()
             }

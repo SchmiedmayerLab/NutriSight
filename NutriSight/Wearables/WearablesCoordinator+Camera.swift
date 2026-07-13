@@ -12,6 +12,16 @@ import MWDATCore
 
 
 extension WearablesCoordinator {
+    func simulatedCaptureFallbackData() -> Data? {
+        guard selectedSource == .simulatedGlasses,
+              LaunchConfiguration.isUITesting,
+              LaunchConfiguration.preparesSimulatedGlasses,
+              let url = Bundle.main.url(forResource: "CheeseSpaetzle", withExtension: "jpg") else {
+            return nil
+        }
+        return try? Data(contentsOf: url)
+    }
+
     func performStartCamera() async throws {
         if selectedSource == .phoneCamera {
             try await phoneCamera?.start()
