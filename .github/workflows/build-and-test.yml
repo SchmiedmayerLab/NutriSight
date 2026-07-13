@@ -30,15 +30,16 @@ jobs:
   periphery:
     name: Periphery
     uses: SchmiedmayerLab/.github/.github/workflows/periphery.yml@v0.2.4
-  codeql:
-    name: CodeQL
-    uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
-    with:
-      codeql: true
-      scheme: NutriSight
-    permissions:
-      contents: read
-      security-events: write
+  # Disabled until https://github.com/github/codeql-action/issues/3978 is addressed.
+  # codeql:
+  #   name: CodeQL
+  #   uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
+  #   with:
+  #     codeql: true
+  #     scheme: NutriSight
+  #   permissions:
+  #     contents: read
+  #     security-events: write
   buildandtest:
     name: Build and Test
     uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
