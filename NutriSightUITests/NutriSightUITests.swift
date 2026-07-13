@@ -6,16 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-import MWDATMockDeviceTestClient
 import XCTest
 
 
 final class NutriSightUITests: XCTestCase {
-    private struct MockDeviceContext {
-        let client: MockDeviceTestClient
-        let identifier: String
-    }
-
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
@@ -59,12 +53,8 @@ final class NutriSightUITests: XCTestCase {
 
     @MainActor
     func testMealCaptureRetakeAnalysisHealthSaveAndStartAnotherMeal() throws {
-        let (app, portFile) = launchAppWithPortFile()
+        let app = launchAppWithSimulatedGlasses()
         defer { app.terminate() }
-        let device = try configureMealDevice(portFile: portFile)
-        defer {
-            device.client.unpairDevice(deviceId: device.identifier)
-        }
 
         waitForCamera(in: app)
         try app.performAccessibilityAuditIgnoringContrast()
@@ -94,12 +84,8 @@ final class NutriSightUITests: XCTestCase {
 
     @MainActor
     func testSampleAnalysisFailureOffersRecovery() throws {
-        let (app, portFile) = launchAppWithPortFile(additionalArguments: ["--mock-llm-failure"])
+        let app = launchAppWithSimulatedGlasses(additionalArguments: ["--mock-llm-failure"])
         defer { app.terminate() }
-        let device = try configureMealDevice(portFile: portFile)
-        defer {
-            device.client.unpairDevice(deviceId: device.identifier)
-        }
 
         waitForCamera(in: app)
         XCTAssertTrue(
@@ -112,12 +98,8 @@ final class NutriSightUITests: XCTestCase {
 
     @MainActor
     func testPausedGlassesCameraCanResume() throws {
-        let (app, portFile) = launchAppWithPortFile(additionalArguments: ["--mock-camera-pause"])
+        let app = launchAppWithSimulatedGlasses(additionalArguments: ["--mock-camera-pause"])
         defer { app.terminate() }
-        let device = try configureMealDevice(portFile: portFile)
-        defer {
-            device.client.unpairDevice(deviceId: device.identifier)
-        }
 
         let resumeButton = app.buttons["resume-camera"]
         XCTAssertTrue(resumeButton.waitForExistence(timeout: 15))
@@ -144,25 +126,19 @@ final class NutriSightUITests: XCTestCase {
     }
 
     @MainActor
-    private func launchAppWithPortFile(
+    private func launchAppWithSimulatedGlasses(
         additionalArguments: [String] = []
-    ) -> (app: XCUIApplication, portFile: String) {
-        let portFile = FileManager.default.temporaryDirectory
-            .appending(path: "nutrisight-mock-device-\(UUID().uuidString).port")
-            .path()
-        let app = launchApp(
+    ) -> XCUIApplication {
+        launchApp(
             completedOnboarding: true,
-            additionalArguments: additionalArguments,
-            portFile: portFile
+            additionalArguments: ["--prepare-simulated-glasses"] + additionalArguments
         )
-        return (app, portFile)
     }
 
     @MainActor
     private func launchApp(
         completedOnboarding: Bool,
-        additionalArguments: [String] = [],
-        portFile: String? = nil
+        additionalArguments: [String] = []
     ) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = [
@@ -187,24 +163,8 @@ final class NutriSightUITests: XCTestCase {
                 "none"
             ]
         }
-        if let portFile {
-            app.launchEnvironment["MWDAT_TEST_SERVER_PORT_FILE"] = portFile
-        }
         app.launch()
         return app
-    }
-
-    @MainActor
-    private func configureMealDevice(portFile: String) throws -> MockDeviceContext {
-        let client = MockDeviceTestClient(portFilePath: portFile)
-        XCTAssertTrue(client.waitForServer(timeout: 15), "The in-app mock-device server did not start.")
-        let identifier = try XCTUnwrap(client.pairDevice())
-        XCTAssertTrue(client.powerOn(deviceId: identifier))
-        XCTAssertTrue(client.unfold(deviceId: identifier))
-        XCTAssertTrue(client.don(deviceId: identifier))
-        XCTAssertTrue(client.setCameraFeed(deviceId: identifier, resourceName: "CheeseSpaetzleFeed", ext: "mov"))
-        XCTAssertTrue(client.setCapturedImage(deviceId: identifier, resourceName: "CheeseSpaetzle", ext: "jpg"))
-        return MockDeviceContext(client: client, identifier: identifier)
     }
 
     @MainActor

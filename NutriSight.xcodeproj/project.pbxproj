@@ -17,7 +17,6 @@
 		6564906C3002C85000F1D55F /* MWDATMockDevice in Frameworks */ = {isa = PBXBuildFile; productRef = 6564906B3002C85000F1D55F /* MWDATMockDevice */; };
 		656490893002C8D300F1D55F /* SpeziHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 656490883002C8D300F1D55F /* SpeziHealthKit */; };
 		A10000000000000000000002 /* SpeziKeychainStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000001 /* SpeziKeychainStorage */; };
-		A10000000000000000000004 /* MWDATMockDeviceTestClient in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000003 /* MWDATMockDeviceTestClient */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,7 +99,6 @@
 		6564907B3002C87800F1D55F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
-				A10000000000000000000004 /* MWDATMockDeviceTestClient in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -206,7 +204,6 @@
 			);
 			name = NutriSightUITests;
 			packageProductDependencies = (
-				A10000000000000000000003 /* MWDATMockDeviceTestClient */,
 			);
 			productName = NutriSightUITests;
 			productReference = 6564907E3002C87800F1D55F /* NutriSightUITests.xctest */;
@@ -754,11 +751,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6564905B3002C7A400F1D55F /* XCRemoteSwiftPackageReference "Spezi" */;
 			productName = SpeziKeychainStorage;
-		};
-		A10000000000000000000003 /* MWDATMockDeviceTestClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 656490663002C85000F1D55F /* XCRemoteSwiftPackageReference "meta-wearables-dat-ios" */;
-			productName = MWDATMockDeviceTestClient;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -32,6 +32,10 @@ enum LaunchConfiguration {
         ProcessInfo.processInfo.arguments.contains("--mock-camera-pause")
     }
 
+    static var preparesSimulatedGlasses: Bool {
+        ProcessInfo.processInfo.arguments.contains("--prepare-simulated-glasses")
+    }
+
     static var usesMockHealthKit: Bool {
         ProcessInfo.processInfo.arguments.contains("--mock-healthkit")
     }
