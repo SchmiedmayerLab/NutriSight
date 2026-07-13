@@ -45,14 +45,31 @@ jobs:
     uses: SchmiedmayerLab/.github/.github/workflows/xcodebuild.yml@v0.2.4
     with:
       scheme: NutriSight
+      resultBundle: NutriSight.xcresult
   uploadcoveragereport:
-    name: Upload Coverage Report
+    name: Upload Coverage Report / Merge and Upload Coverage
     needs: [buildandtest]
-    uses: SchmiedmayerLab/.github/.github/workflows/coverage.yml@v0.2.4
+    runs-on: macos-26
     permissions:
       actions: read
       contents: read
-    with:
-      coveragereports: NutriSight.xcresult
-    secrets:
-      token: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 26.0.1
+      - name: Download coverage result
+        uses: actions/download-artifact@v8
+        with:
+          name: NutriSight.xcresult
+          path: NutriSight.xcresult
+      - name: Convert coverage result
+        uses: schmiedmayerlab/xccov2lcov@v1
+        with:
+          xcresult: NutriSight.xcresult
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          fail_ci_if_error: true
+          files: info.lcov
+          token: ${{ secrets.CODECOV_TOKEN }}
