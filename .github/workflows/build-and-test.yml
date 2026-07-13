@@ -53,6 +53,6 @@ jobs:
       actions: read
       contents: read
     with:
-      coveragereports: NutriSight.xcresult
+      coveragereports: NutriSight.xcresult/NutriSight.xcresult
     secrets:
       token: ${{ secrets.CODECOV_TOKEN }}
