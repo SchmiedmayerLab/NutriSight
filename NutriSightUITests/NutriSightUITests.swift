@@ -221,7 +221,7 @@ final class NutriSightUITests: XCTestCase {
         for attempt in 0..<2 {
             let identifier = attempt == 0 ? firstCaptureIdentifier : "take-photo"
             let captureButton = app.buttons[identifier]
-            guard captureButton.waitForExistence(timeout: 15) else {
+            guard waitUntilHittable(captureButton, timeout: 15) else {
                 continue
             }
             captureButton.tap()
@@ -229,8 +229,21 @@ final class NutriSightUITests: XCTestCase {
             if result.waitForExistence(timeout: 25) {
                 return true
             }
+            let alert = app.alerts.firstMatch
+            if alert.waitForExistence(timeout: 2) {
+                alert.buttons.firstMatch.tap()
+            }
         }
         return false
+    }
+
+    @MainActor
+    private func waitUntilHittable(_ element: XCUIElement, timeout: TimeInterval) -> Bool {
+        let predicate = NSPredicate { object, _ in
+            (object as? XCUIElement)?.isHittable == true
+        }
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
+        return XCTWaiter.wait(for: [expectation], timeout: timeout) == .completed
     }
 
     @MainActor
