@@ -13,35 +13,35 @@ struct NutritionAnalysisProgressView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     let configuration: ExperienceConfiguration
-    let title: LocalizedStringResource
-    let subtitle: LocalizedStringResource
+    let workflowState: CaptureWorkflowState
 
-    @State private var animatesAnalysis = false
+    @State private var stage: NutritionAnalysisStage
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             HStack(alignment: .top, spacing: 16) {
                 Image(systemName: "sparkles")
                     .font(.title2.weight(.semibold))
-                    .symbolEffect(.pulse, options: .repeating, value: animatesAnalysis)
+                    .symbolEffect(.pulse, options: .repeating, value: stage)
                     .frame(width: 52, height: 52)
                     .background(.tint.opacity(0.14), in: .circle)
                     .foregroundStyle(.tint)
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(title)
+                    Text(stage.title)
                         .font(.title2.bold())
-                    Text(subtitle)
+                        .contentTransition(.opacity)
+                    Text(stage.detail)
                         .foregroundStyle(.secondary)
                         .lineLimit(nil)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
 
-            ProgressView(value: animatesAnalysis ? 0.72 : 0.18)
+            ProgressView(value: stage.progress)
                 .progressViewStyle(.linear)
-                .animation(reduceMotion ? nil : .smooth(duration: 1.6).repeatForever(autoreverses: true), value: animatesAnalysis)
+                .animation(progressAnimation, value: stage)
 
             if configuration.usesSampleAnalysis {
                 Label(.sampleAnalysisActive, systemImage: "wand.and.stars")
@@ -52,24 +52,58 @@ struct NutritionAnalysisProgressView: View {
             }
         }
         .padding(24)
+        .padding(.top, 16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .glassEffect(.regular, in: .rect(cornerRadius: 28))
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("analysis-progress")
-        .onAppear {
-            animatesAnalysis = true
+        .task(id: workflowState) {
+            await advanceProgress()
+        }
+    }
+
+    private var progressAnimation: Animation {
+        reduceMotion ? .easeInOut(duration: 0.15) : .smooth(duration: 0.7)
+    }
+
+    init(configuration: ExperienceConfiguration, workflowState: CaptureWorkflowState) {
+        self.configuration = configuration
+        self.workflowState = workflowState
+        self._stage = State(initialValue: workflowState == .capturing ? .capturingPhoto : .preparingImage)
+    }
+
+    private func advanceProgress() async {
+        guard workflowState == .analyzing else {
+            stage = .capturingPhoto
+            return
+        }
+        stage = .preparingImage
+        for nextStage in NutritionAnalysisStage.analysisStages.dropFirst() {
+            do {
+                try await Task.sleep(for: nextStage.delayBeforePresentation)
+            } catch {
+                return
+            }
+            withAnimation(progressAnimation) {
+                stage = nextStage
+            }
         }
     }
 }
 
 
-#Preview("Sample Analysis Progress") {
+#Preview("Analysis Progress · Staged", traits: .fixedLayout(width: 402, height: 320)) {
     NutritionAnalysisProgressView(
         configuration: .preview(glassesSource: .simulatedGlasses, analysisSource: .sampleAnalysis),
-        title: .analyzingYourMeal,
-        subtitle: .analysisInProgress
+        workflowState: .analyzing
     )
-    .presentationBackground(.regularMaterial)
+    .background(.ultraThinMaterial)
+}
+
+
+#Preview("Analysis Progress · Capturing", traits: .fixedLayout(width: 402, height: 260)) {
+    NutritionAnalysisProgressView(
+        configuration: .preview(glassesSource: .metaGlasses, analysisSource: .metaModel),
+        workflowState: .capturing
+    )
+    .background(.ultraThinMaterial)
 }

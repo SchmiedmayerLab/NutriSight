@@ -52,40 +52,40 @@ struct CameraPreviewCard: View {
 }
 
 
-#Preview("Camera Preview Crop Alignment") {
+#Preview("Camera Preview · Live", traits: .fixedLayout(width: 402, height: 874)) {
     @Previewable @State var viewState: ViewState = .idle
-    let previewImage = PreviewAssets.cheeseSpaetzle
 
-    VStack(spacing: 0) {
-        CameraPreviewCard(
-            wearables: WearablesCoordinator(previewImage: previewImage),
-            capturedImage: nil,
-            viewState: $viewState,
-            captureAction: {}
-        )
-        .overlay(alignment: .topLeading) {
-            previewStateLabel("Live")
-        }
-
-        CameraPreviewCard(
-            wearables: WearablesCoordinator(previewImage: previewImage),
-            capturedImage: previewImage,
-            viewState: $viewState,
-            captureAction: {}
-        )
-        .overlay(alignment: .topLeading) {
-            previewStateLabel("Captured")
-        }
-    }
+    CameraPreviewCard(
+        wearables: WearablesCoordinator(previewImage: PreviewAssets.cheeseSpaetzle),
+        capturedImage: nil,
+        viewState: $viewState,
+        captureAction: {}
+    )
     .background(.black)
 }
 
 
-private func previewStateLabel(_ title: String) -> some View {
-    Text(title)
-        .font(.caption.bold())
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .glassEffect(.regular, in: .capsule)
-        .padding()
+#Preview("Camera Preview · Captured", traits: .fixedLayout(width: 402, height: 874)) {
+    @Previewable @State var viewState: ViewState = .idle
+
+    CameraPreviewCard(
+        wearables: WearablesCoordinator(previewImage: PreviewAssets.cheeseSpaetzle),
+        capturedImage: PreviewAssets.cheeseSpaetzle,
+        viewState: $viewState,
+        captureAction: {}
+    )
+    .background(.black)
+}
+
+
+#Preview("Camera Preview · Connecting", traits: .fixedLayout(width: 402, height: 874)) {
+    @Previewable @State var viewState: ViewState = .idle
+
+    CameraPreviewCard(
+        wearables: WearablesCoordinator(previewImage: nil, state: .connecting),
+        capturedImage: nil,
+        viewState: $viewState,
+        captureAction: {}
+    )
+    .background(.black)
 }

@@ -14,44 +14,28 @@ struct NutritionResultHeaderView: View {
     let capturedImage: UIImage?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        Group {
             if let capturedImage {
-                Image(uiImage: capturedImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .aspectRatio(4.0 / 3.0, contentMode: .fill)
-                    .clipped()
-                    .clipShape(.rect(cornerRadius: 18))
-                    .accessibilityLabel(.capturedMealPhoto)
+                ZStack(alignment: .bottom) {
+                    Color.secondary.opacity(0.12)
+                    Image(uiImage: capturedImage)
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fill)
+                        .accessibilityLabel(.capturedMealPhoto)
+                    NutritionResultSummaryOverlay(analysis: analysis)
+                        .padding(12)
+                }
+                .clipShape(.rect(cornerRadius: 22))
+            } else {
+                NutritionResultSummaryOverlay(analysis: analysis)
             }
-            Text(analysis.title)
-                .font(.largeTitle)
-                .bold()
-                .accessibilityHeading(.h1)
-                .accessibilityIdentifier("nutrition-title")
-            Text(analysis.summary)
-                .foregroundStyle(.secondary)
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
-            Label {
-                Text(analysis.confidence, format: .percent.precision(.fractionLength(0)))
-            } icon: {
-                Image(systemName: "checkmark.seal")
-            }
-            .lineLimit(nil)
-            .fixedSize(horizontal: false, vertical: true)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(.modelConfidence)
-            .accessibilityValue(Text(analysis.confidence, format: .percent.precision(.fractionLength(0))))
         }
-        .padding(.top, 8)
-        .padding(.bottom, 2)
+        .accessibilityElement(children: .contain)
     }
 }
 
 
-#Preview("Nutrition Result Header") {
+#Preview("Nutrition Result Header · With Photo", traits: .fixedLayout(width: 402, height: 560)) {
     ScrollView {
         NutritionResultHeaderView(
             analysis: .cheeseSpaetzleFixture,
@@ -59,4 +43,13 @@ struct NutritionResultHeaderView: View {
         )
         .padding()
     }
+}
+
+
+#Preview("Nutrition Result Header · Text Only", traits: .sizeThatFitsLayout) {
+    NutritionResultHeaderView(
+        analysis: .cheeseSpaetzleFixture,
+        capturedImage: nil
+    )
+    .padding()
 }

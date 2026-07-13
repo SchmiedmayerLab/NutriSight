@@ -75,6 +75,17 @@ struct CaptureWorkflowTests {
         }
     }
 
+    @Test("Analysis milestones advance monotonically without claiming completion")
+    func analysisProgressMilestones() {
+        let progress = NutritionAnalysisStage.allCases.map(\.progress)
+
+        #expect(zip(progress, progress.dropFirst()).allSatisfy { $0.0 < $0.1 })
+        #expect(progress.first == 0.08)
+        #expect(progress.last == 0.94)
+        #expect(NutritionAnalysisStage.analysisStages.first == .preparingImage)
+        #expect(NutritionAnalysisStage.analysisStages.last == .finalizingResults)
+    }
+
     private func testImageData() -> Data? {
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 2, height: 2))
         return renderer.image { context in

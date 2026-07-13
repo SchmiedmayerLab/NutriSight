@@ -1,11 +1,112 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "CALCULATING_NUTRITION" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nährwerte werden berechnet" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Calculating Nutrition" } }
+      }
+    },
+    "CALCULATING_NUTRITION_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kalorien und Nährstoffe werden für die geschätzten Portionen berechnet." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Calculating calories and nutrients for the estimated portions." } }
+      }
+    },
+    "ESTIMATING_PORTIONS" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Portionen werden geschätzt" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Estimating Portions" } }
+      }
+    },
+    "ESTIMATING_PORTIONS_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die sichtbaren Mengen der einzelnen Bestandteile werden geschätzt." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Estimating the visible amount of each part of the meal." } }
+      }
+    },
+    "FINALIZING_RESULTS" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ergebnis wird fertiggestellt" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Finalizing Results" } }
+      }
+    },
+    "FINALIZING_RESULTS_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Schätzung wird für deine Überprüfung vorbereitet." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Preparing the estimate for your review." } }
+      }
+    },
+    "IDENTIFYING_FOODS" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Speisen werden erkannt" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Identifying Foods" } }
+      }
+    },
+    "IDENTIFYING_FOODS_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Mahlzeit wird in ihre sichtbaren Bestandteile aufgeteilt." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Breaking the meal down into its visible components." } }
+      }
+    },
+    "PREPARING_IMAGE_FOR_MODEL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Das Foto wird sicher für die Analyse vorbereitet." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Preparing the photo securely for analysis." } }
+      }
+    },
+    "PREPARING_MEAL_PHOTO" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Mahlzeitenfoto wird vorbereitet" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Preparing Meal Photo" } }
+      }
+    },
+    "REVIEWING_ESTIMATE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schätzung wird überprüft" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reviewing Estimate" } }
+      }
+    },
+    "REVIEWING_ESTIMATE_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die erkannten Speisen und Nährwerte werden auf Konsistenz geprüft." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Checking the identified foods and nutrition estimate for consistency." } }
+      }
+    },
     "" : {
 
     },
     "Allow camera access to capture meals with this iPhone when Meta glasses are not connected." : {
 
+    },
+    "ALLOW_GLASSES_CAMERA" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brillenkamera erlauben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow Glasses Camera"
+          }
+        }
+      }
     },
     "ANALYSIS_IN_PROGRESS" : {
       "comment" : "Progress message shown while the meal photo is analyzed.",
@@ -195,23 +296,6 @@
         }
       }
     },
-    "ALLOW_GLASSES_CAMERA" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brillenkamera erlauben"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Allow Glasses Camera"
-          }
-        }
-      }
-    },
     "CAMERA_ACCESS" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -242,159 +326,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meta AI will separately ask whether NutriSight may use your glasses camera."
-          }
-        }
-      }
-    },
-    "CAMERA_PERMISSION_DETAIL" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erlaube den Kamerazugriff, bevor NutriSight den Live-Stream startet."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Allow camera access before NutriSight starts the live stream."
-          }
-        }
-      }
-    },
-    "CAMERA_PERMISSION_SUBTITLE" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Kopplung ist abgeschlossen. Als Nächstes benötigt NutriSight Zugriff auf die Kamera deiner Brille."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pairing is complete. Next, NutriSight needs access to your glasses camera."
-          }
-        }
-      }
-    },
-    "CAMERA_PERMISSION_TITLE" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brillenkamera erlauben"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Allow the Glasses Camera"
-          }
-        }
-      }
-    },
-    "CAMERA_STARTS_NEXT" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Live-Ansicht folgt"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Live view comes next"
-          }
-        }
-      }
-    },
-    "CAMERA_STARTS_NEXT_DETAIL" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nach deiner Erlaubnis öffnet NutriSight die Live-Ansicht und zeigt den Verbindungsstatus der Kamera."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "After you allow access, NutriSight opens the live view and shows the camera connection state."
-          }
-        }
-      }
-    },
-    "CONTINUE_TO_CAMERA" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Weiter zur Kamera"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue to Camera"
-          }
-        }
-      }
-    },
-    "GLASSES_PAIRED" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brille gekoppelt"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Glasses paired"
-          }
-        }
-      }
-    },
-    "GLASSES_PAIRED_DETAIL" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NutriSight ist jetzt über Meta AI mit deiner Brille verbunden."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NutriSight is now connected to your glasses through Meta AI."
-          }
-        }
-      }
-    },
-    "WAITING_FOR_ACTIVE_GLASSES" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Warte auf eine aktive Brille. Schalte sie ein und setze sie auf."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Waiting for active glasses. Turn them on and put them on."
           }
         }
       }
@@ -501,6 +432,57 @@
         }
       }
     },
+    "CAMERA_PERMISSION_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erlaube den Kamerazugriff, bevor NutriSight den Live-Stream startet."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow camera access before NutriSight starts the live stream."
+          }
+        }
+      }
+    },
+    "CAMERA_PERMISSION_SUBTITLE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kopplung ist abgeschlossen. Als Nächstes benötigt NutriSight Zugriff auf die Kamera deiner Brille."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pairing is complete. Next, NutriSight needs access to your glasses camera."
+          }
+        }
+      }
+    },
+    "CAMERA_PERMISSION_TITLE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brillenkamera erlauben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow the Glasses Camera"
+          }
+        }
+      }
+    },
     "CAMERA_READY" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -535,8 +517,39 @@
         }
       }
     },
-    "Cancel Pairing" : {
-
+    "CAMERA_STARTS_NEXT" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live-Ansicht folgt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live view comes next"
+          }
+        }
+      }
+    },
+    "CAMERA_STARTS_NEXT_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach deiner Erlaubnis öffnet NutriSight die Live-Ansicht und zeigt den Verbindungsstatus der Kamera."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After you allow access, NutriSight opens the live view and shows the camera connection state."
+          }
+        }
+      }
     },
     "CAPTURE_IN_THE_APP" : {
       "extractionState" : "manual",
@@ -657,6 +670,23 @@
         }
       }
     },
+    "CONTINUE_TO_CAMERA" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiter zur Kamera"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue to Camera"
+          }
+        }
+      }
+    },
     "CONTINUE_WITH_META_MODEL" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -708,6 +738,23 @@
         }
       }
     },
+    "ERROR_DEVICE_UPDATE_REQUIRED" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Brille muss aktualisiert werden, bevor NutriSight ihre Kamera verwenden kann."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The glasses must be updated before NutriSight can use their camera."
+          }
+        }
+      }
+    },
     "ERROR_DUPLICATE_NUTRIENT" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -721,6 +768,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The nutrition result contained a nutrient more than once."
+          }
+        }
+      }
+    },
+    "ERROR_INCOMPATIBLE_DEVICE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählte Brille ist mit dieser Version von NutriSight nicht kompatibel."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected glasses are not compatible with this version of NutriSight."
           }
         }
       }
@@ -844,40 +908,6 @@
         }
       }
     },
-    "ERROR_DEVICE_UPDATE_REQUIRED" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Brille muss aktualisiert werden, bevor NutriSight ihre Kamera verwenden kann."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The glasses must be updated before NutriSight can use their camera."
-          }
-        }
-      }
-    },
-    "ERROR_INCOMPATIBLE_DEVICE" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die ausgewählte Brille ist mit dieser Version von NutriSight nicht kompatibel."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The selected glasses are not compatible with this version of NutriSight."
-          }
-        }
-      }
-    },
     "ERROR_NO_DEVICE" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -929,23 +959,6 @@
         }
       }
     },
-    "ERROR_REGISTRATION_REQUIRED" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kopple die Meta-Brille, bevor du auf ihre Kamera zugreifst."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pair the Meta glasses before accessing their camera."
-          }
-        }
-      }
-    },
     "ERROR_RECOVERY_NUTRITION" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -976,6 +989,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirm the glasses are connected, unfolded, and being worn, then try again."
+          }
+        }
+      }
+    },
+    "ERROR_REGISTRATION_REQUIRED" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopple die Meta-Brille, bevor du auf ihre Kamera zugreifst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pair the Meta glasses before accessing their camera."
           }
         }
       }
@@ -1082,6 +1112,23 @@
         }
       }
     },
+    "FINISH_PAIRING_IN_META_AI" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopplung in Meta AI abschließen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish Pairing in Meta AI"
+          }
+        }
+      }
+    },
     "FOODS" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1129,6 +1176,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Glasses"
+          }
+        }
+      }
+    },
+    "GLASSES_PAIRED" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brille gekoppelt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glasses paired"
+          }
+        }
+      }
+    },
+    "GLASSES_PAIRED_DETAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NutriSight ist jetzt über Meta AI mit deiner Brille verbunden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NutriSight is now connected to your glasses through Meta AI."
           }
         }
       }
@@ -1197,6 +1278,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose your glasses"
+          }
+        }
+      }
+    },
+    "GUIDED_PREVIEW_READY" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geführte Vorschau bereit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guided Preview Ready"
           }
         }
       }
@@ -1337,6 +1435,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter the key for the Meta Model API."
+          }
+        }
+      }
+    },
+    "META_MODEL_READY" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta Model bereit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta Model Ready"
           }
         }
       }
@@ -1755,13 +1870,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beispieldaten verwenden das integrierte Käsespätzle-Foto und rufen Meta nicht auf."
+            "value" : "Erkunde den vollständigen Ablauf mit einer integrierten Beispielmahlzeit. Die angezeigten Nährwerte sind nur eine Vorschau und keine tatsächlichen Analyseergebnisse."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sample results use the built-in Cheese Spaetzle photo and do not call Meta."
+            "value" : "Explore the full experience with a built-in sample meal. The nutrition shown is a preview, not an actual analysis result."
           }
         }
       }
@@ -2013,13 +2128,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beispielanalyse verwenden"
+            "value" : "Geführte Vorschau ansehen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use Sample Analysis"
+            "value" : "Explore a Guided Preview"
           }
         }
       }
@@ -2037,6 +2152,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Use Simulated Glasses"
+          }
+        }
+      }
+    },
+    "WAITING_FOR_ACTIVE_GLASSES" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warte auf eine aktive Brille. Schalte sie ein und setze sie auf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for active glasses. Turn them on and put them on."
           }
         }
       }

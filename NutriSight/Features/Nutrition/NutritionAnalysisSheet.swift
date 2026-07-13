@@ -12,13 +12,11 @@ import SwiftUI
 
 
 struct NutritionAnalysisSheet: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @ScaledMetric(relativeTo: .body) private var compactSheetHeight: CGFloat = 200
     @Bindable var model: CaptureFeatureModel
     @Bindable var configuration: ExperienceConfiguration
     let retryAction: @MainActor () async throws -> Void
     let closeAction: () -> Void
-
-    @State private var selectedDetent: PresentationDetent = .medium
 
     var body: some View {
         Group {
@@ -26,14 +24,12 @@ struct NutritionAnalysisSheet: View {
             case .capturing:
                 NutritionAnalysisProgressView(
                     configuration: configuration,
-                    title: .capturingMeal,
-                    subtitle: .preparingPhotoForAnalysis
+                    workflowState: .capturing
                 )
             case .analyzing:
                 NutritionAnalysisProgressView(
                     configuration: configuration,
-                    title: .analyzingYourMeal,
-                    subtitle: .analysisInProgress
+                    workflowState: .analyzing
                 )
             case .captured:
                 NutritionAnalysisRetryView(
@@ -58,44 +54,70 @@ struct NutritionAnalysisSheet: View {
         .id(model.workflowState)
         .transition(.opacity.combined(with: .move(edge: .bottom)))
         .animation(.smooth, value: model.workflowState)
-        .presentationDetents([.medium, .large], selection: $selectedDetent)
+        .presentationDetents(availableDetents)
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(32)
-        .presentationBackground(.regularMaterial)
+        .presentationBackground(.ultraThinMaterial)
         .interactiveDismissDisabled(model.workflowState == .capturing || model.workflowState == .analyzing)
-        .onChange(of: model.workflowState) {
-            guard model.workflowState == .result || model.workflowState == .saved else {
-                return
-            }
-            if reduceMotion {
-                selectedDetent = .large
-            } else {
-                withAnimation(.smooth) {
-                    selectedDetent = .large
-                }
-            }
+    }
+
+    private var availableDetents: Set<PresentationDetent> {
+        switch model.workflowState {
+        case .capturing, .analyzing: [.height(compactSheetHeight)]
+        case .captured: [.medium]
+        case .result, .saved, .camera: [.large]
         }
     }
 }
 
 
-#Preview("Nutrition Sheet Progress") {
+#Preview("Nutrition Sheet · Progress", traits: .fixedLayout(width: 402, height: 874)) {
+    @Previewable @State var presentsSheet = true
     @Previewable @State var model = CaptureFeatureModel(previewWorkflowState: .analyzing)
     @Previewable @State var configuration = ExperienceConfiguration.preview(
         glassesSource: .simulatedGlasses,
         analysisSource: .sampleAnalysis
     )
 
-    NutritionAnalysisSheet(
-        model: model,
-        configuration: configuration,
-        retryAction: {},
-        closeAction: {}
-    )
+    Button("Present Analysis Sheet") {
+        presentsSheet = true
+    }
+    .sheet(isPresented: $presentsSheet) {
+        NutritionAnalysisSheet(
+            model: model,
+            configuration: configuration,
+            retryAction: {},
+            closeAction: {}
+        )
+    }
 }
 
 
-#Preview("Nutrition Sheet Result") {
+#Preview("Nutrition Sheet · Accessibility Text", traits: .fixedLayout(width: 402, height: 874)) {
+    @Previewable @State var presentsSheet = true
+    @Previewable @State var model = CaptureFeatureModel(previewWorkflowState: .analyzing)
+    @Previewable @State var configuration = ExperienceConfiguration.preview(
+        glassesSource: .simulatedGlasses,
+        analysisSource: .sampleAnalysis
+    )
+
+    Button("Present Analysis Sheet") {
+        presentsSheet = true
+    }
+    .sheet(isPresented: $presentsSheet) {
+        NutritionAnalysisSheet(
+            model: model,
+            configuration: configuration,
+            retryAction: {},
+            closeAction: {}
+        )
+        .dynamicTypeSize(.accessibility2)
+    }
+}
+
+
+#Preview("Nutrition Sheet · Result", traits: .fixedLayout(width: 402, height: 874)) {
+    @Previewable @State var presentsSheet = true
     @Previewable @State var model = CaptureFeatureModel(
         previewWorkflowState: .result,
         analysis: .cheeseSpaetzleFixture
@@ -105,12 +127,17 @@ struct NutritionAnalysisSheet: View {
         analysisSource: .sampleAnalysis
     )
 
-    NutritionAnalysisSheet(
-        model: model,
-        configuration: configuration,
-        retryAction: {},
-        closeAction: {}
-    )
+    Button("Present Result Sheet") {
+        presentsSheet = true
+    }
+    .sheet(isPresented: $presentsSheet) {
+        NutritionAnalysisSheet(
+            model: model,
+            configuration: configuration,
+            retryAction: {},
+            closeAction: {}
+        )
+    }
     .previewWith(standard: NutriSightStandard()) {
         SpeziHealthKit.HealthKit {
             RequestWriteAccess(quantity: NutritionHealthKitTypes.writable)

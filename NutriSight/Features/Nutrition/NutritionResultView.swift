@@ -33,7 +33,8 @@ struct NutritionResultView: View {
     @ViewBuilder private var resultSections: some View {
         NutritionResultHeaderView(analysis: analysis, capturedImage: capturedImage)
             .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 4, trailing: 20))
+            .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+            .listRowSeparator(.hidden)
 
         Section {
             FoodItemsView(items: analysis.items)
@@ -73,7 +74,7 @@ struct NutritionResultView: View {
             )
             .padding(.vertical, 8)
             .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 24, trailing: 20))
+            .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 24, trailing: 0))
             .listRowSeparator(.hidden)
         }
     }
@@ -95,7 +96,7 @@ struct NutritionResultView: View {
 }
 
 
-#Preview("Nutrition Result") {
+#Preview("Nutrition Result · Complete Composition", traits: .fixedLayout(width: 402, height: 874)) {
     @Previewable @State var model = CaptureFeatureModel(
         previewWorkflowState: .result,
         analysis: .cheeseSpaetzleFixture

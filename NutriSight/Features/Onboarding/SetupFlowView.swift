@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Spezi
+import SpeziKeychainStorage
 import SpeziViews
 import SwiftUI
 
@@ -30,4 +32,13 @@ struct SetupFlowView: View {
             configuration.completeOnboarding()
         }
     }
+}
+
+
+#Preview("Complete Setup Flow", traits: .fixedLayout(width: 402, height: 874)) {
+    SetupFlowView(configuration: .preview())
+        .environment(WearablesCoordinator())
+        .previewWith {
+            KeychainStorage()
+        }
 }

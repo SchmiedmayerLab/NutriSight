@@ -11,13 +11,21 @@ import SwiftUI
 
 
 struct CameraActionsView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Bindable var model: CaptureFeatureModel
     let captureAction: @MainActor () async throws -> Void
     let setupGlassesAction: () -> Void
 
     var body: some View {
         cameraAction
+            .id(model.wearables.state)
+            .padding(.bottom, model.wearables.state == .streaming ? 96 : 0)
+            .animation(controlAnimation, value: model.wearables.state)
             .controlSize(.large)
+    }
+
+    private var controlAnimation: Animation {
+        reduceMotion ? .easeInOut(duration: 0.15) : .bouncy(duration: 0.45, extraBounce: 0.08)
     }
 
     @ViewBuilder private var cameraAction: some View {
@@ -81,4 +89,44 @@ struct CameraActionsView: View {
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity)
     }
+}
+
+
+#Preview("Camera Action · Pair", traits: .fixedLayout(width: 402, height: 140)) {
+    @Previewable @State var model = CaptureFeatureModel(
+        wearables: WearablesCoordinator(previewImage: nil, state: .notRegistered)
+    )
+
+    CameraActionsView(model: model, captureAction: {}, setupGlassesAction: {})
+        .padding()
+}
+
+
+#Preview("Camera Action · Permission", traits: .fixedLayout(width: 402, height: 140)) {
+    @Previewable @State var model = CaptureFeatureModel(
+        wearables: WearablesCoordinator(previewImage: nil, state: .permissionRequired)
+    )
+
+    CameraActionsView(model: model, captureAction: {}, setupGlassesAction: {})
+        .padding()
+}
+
+
+#Preview("Camera Action · Capture", traits: .fixedLayout(width: 402, height: 140)) {
+    @Previewable @State var model = CaptureFeatureModel(
+        wearables: WearablesCoordinator(previewImage: PreviewAssets.cheeseSpaetzle, state: .streaming)
+    )
+
+    CameraActionsView(model: model, captureAction: {}, setupGlassesAction: {})
+        .padding()
+}
+
+
+#Preview("Camera Action · Resume", traits: .fixedLayout(width: 402, height: 140)) {
+    @Previewable @State var model = CaptureFeatureModel(
+        wearables: WearablesCoordinator(previewImage: nil, state: .paused)
+    )
+
+    CameraActionsView(model: model, captureAction: {}, setupGlassesAction: {})
+        .padding()
 }

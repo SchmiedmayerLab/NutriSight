@@ -23,12 +23,29 @@ struct CameraUnavailableView: View {
 }
 
 
-#Preview("Camera Unavailable") {
-    VStack {
-        CameraUnavailableView(state: .noDevice)
-        CameraUnavailableView(state: .permissionRequired)
-        CameraUnavailableView(state: .paused)
-    }
+#Preview("Camera Unavailable · Not Paired", traits: .fixedLayout(width: 402, height: 874)) {
+    CameraUnavailableView(state: .notRegistered)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(.black)
+}
+
+
+#Preview("Camera Unavailable · No Device", traits: .fixedLayout(width: 402, height: 874)) {
+    CameraUnavailableView(state: .noDevice)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.black)
+}
+
+
+#Preview("Camera Unavailable · Permission", traits: .fixedLayout(width: 402, height: 874)) {
+    CameraUnavailableView(state: .permissionRequired)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.black)
+}
+
+
+#Preview("Camera Unavailable · Paused", traits: .fixedLayout(width: 402, height: 874)) {
+    CameraUnavailableView(state: .paused)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.black)
 }

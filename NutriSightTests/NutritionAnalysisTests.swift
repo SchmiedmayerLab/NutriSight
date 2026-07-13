@@ -24,6 +24,15 @@ struct NutritionAnalysisTests {
         #expect(result == .cheeseSpaetzleFixture)
     }
 
+    @Test("Sample response represents every visible part of the test meal")
+    func sampleResponseMatchesTestMeal() {
+        let itemNames = NutritionAnalysis.cheeseSpaetzleFixture.items.map(\.name)
+
+        #expect(itemNames.contains { $0.localizedCaseInsensitiveContains("spaetzle") })
+        #expect(itemNames.contains { $0.localizedCaseInsensitiveContains("salad") })
+        #expect(itemNames.contains { $0.localizedCaseInsensitiveContains("soft drink") })
+    }
+
     @Test("Rejects malformed model output", arguments: [
         "",
         "No structured nutrition was returned.",

@@ -9,7 +9,7 @@
 import Foundation
 
 
-enum WearablesCameraState: CaseIterable, Equatable, Sendable {
+enum WearablesCameraState: CaseIterable, Hashable, Sendable {
     case notRegistered
     case noDevice
     case permissionRequired

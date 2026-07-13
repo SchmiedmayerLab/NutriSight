@@ -9,35 +9,6 @@
 import SwiftUI
 
 
-private struct OnboardingHeroPreview: Identifiable {
-    static let allCases = [
-        OnboardingHeroPreview(
-            id: "welcome",
-            systemImage: "camera.viewfinder",
-            title: .welcomeTitle,
-            subtitle: .welcomeSubtitle
-        ),
-        OnboardingHeroPreview(
-            id: "analysis",
-            systemImage: "sparkles.rectangle.stack",
-            title: .analysisSetupTitle,
-            subtitle: .analysisSetupSubtitle
-        ),
-        OnboardingHeroPreview(
-            id: "glasses",
-            systemImage: "eyeglasses",
-            title: .glassesSetupTitle,
-            subtitle: .glassesSetupSubtitle
-        )
-    ]
-
-    let id: String
-    let systemImage: String
-    let title: LocalizedStringResource
-    let subtitle: LocalizedStringResource
-}
-
-
 struct OnboardingHeroView: View {
     let systemImage: String
     let title: LocalizedStringResource
@@ -71,16 +42,41 @@ struct OnboardingHeroView: View {
 }
 
 
-#Preview("Onboarding Heroes") {
-    ScrollView {
-        ForEach(OnboardingHeroPreview.allCases.indices, id: \.self) { index in
-            let preview = OnboardingHeroPreview.allCases[index]
-            OnboardingHeroView(
-                systemImage: preview.systemImage,
-                title: preview.title,
-                subtitle: preview.subtitle
-            )
-        }
-    }
+#Preview("Hero · Welcome", traits: .fixedLayout(width: 320, height: 330)) {
+    OnboardingHeroView(
+        systemImage: "camera.viewfinder",
+        title: .welcomeTitle,
+        subtitle: .welcomeSubtitle
+    )
+    .padding()
+}
+
+
+#Preview("Hero · Analysis", traits: .fixedLayout(width: 320, height: 330)) {
+    OnboardingHeroView(
+        systemImage: "sparkles.rectangle.stack",
+        title: .analysisSetupTitle,
+        subtitle: .analysisSetupSubtitle
+    )
+    .padding()
+}
+
+
+#Preview("Hero · Glasses", traits: .fixedLayout(width: 320, height: 330)) {
+    OnboardingHeroView(
+        systemImage: "eyeglasses",
+        title: .glassesSetupTitle,
+        subtitle: .glassesSetupSubtitle
+    )
+    .padding()
+}
+
+
+#Preview("Hero · Permission", traits: .fixedLayout(width: 320, height: 330)) {
+    OnboardingHeroView(
+        systemImage: "camera.badge.ellipsis",
+        title: .cameraPermissionTitle,
+        subtitle: .cameraPermissionSubtitle
+    )
     .padding()
 }

@@ -48,9 +48,12 @@ struct AnalysisSetupOnboardingView: View {
         } footer: {
             VStack(spacing: 10) {
                 AsyncButton(state: $viewState, action: saveAndContinue) {
-                    Text(.continueWithMetaModel)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity)
+                    Label(
+                        configuration.analysisSource == .metaModel ? .metaModelReady : .continueWithMetaModel,
+                        systemImage: configuration.analysisSource == .metaModel ? "checkmark" : "sparkles"
+                    )
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.glassProminent)
                 .controlSize(.large)
@@ -59,12 +62,16 @@ struct AnalysisSetupOnboardingView: View {
 
                 if LaunchConfiguration.allowsSampleAnalysis {
                     AsyncButton(state: $viewState, action: useSampleAnalysis) {
-                        Text(.useSampleAnalysis)
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
+                        Label(
+                            configuration.usesSampleAnalysis ? .guidedPreviewReady : .useSampleAnalysis,
+                            systemImage: configuration.usesSampleAnalysis ? "checkmark" : "play.fill"
+                        )
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.glass)
                     .controlSize(.large)
+                    .disabled(configuration.usesSampleAnalysis)
                     .accessibilityIdentifier("use-sample-analysis")
 
                     Text(.sampleAnalysisExplanation)
@@ -85,6 +92,7 @@ struct AnalysisSetupOnboardingView: View {
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
         .task {
             loadStoredAPIKey()
         }
@@ -123,12 +131,25 @@ struct AnalysisSetupOnboardingView: View {
 }
 
 
-#Preview("Analysis Setup") {
+#Preview("Analysis Setup", traits: .fixedLayout(width: 402, height: 874)) {
     @Previewable @State var didComplete = false
     @Previewable @State var path = ManagedNavigationStack.Path()
 
     ManagedNavigationStack(didComplete: $didComplete, path: path) {
         AnalysisSetupOnboardingView(configuration: .preview())
+    }
+    .previewWith {
+        KeychainStorage()
+    }
+}
+
+
+#Preview("Analysis Setup · Guided Preview Selected", traits: .fixedLayout(width: 402, height: 874)) {
+    @Previewable @State var didComplete = false
+    @Previewable @State var path = ManagedNavigationStack.Path()
+
+    ManagedNavigationStack(didComplete: $didComplete, path: path) {
+        AnalysisSetupOnboardingView(configuration: .preview(analysisSource: .sampleAnalysis))
     }
     .previewWith {
         KeychainStorage()

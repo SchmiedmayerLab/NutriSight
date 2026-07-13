@@ -13,20 +13,26 @@ struct DeviceStatusBadge: View {
     let state: WearablesCameraState
 
     var body: some View {
-        Label(state.title, systemImage: state.systemImage)
-            .font(.subheadline)
-            .bold()
-            .lineLimit(nil)
-            .fixedSize(horizontal: false, vertical: true)
-            .accessibilityIdentifier("device-status")
+        if state != .streaming {
+            Label(state.title, systemImage: state.systemImage)
+                .font(.footnote)
+                .bold()
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier("device-status")
+        }
     }
 }
 
 
-#Preview("Device Status") {
-    VStack {
-        ForEach(WearablesCameraState.allCases.indices, id: \.self) { index in
-            DeviceStatusBadge(state: WearablesCameraState.allCases[index])
+#Preview("Device Statuses", traits: .sizeThatFitsLayout) {
+    Grid(alignment: .leading, verticalSpacing: 12) {
+        ForEach(WearablesCameraState.allCases, id: \.self) { state in
+            GridRow {
+                Text(String(describing: state))
+                    .foregroundStyle(.secondary)
+                DeviceStatusBadge(state: state)
+            }
         }
     }
     .padding()

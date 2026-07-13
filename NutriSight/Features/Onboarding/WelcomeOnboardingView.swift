@@ -53,11 +53,12 @@ struct WelcomeOnboardingView: View {
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
     }
 }
 
 
-#Preview("Welcome") {
+#Preview("Welcome", traits: .fixedLayout(width: 402, height: 874)) {
     @Previewable @State var didComplete = false
     @Previewable @State var path = ManagedNavigationStack.Path()
 

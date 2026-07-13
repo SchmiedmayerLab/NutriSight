@@ -19,6 +19,7 @@ struct GlassesCameraPermissionOnboardingView: View {
 
     @State private var permissionGranted = false
     @State private var viewState: ViewState = .idle
+    @State private var registrationCallbackURL: URL?
 
     private var canContinue: Bool {
         permissionGranted || wearables.state == .ready
@@ -74,13 +75,17 @@ struct GlassesCameraPermissionOnboardingView: View {
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
         .task {
             await preparePermissionStep()
         }
         .task(id: wearables.state) {
             await refreshPermissionStatus()
         }
-        .onOpenURL(perform: handleWearablesURL)
+        .onOpenURL(perform: receiveWearablesURL)
+        .task(id: registrationCallbackURL) {
+            await handleRegistrationCallback()
+        }
     }
 
     private func preparePermissionStep() async {
@@ -117,27 +122,32 @@ struct GlassesCameraPermissionOnboardingView: View {
         path.nextStep()
     }
 
-    private func handleWearablesURL(_ url: URL) {
+    private func receiveWearablesURL(_ url: URL) {
         guard url.isMetaWearablesCallback else {
             return
         }
-        Task {
-            do {
-                try await wearables.handleRegistrationCallback(url)
-                await refreshPermissionStatus()
-            } catch let error as any LocalizedError {
-                Logger.wearables.error("Unable to complete camera permission request: \(error.localizedDescription)")
-                viewState = .error(error)
-            } catch {
-                Logger.wearables.error("Unable to complete camera permission request: \(error.localizedDescription)")
-                viewState = .error(WearablesCameraError.sdk(error.localizedDescription))
-            }
+        registrationCallbackURL = url
+    }
+
+    private func handleRegistrationCallback() async {
+        guard let registrationCallbackURL else {
+            return
+        }
+        do {
+            try await wearables.handleRegistrationCallback(registrationCallbackURL)
+            await refreshPermissionStatus()
+        } catch let error as any LocalizedError {
+            Logger.wearables.error("Unable to complete camera permission request: \(error.localizedDescription)")
+            viewState = .error(error)
+        } catch {
+            Logger.wearables.error("Unable to complete camera permission request: \(error.localizedDescription)")
+            viewState = .error(WearablesCameraError.sdk(error.localizedDescription))
         }
     }
 }
 
 
-#Preview("Camera Permission") {
+#Preview("Camera Permission", traits: .fixedLayout(width: 402, height: 874)) {
     @Previewable @State var didComplete = false
     @Previewable @State var path = ManagedNavigationStack.Path()
 
