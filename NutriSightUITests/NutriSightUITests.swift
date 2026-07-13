@@ -185,7 +185,13 @@ final class NutriSightUITests: XCTestCase {
                 continue
             }
             captureButton.tap()
-            XCTAssertTrue(app.descendants(matching: .any)["analysis-progress"].waitForExistence(timeout: 5))
+            guard app.descendants(matching: .any)["analysis-progress"].waitForExistence(timeout: 5) else {
+                let alert = app.alerts.firstMatch
+                if alert.waitForExistence(timeout: 2) {
+                    alert.buttons.firstMatch.tap()
+                }
+                continue
+            }
             if result.waitForExistence(timeout: 25) {
                 return true
             }

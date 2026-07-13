@@ -45,12 +45,11 @@ enum WearablesBootstrap {
         } catch {
             throw WearablesBootstrapError.sdk(error.localizedDescription)
         }
-        configuredSource = source
-
         if source == .simulatedGlasses
             && (!LaunchConfiguration.isUITesting || LaunchConfiguration.preparesSimulatedGlasses) {
             try prepareSimulatedGlasses()
         }
+        configuredSource = source
 
         #if DEBUG
         if LaunchConfiguration.isUITesting,
