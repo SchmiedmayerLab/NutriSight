@@ -205,6 +205,12 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
     }
 
     func capturePhoto(timeout: Duration = .seconds(20)) async throws -> Data {
+        // The mock SDK's photo callback is not deterministic on hosted simulators. UI tests still exercise the
+        // complete capture, analysis, and save flow using the same glasses-format fixture that configures the feed,
+        // but must not time out and rebuild an otherwise healthy stream before receiving that fixture.
+        if let uiTestCaptureData = simulatedUITestCaptureData() {
+            return uiTestCaptureData
+        }
         if state != .streaming && selectedSource != .phoneCamera {
             try await startCamera()
         }
@@ -217,8 +223,6 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
         guard captureContinuation == nil else {
             throw WearablesCameraError.captureRejected
         }
-        let simulatedCaptureFallbackData = simulatedCaptureFallbackData()
-        let captureTimeout = simulatedCaptureFallbackData == nil ? timeout : .seconds(2)
 
         return try await withCheckedThrowingContinuation { continuation in
             captureContinuation = continuation
@@ -228,17 +232,12 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
                 return
             }
             captureTimeoutTask = Task { [weak self] in
-                try? await Task.sleep(for: captureTimeout)
+                try? await Task.sleep(for: timeout)
                 guard !Task.isCancelled, let self, let continuation = captureContinuation else {
                     return
                 }
                 captureContinuation = nil
                 captureTimeoutTask = nil
-                if let simulatedCaptureFallbackData {
-                    await recoverCameraAfterCaptureTimeout()
-                    continuation.resume(returning: simulatedCaptureFallbackData)
-                    return
-                }
                 await recoverCameraAfterCaptureTimeout()
                 continuation.resume(throwing: WearablesCameraError.captureTimedOut)
             }

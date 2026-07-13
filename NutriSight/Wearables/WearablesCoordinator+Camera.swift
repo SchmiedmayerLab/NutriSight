@@ -12,7 +12,7 @@ import MWDATCore
 
 
 extension WearablesCoordinator {
-    func simulatedCaptureFallbackData() -> Data? {
+    func simulatedUITestCaptureData() -> Data? {
         guard selectedSource == .simulatedGlasses,
               LaunchConfiguration.isUITesting,
               LaunchConfiguration.preparesSimulatedGlasses,

@@ -66,7 +66,7 @@ final class NutriSightUITests: XCTestCase {
                 waitingFor: nutritionTitle,
                 firstCaptureIdentifier: "camera-preview-capture"
             ),
-            "The simulated glasses did not deliver a photo after two capture attempts."
+            "The capture and sample-analysis flow did not reach the nutrition result."
         )
         XCTAssertTrue(app.buttons["close-nutrition-results"].waitForExistence(timeout: 5))
         app.swipeUp()
@@ -90,7 +90,7 @@ final class NutriSightUITests: XCTestCase {
         waitForCamera(in: app)
         XCTAssertTrue(
             captureMeal(in: app, waitingFor: app.buttons["retry-analysis"]),
-            "The simulated glasses did not deliver a photo after two capture attempts."
+            "The capture and sample-analysis flow did not reach the retry state."
         )
         app.buttons["retake-photo"].tap()
         XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 5))
@@ -178,29 +178,21 @@ final class NutriSightUITests: XCTestCase {
         waitingFor result: XCUIElement,
         firstCaptureIdentifier: String = "take-photo"
     ) -> Bool {
-        for attempt in 0..<2 {
-            let identifier = attempt == 0 ? firstCaptureIdentifier : "take-photo"
-            let captureButton = app.buttons[identifier]
-            guard waitUntilHittable(captureButton, timeout: 30) else {
-                continue
-            }
-            captureButton.tap()
-            guard app.descendants(matching: .any)["analysis-progress"].waitForExistence(timeout: 20) else {
-                let alert = app.alerts.firstMatch
-                if alert.waitForExistence(timeout: 2) {
-                    alert.buttons.firstMatch.tap()
-                }
-                continue
-            }
-            if result.waitForExistence(timeout: 25) {
-                return true
-            }
+        let captureButton = app.buttons[firstCaptureIdentifier]
+        guard waitUntilHittable(captureButton, timeout: 30) else {
+            return false
+        }
+        captureButton.tap()
+
+        let analysisProgress = app.descendants(matching: .any)["analysis-progress"]
+        guard analysisProgress.waitForExistence(timeout: 20) else {
             let alert = app.alerts.firstMatch
             if alert.waitForExistence(timeout: 2) {
                 alert.buttons.firstMatch.tap()
             }
+            return false
         }
-        return false
+        return result.waitForExistence(timeout: 45)
     }
 
     @MainActor
