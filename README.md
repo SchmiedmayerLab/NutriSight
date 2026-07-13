@@ -34,6 +34,8 @@ The module enforces the SDK interaction order internally. It repairs missing con
 
 The shared `NutriSight.xctestplan` runs Swift Testing unit tests and five serialized end-to-end UI scenarios. The UI suite starts Meta's in-app Mock Device server, pairs and dons a simulated device, returns the bundled vegetarian Käsespätzle photo from the camera, injects a deterministic Muse Spark response, and uses an in-memory HealthKit writer. It therefore validates onboarding and API-key entry, localization, camera recovery, model-error recovery, and the complete meal pipeline without glasses, an API key, network access, or HealthKit authorization.
 
+When running the app normally in the iOS Simulator, sample analysis and simulated glasses still use the real HealthKit writer. This allows the complete authorization and nutrition-save flow to be tested against the simulator's Health database. The in-memory writer is selected only when the app is launched with `--mock-healthkit`, as the automated UI tests do.
+
 The bundled Käsespätzle test media is an AI-generated first-person restaurant scene with a side salad and an unbranded glass of cola-orange soda. It includes a 3024×4032 captured-photo JPEG matching the glasses' portrait output and a corresponding 540×960, 24 fps HEVC feed following Meta's Mock Device Kit guidance. The adjacent `.license` sidecars preserve its provenance and CC0 licensing.
 
 Run the same single-simulator lane used by CI:

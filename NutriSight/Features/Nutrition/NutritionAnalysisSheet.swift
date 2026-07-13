@@ -20,45 +20,44 @@ struct NutritionAnalysisSheet: View {
 
     var body: some View {
         Group {
-            switch model.workflowState {
-            case .capturing:
-                NutritionAnalysisProgressView(
-                    configuration: configuration,
-                    workflowState: .capturing
-                )
-            case .analyzing:
-                NutritionAnalysisProgressView(
-                    configuration: configuration,
-                    workflowState: .analyzing
-                )
-            case .captured:
-                NutritionAnalysisRetryView(
-                    viewState: $model.viewState,
-                    retryAction: retryAction,
-                    retakeAction: closeAction
-                )
-            case .result, .saved:
-                if let analysis = model.analysis {
-                    NutritionResultView(
+            if showsDismissButton {
+                NavigationStack {
+                    NutritionAnalysisSheetContent(
                         model: model,
                         configuration: configuration,
-                        analysis: analysis,
-                        capturedImage: model.capturedImage,
+                        retryAction: retryAction,
                         closeAction: closeAction
                     )
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle(model.analysis?.title ?? "")
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button(.close, systemImage: "xmark", action: closeAction)
+                                .accessibilityIdentifier("close-nutrition-results")
+                        }
+                    }
                 }
-            case .camera:
-                EmptyView()
+            } else {
+                NutritionAnalysisSheetContent(
+                    model: model,
+                    configuration: configuration,
+                    retryAction: retryAction,
+                    closeAction: closeAction
+                )
             }
         }
-        .id(model.workflowState)
         .transition(.opacity.combined(with: .move(edge: .bottom)))
         .animation(.smooth, value: model.workflowState)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .presentationDetents(availableDetents)
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(32)
         .presentationBackground(.ultraThinMaterial)
         .interactiveDismissDisabled(model.workflowState == .capturing || model.workflowState == .analyzing)
+    }
+
+    private var showsDismissButton: Bool {
+        model.workflowState == .result || model.workflowState == .saved
     }
 
     private var availableDetents: Set<PresentationDetent> {
@@ -79,8 +78,15 @@ struct NutritionAnalysisSheet: View {
         analysisSource: .sampleAnalysis
     )
 
-    Button("Present Analysis Sheet") {
-        presentsSheet = true
+    ZStack {
+        Image(uiImage: PreviewAssets.cheeseSpaetzle ?? UIImage())
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea()
+        Button("Present Analysis Sheet") {
+            presentsSheet = true
+        }
+        .buttonStyle(.glassProminent)
     }
     .sheet(isPresented: $presentsSheet) {
         NutritionAnalysisSheet(
@@ -101,8 +107,15 @@ struct NutritionAnalysisSheet: View {
         analysisSource: .sampleAnalysis
     )
 
-    Button("Present Analysis Sheet") {
-        presentsSheet = true
+    ZStack {
+        Image(uiImage: PreviewAssets.cheeseSpaetzle ?? UIImage())
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea()
+        Button("Present Analysis Sheet") {
+            presentsSheet = true
+        }
+        .buttonStyle(.glassProminent)
     }
     .sheet(isPresented: $presentsSheet) {
         NutritionAnalysisSheet(

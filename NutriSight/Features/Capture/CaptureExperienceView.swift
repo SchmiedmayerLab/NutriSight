@@ -115,7 +115,7 @@ struct CaptureExperienceView: View {
 }
 
 
-#Preview("Capture Experience · Simulated", traits: .fixedLayout(width: 402, height: 874)) {
+#Preview("Capture Experience · Simulated") {
     let configuration = ExperienceConfiguration.preview(
         glassesSource: .simulatedGlasses,
         analysisSource: .sampleAnalysis
@@ -135,7 +135,27 @@ struct CaptureExperienceView: View {
 }
 
 
-#Preview("Capture Experience · Camera Unavailable", traits: .fixedLayout(width: 402, height: 874)) {
+#Preview("Capture Experience · iPhone Camera") {
+    let configuration = ExperienceConfiguration.preview(
+        glassesSource: .phoneCamera,
+        analysisSource: .sampleAnalysis
+    )
+    let wearables = WearablesCoordinator(previewImage: PreviewAssets.cheeseSpaetzle)
+
+    CaptureExperienceView(
+        configuration: configuration,
+        wearables: wearables,
+        automaticallyStartsCamera: false
+    )
+    .previewWith(standard: NutriSightStandard()) {
+        LLMRunner {
+            MetaMusePlatform(configuration: .init(authToken: .keychain(for: MetaMusePlatform.self)))
+        }
+    }
+}
+
+
+#Preview("Capture Experience · Camera Unavailable") {
     let configuration = ExperienceConfiguration.preview(
         glassesSource: .metaGlasses,
         analysisSource: .metaModel

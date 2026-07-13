@@ -114,7 +114,7 @@ final class WearablesCoordinator: Module, EnvironmentAccessible {
     func selectSource(_ source: GlassesSource?) async throws {
         if selectedSource != nil && selectedSource != source {
             await stopCamera()
-            phoneCamera?.stop()
+            await phoneCamera?.stop()
             await deactivateMetaLifecycle()
         }
         guard let source else {

@@ -15,8 +15,8 @@ struct NutritionResultSummaryOverlay: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 7) {
             Text(analysis.title)
-                .font(.title.bold())
-                .lineLimit(2)
+                .font(.title2.bold())
+                .fixedSize(horizontal: false, vertical: true)
                 .accessibilityHeading(.h1)
                 .accessibilityIdentifier("nutrition-title")
             Text(analysis.summary)
@@ -42,6 +42,23 @@ struct NutritionResultSummaryOverlay: View {
 
 #Preview("Result Summary Overlay", traits: .fixedLayout(width: 360, height: 210)) {
     NutritionResultSummaryOverlay(analysis: .cheeseSpaetzleFixture)
+        .padding()
+        .background(PreviewAssets.cheeseSpaetzle.map(Image.init(uiImage:))?.resizable().scaledToFill())
+}
+
+
+#Preview("Result Summary Overlay · Wrapping Title", traits: .fixedLayout(width: 320, height: 280)) {
+    let fixture = NutritionAnalysis.cheeseSpaetzleFixture
+    let longTitleAnalysis = NutritionAnalysis(
+        title: "Traditional Alpine Käsespätzle with Fresh Garden Salad",
+        summary: fixture.summary,
+        items: fixture.items,
+        nutrients: fixture.nutrients,
+        confidence: fixture.confidence,
+        caveats: fixture.caveats
+    )
+
+    NutritionResultSummaryOverlay(analysis: longTitleAnalysis)
         .padding()
         .background(PreviewAssets.cheeseSpaetzle.map(Image.init(uiImage:))?.resizable().scaledToFill())
 }

@@ -10,85 +10,24 @@ import AVFoundation
 import UIKit
 
 
+/// Main-actor facade for the phone camera and its UI-facing availability state.
 @MainActor
-final class PhoneCamera: NSObject {
-    private let captureSession = AVCaptureSession()
-    private let photoOutput = AVCapturePhotoOutput()
-    private let videoOutput = AVCaptureVideoDataOutput()
-    private let videoQueue = DispatchQueue(label: "edu.stanford.nutrisight.phone-camera.video")
-    private let previewHandler: @MainActor (UIImage) -> Void
-
-    private var isConfigured = false
-    private var captureContinuation: CheckedContinuation<Data, any Error>?
-    private var captureTimeoutTask: Task<Void, Never>?
-
-    private(set) var isAvailable = false
-
-    init(previewHandler: @escaping @MainActor (UIImage) -> Void) {
-        self.previewHandler = previewHandler
-        super.init()
-    }
-
-    func start() async throws {
-        guard Self.isSupported else {
-            throw WearablesCameraError.streamUnavailable
-        }
-        guard await Self.requestAccess() else {
-            throw WearablesCameraError.permissionDenied
-        }
-        configureIfNeeded()
-        guard isConfigured else {
-            throw WearablesCameraError.streamUnavailable
-        }
-        guard !captureSession.isRunning else {
-            isAvailable = true
-            return
-        }
-        captureSession.startRunning()
-        isAvailable = true
-    }
-
-    func capturePhoto(timeout: Duration = .seconds(20)) async throws -> Data {
-        guard isAvailable else {
-            throw WearablesCameraError.streamNotReady
-        }
-        guard captureContinuation == nil else {
-            throw WearablesCameraError.captureRejected
-        }
-
-        return try await withCheckedThrowingContinuation { continuation in
-            captureContinuation = continuation
-            captureTimeoutTask = Task { [weak self] in
-                try? await Task.sleep(for: timeout)
-                guard !Task.isCancelled, let self, let continuation = self.captureContinuation else {
-                    return
-                }
-                self.captureContinuation = nil
-                self.captureTimeoutTask = nil
-                continuation.resume(throwing: WearablesCameraError.captureTimedOut)
-            }
-            photoOutput.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
-        }
-    }
-
-    func stop() {
-        captureTimeoutTask?.cancel()
-        captureTimeoutTask = nil
-        captureContinuation?.resume(throwing: CancellationError())
-        captureContinuation = nil
-        isAvailable = false
-        guard captureSession.isRunning else {
-            return
-        }
-        captureSession.stopRunning()
-    }
-
+final class PhoneCamera {
     static var isSupported: Bool {
         #if targetEnvironment(simulator)
         false
         #else
         true
         #endif
+    }
+
+    private let previewHandler: @MainActor @Sendable (UIImage) -> Void
+    private var session: PhoneCameraSession?
+
+    private(set) var isAvailable = false
+
+    init(previewHandler: @escaping @MainActor @Sendable (UIImage) -> Void) {
+        self.previewHandler = previewHandler
     }
 
     static func requestAccess() async -> Bool {
@@ -104,89 +43,37 @@ final class PhoneCamera: NSObject {
         }
     }
 
-    private func configureIfNeeded() {
-        guard !isConfigured else {
-            return
+    func start() async throws {
+        guard Self.isSupported else {
+            throw WearablesCameraError.streamUnavailable
         }
-        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-            return
+        guard await Self.requestAccess() else {
+            throw WearablesCameraError.permissionDenied
         }
 
-        do {
-            let input = try AVCaptureDeviceInput(device: camera)
-            guard captureSession.canAddInput(input), captureSession.canAddOutput(photoOutput), captureSession.canAddOutput(videoOutput) else {
-                return
-            }
-
-            captureSession.beginConfiguration()
-            captureSession.sessionPreset = .photo
-            captureSession.addInput(input)
-            captureSession.addOutput(photoOutput)
-            videoOutput.alwaysDiscardsLateVideoFrames = true
-            videoOutput.setSampleBufferDelegate(self, queue: videoQueue)
-            captureSession.addOutput(videoOutput)
-            captureSession.commitConfiguration()
-            isConfigured = true
-        } catch {
-            isConfigured = false
+        let session: PhoneCameraSession
+        if let existingSession = self.session {
+            session = existingSession
+        } else {
+            session = await PhoneCameraSession(previewHandler: previewHandler)
+            self.session = session
         }
+
+        guard await session.start() else {
+            throw WearablesCameraError.streamUnavailable
+        }
+        isAvailable = true
     }
 
-    private func completeCapture(with result: Result<Data, any Error>) {
-        captureTimeoutTask?.cancel()
-        captureTimeoutTask = nil
-        guard let captureContinuation else {
-            return
+    func capturePhoto(timeout: Duration = .seconds(20)) async throws -> Data {
+        guard isAvailable, let session else {
+            throw WearablesCameraError.streamNotReady
         }
-        self.captureContinuation = nil
-        captureContinuation.resume(with: result)
+        return try await session.capturePhoto(timeout: timeout)
     }
-}
 
-
-extension PhoneCamera: AVCapturePhotoCaptureDelegate {
-    nonisolated func photoOutput(
-        _ output: AVCapturePhotoOutput,
-        didFinishProcessingPhoto photo: AVCapturePhoto,
-        error: (any Error)?
-    ) {
-        if let error {
-            Task { @MainActor [weak self] in
-                self?.completeCapture(with: .failure(WearablesCameraError.sdk(error.localizedDescription)))
-            }
-            return
-        }
-        guard let data = photo.fileDataRepresentation() else {
-            Task { @MainActor [weak self] in
-                self?.completeCapture(with: .failure(WearablesCameraError.captureRejected))
-            }
-            return
-        }
-        Task { @MainActor [weak self] in
-            self?.completeCapture(with: .success(data))
-        }
-    }
-}
-
-
-extension PhoneCamera: AVCaptureVideoDataOutputSampleBufferDelegate {
-    nonisolated func captureOutput(
-        _ output: AVCaptureOutput,
-        didOutput sampleBuffer: CMSampleBuffer,
-        from connection: AVCaptureConnection
-    ) {
-        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-            return
-        }
-
-        let context = CIContext()
-        let ciImage = CIImage(cvImageBuffer: imageBuffer)
-        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
-            return
-        }
-        let image = UIImage(cgImage: cgImage, scale: 1, orientation: .right)
-        Task { @MainActor [weak self] in
-            self?.previewHandler(image)
-        }
+    func stop() async {
+        isAvailable = false
+        await session?.stop()
     }
 }

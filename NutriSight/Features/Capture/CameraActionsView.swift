@@ -19,7 +19,7 @@ struct CameraActionsView: View {
     var body: some View {
         cameraAction
             .id(model.wearables.state)
-            .padding(.bottom, model.wearables.state == .streaming ? 96 : 0)
+            .padding(.bottom, model.wearables.state == .streaming ? 64 : 0)
             .animation(controlAnimation, value: model.wearables.state)
             .controlSize(.large)
     }

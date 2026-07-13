@@ -19,7 +19,7 @@ struct CaptureScreen: View {
     @State private var presentsNutritionSheet = false
 
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack {
             Color.black
                 .ignoresSafeArea()
             CameraPreviewCard(
@@ -29,11 +29,20 @@ struct CaptureScreen: View {
                 captureAction: captureAndAnalyze
             )
             .ignoresSafeArea()
-            CameraStatusOverlay(cameraState: model.wearables.state, configuration: configuration)
-                .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .safeAreaInset(edge: .bottom) {
+        .safeAreaInset(edge: .top, spacing: 0) {
+            let statusOverlay = CameraStatusOverlay(
+                cameraState: model.wearables.state,
+                configuration: configuration
+            )
+            if statusOverlay.showsOverlay {
+                statusOverlay
+                    .padding(.horizontal)
+                    .padding(.top, 12)
+            }
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             CameraActionsView(
                 model: model,
                 captureAction: captureAndAnalyze,

@@ -1299,6 +1299,23 @@
         }
       }
     },
+    "HEALTH_SAVE_SUCCESS_MESSAGE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die geschätzten Nährwerte dieser Mahlzeit sind jetzt in Apple Health verfügbar."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The estimated nutrition for this meal is now available in Apple Health."
+          }
+        }
+      }
+    },
     "iPhone Camera" : {
 
     },
@@ -2047,6 +2064,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Saved for this preview"
+          }
+        }
+      }
+    },
+    "SIMULATED_SAVE_SUCCESS_MESSAGE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Vorschau wurde erfolgreich abgeschlossen. Es wurden keine Daten in Apple Health geschrieben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This preview completed successfully. No data was written to Apple Health."
           }
         }
       }

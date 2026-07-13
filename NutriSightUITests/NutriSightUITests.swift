@@ -76,6 +76,7 @@ final class NutriSightUITests: XCTestCase {
 
         let nutritionTitle = app.staticTexts["nutrition-title"]
         XCTAssertTrue(nutritionTitle.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["close-nutrition-results"].exists)
         app.swipeUp()
 
         let saveButton = app.buttons["save-health"]
@@ -207,7 +208,14 @@ final class NutriSightUITests: XCTestCase {
         let confirmation = app.descendants(matching: .any)["health-save-confirmation"]
         let confirmationText = app.staticTexts["Saved for this preview"]
         for _ in 0..<5 {
-            if confirmation.waitForExistence(timeout: 1) || confirmationText.waitForExistence(timeout: 1) {
+            if confirmationText.waitForExistence(timeout: 1) {
+                let alert = app.alerts.firstMatch
+                if alert.exists {
+                    alert.buttons.firstMatch.tap()
+                }
+                return confirmation.waitForExistence(timeout: 2)
+            }
+            if confirmation.waitForExistence(timeout: 1) {
                 return true
             }
             app.swipeUp()

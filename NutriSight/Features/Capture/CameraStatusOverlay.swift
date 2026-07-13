@@ -36,7 +36,7 @@ struct CameraStatusOverlay: View {
         }
     }
 
-    private var showsOverlay: Bool {
+    var showsOverlay: Bool {
         cameraState != .streaming
             || configuration.usesSimulatedGlasses
             || configuration.usesPhoneCamera

@@ -37,8 +37,8 @@ final class ExperienceConfiguration {
         analysisSource == .sampleAnalysis
     }
 
-    var preventsAppleHealthWrite: Bool {
-        usesSimulatedGlasses || usesSampleAnalysis
+    var usesMockHealthKit: Bool {
+        LaunchConfiguration.usesMockHealthKit
     }
 
     init(defaults: UserDefaults = .standard) {

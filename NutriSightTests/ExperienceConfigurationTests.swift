@@ -31,15 +31,15 @@ struct ExperienceConfigurationTests {
     }
 
     @Test(
-        "Prevents Apple Health writes for non-production sources",
+        "Camera and analysis sources do not disable Apple Health writes",
         arguments: [
-            (GlassesSource.simulatedGlasses, AnalysisSource.metaModel, true),
-            (GlassesSource.metaGlasses, AnalysisSource.sampleAnalysis, true),
-            (GlassesSource.simulatedGlasses, AnalysisSource.sampleAnalysis, true),
-            (GlassesSource.metaGlasses, AnalysisSource.metaModel, false)
+            (GlassesSource.simulatedGlasses, AnalysisSource.metaModel),
+            (GlassesSource.metaGlasses, AnalysisSource.sampleAnalysis),
+            (GlassesSource.simulatedGlasses, AnalysisSource.sampleAnalysis),
+            (GlassesSource.metaGlasses, AnalysisSource.metaModel)
         ]
     )
-    func healthWriteSafety(glasses: GlassesSource, analysis: AnalysisSource, expected: Bool) throws {
+    func healthWriteAvailability(glasses: GlassesSource, analysis: AnalysisSource) throws {
         let suiteName = "ExperienceConfigurationTests-\(glasses.rawValue)-\(analysis.rawValue)"
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defaults.removePersistentDomain(forName: suiteName)
@@ -48,6 +48,6 @@ struct ExperienceConfigurationTests {
         configuration.selectGlassesSource(glasses)
         configuration.selectAnalysisSource(analysis)
 
-        #expect(configuration.preventsAppleHealthWrite == expected)
+        #expect(!configuration.usesMockHealthKit)
     }
 }

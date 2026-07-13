@@ -53,7 +53,7 @@ struct NutritionAnalysisProgressView: View {
         }
         .padding(24)
         .padding(.top, 16)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("analysis-progress")
         .task(id: workflowState) {

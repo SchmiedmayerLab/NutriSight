@@ -20,6 +20,8 @@ struct NutritionResultView: View {
     let capturedImage: UIImage?
     let closeAction: () -> Void
 
+    @State private var showsSaveConfirmation = false
+
     var body: some View {
         List {
             resultSections
@@ -28,12 +30,20 @@ struct NutritionResultView: View {
         .listSectionSpacing(.compact)
         .scrollContentBackground(.hidden)
         .background(.regularMaterial)
+        .padding(.top, -24)
+        .alert(saveConfirmationTitle, isPresented: $showsSaveConfirmation) {
+        } message: {
+            Text(saveConfirmationMessage)
+        }
+        .sensoryFeedback(.success, trigger: showsSaveConfirmation) { _, isPresented in
+            isPresented
+        }
     }
 
     @ViewBuilder private var resultSections: some View {
         NutritionResultHeaderView(analysis: analysis, capturedImage: capturedImage)
             .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
             .listRowSeparator(.hidden)
 
         Section {
@@ -79,6 +89,14 @@ struct NutritionResultView: View {
         }
     }
 
+    private var saveConfirmationTitle: LocalizedStringResource {
+        configuration.usesMockHealthKit ? .simulatedSaveComplete : .savedToAppleHealth
+    }
+
+    private var saveConfirmationMessage: LocalizedStringResource {
+        configuration.usesMockHealthKit ? .simulatedSaveSuccessMessage : .healthSaveSuccessMessage
+    }
+
     private func sectionHeader(_ title: LocalizedStringResource) -> some View {
         Text(title)
             .font(.headline)
@@ -87,11 +105,12 @@ struct NutritionResultView: View {
     }
 
     private func save() async throws {
-        if configuration.preventsAppleHealthWrite {
+        if configuration.usesMockHealthKit {
             try await model.save(using: MockNutritionHealthStore())
         } else {
             try await model.save(using: HealthKitNutritionStore(healthKit: healthKit))
         }
+        showsSaveConfirmation = true
     }
 }
 
@@ -113,6 +132,34 @@ struct NutritionResultView: View {
         capturedImage: PreviewAssets.cheeseSpaetzle,
         closeAction: {}
     )
+    .previewWith(standard: NutriSightStandard()) {
+        SpeziHealthKit.HealthKit {
+            RequestWriteAccess(quantity: NutritionHealthKitTypes.writable)
+        }
+    }
+}
+
+
+#Preview("Nutrition Result · Saved", traits: .fixedLayout(width: 402, height: 874)) {
+    @Previewable @State var model = CaptureFeatureModel(
+        previewWorkflowState: .saved,
+        analysis: .cheeseSpaetzleFixture
+    )
+    @Previewable @State var configuration = ExperienceConfiguration.preview(
+        glassesSource: .simulatedGlasses,
+        analysisSource: .sampleAnalysis
+    )
+
+    NavigationStack {
+        NutritionResultView(
+            model: model,
+            configuration: configuration,
+            analysis: .cheeseSpaetzleFixture,
+            capturedImage: PreviewAssets.cheeseSpaetzle,
+            closeAction: {}
+        )
+        .navigationBarTitleDisplayMode(.inline)
+    }
     .previewWith(standard: NutriSightStandard()) {
         SpeziHealthKit.HealthKit {
             RequestWriteAccess(quantity: NutritionHealthKitTypes.writable)
