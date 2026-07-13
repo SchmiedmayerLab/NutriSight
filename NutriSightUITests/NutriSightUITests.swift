@@ -69,13 +69,15 @@ final class NutriSightUITests: XCTestCase {
         waitForCamera(in: app)
         try app.performAccessibilityAuditIgnoringContrast()
 
-        let previewCapture = app.buttons["camera-preview-capture"]
-        XCTAssertTrue(previewCapture.waitForExistence(timeout: 10))
-        previewCapture.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["analysis-progress"].waitForExistence(timeout: 5))
-
         let nutritionTitle = app.staticTexts["nutrition-title"]
-        XCTAssertTrue(nutritionTitle.waitForExistence(timeout: 30))
+        XCTAssertTrue(
+            captureMeal(
+                in: app,
+                waitingFor: nutritionTitle,
+                firstCaptureIdentifier: "camera-preview-capture"
+            ),
+            "The simulated glasses did not deliver a photo after two capture attempts."
+        )
         XCTAssertTrue(app.buttons["close-nutrition-results"].waitForExistence(timeout: 5))
         app.swipeUp()
 
@@ -100,9 +102,10 @@ final class NutriSightUITests: XCTestCase {
         }
 
         waitForCamera(in: app)
-        capturePhotoWithShutter(in: app)
-
-        XCTAssertTrue(app.buttons["retry-analysis"].waitForExistence(timeout: 5))
+        XCTAssertTrue(
+            captureMeal(in: app, waitingFor: app.buttons["retry-analysis"]),
+            "The simulated glasses did not deliver a photo after two capture attempts."
+        )
         app.buttons["retake-photo"].tap()
         XCTAssertTrue(app.buttons["take-photo"].waitForExistence(timeout: 5))
     }
@@ -210,8 +213,24 @@ final class NutriSightUITests: XCTestCase {
     }
 
     @MainActor
-    private func capturePhotoWithShutter(in app: XCUIApplication) {
-        app.buttons["take-photo"].tap()
+    private func captureMeal(
+        in app: XCUIApplication,
+        waitingFor result: XCUIElement,
+        firstCaptureIdentifier: String = "take-photo"
+    ) -> Bool {
+        for attempt in 0..<2 {
+            let identifier = attempt == 0 ? firstCaptureIdentifier : "take-photo"
+            let captureButton = app.buttons[identifier]
+            guard captureButton.waitForExistence(timeout: 15) else {
+                continue
+            }
+            captureButton.tap()
+            XCTAssertTrue(app.descendants(matching: .any)["analysis-progress"].waitForExistence(timeout: 5))
+            if result.waitForExistence(timeout: 25) {
+                return true
+            }
+        }
+        return false
     }
 
     @MainActor
