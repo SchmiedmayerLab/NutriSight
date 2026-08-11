@@ -687,8 +687,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SchmiedmayerLab/Spezi";
 			requirement = {
-				branch = fixBuilds;
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.2.0;
 			};
 		};
 		656490663002C85000F1D55F /* XCRemoteSwiftPackageReference "meta-wearables-dat-ios" */ = {
