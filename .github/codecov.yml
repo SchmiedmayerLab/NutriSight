@@ -21,5 +21,5 @@ coverage:
 comment: false
 
 ignore:
-- NutriSightUITests
-- NutriSightTests
+  - NutriSightUITests
+  - NutriSightTests
