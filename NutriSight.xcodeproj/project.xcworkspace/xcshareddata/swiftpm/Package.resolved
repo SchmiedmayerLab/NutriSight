@@ -31,10 +31,10 @@
     {
       "identity" : "fhirmodels",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/FHIRModels.git",
+      "location" : "https://github.com/SchmiedmayerLab/FHIRModels.git",
       "state" : {
-        "revision" : "a05392269b630a8d661bda720d149fee2f0257e2",
-        "version" : "0.8.0"
+        "revision" : "c8392ba94a1a71a3651104c0f1f717361e78903b",
+        "version" : "0.9.3"
       }
     },
     {
@@ -101,15 +101,6 @@
       }
     },
     {
-      "identity" : "gzipswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/1024jp/GzipSwift",
-      "state" : {
-        "revision" : "731037f6cc2be2ec01562f6597c1d0aa3fe6fd05",
-        "version" : "6.0.1"
-      }
-    },
-    {
       "identity" : "interop-ios-for-google-sdks",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/interop-ios-for-google-sdks.git",
@@ -134,24 +125,6 @@
       "state" : {
         "revision" : "2e30f1253ab76ee3c448a29dce39114ab09763c3",
         "version" : "0.8.0"
-      }
-    },
-    {
-      "identity" : "mlx-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ml-explore/mlx-swift.git",
-      "state" : {
-        "revision" : "072b684acaae80b6a463abab3a103732f33774bf",
-        "version" : "0.29.1"
-      }
-    },
-    {
-      "identity" : "mlx-swift-examples",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ml-explore/mlx-swift-examples.git",
-      "state" : {
-        "revision" : "9bff95ca5f0b9e8c021acc4d71a2bbe4a7441631",
-        "version" : "2.29.1"
       }
     },
     {
@@ -184,10 +157,10 @@
     {
       "identity" : "phonenumberkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/marmelroy/PhoneNumberKit.git",
+      "location" : "https://github.com/PhoneNumberKit/PhoneNumberKit.git",
       "state" : {
-        "revision" : "169ab10234347fb19b37441f2867ace896a284b0",
-        "version" : "4.3.0"
+        "revision" : "e18a029dbada1d8eb32e3f81a4eb72eba539ff75",
+        "version" : "5.0.6"
       }
     },
     {
@@ -200,21 +173,12 @@
       }
     },
     {
-      "identity" : "researchkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/StanfordBDHG/ResearchKit.git",
-      "state" : {
-        "revision" : "d1d523e9e738b7ad9c97ca6101aada1c041ea9da",
-        "version" : "3.1.4"
-      }
-    },
-    {
       "identity" : "spezi",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SchmiedmayerLab/Spezi",
       "state" : {
-        "branch" : "fixBuilds",
-        "revision" : "88d3ab27617f387d8d6d2a03762a4f2d7cc40e78"
+        "revision" : "bf642cea187249cbcac3f7c3897cdbbf1156287b",
+        "version" : "0.2.0"
       }
     },
     {
@@ -281,30 +245,12 @@
       }
     },
     {
-      "identity" : "swift-concurrency-extras",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-concurrency-extras",
-      "state" : {
-        "revision" : "a90e2e40a7a840a853dd29e57cbef5dbb72c9d5b",
-        "version" : "1.4.0"
-      }
-    },
-    {
       "identity" : "swift-http-types",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-http-types",
       "state" : {
         "revision" : "db774a277f60063a32d854f2980299caf06da041",
         "version" : "1.6.0"
-      }
-    },
-    {
-      "identity" : "swift-jinja",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/huggingface/swift-jinja.git",
-      "state" : {
-        "revision" : "0b67ecb79139f6addef8699eff3622808aa6c7dc",
-        "version" : "2.3.6"
       }
     },
     {
@@ -398,42 +344,6 @@
       }
     },
     {
-      "identity" : "swift-transformers",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/huggingface/swift-transformers.git",
-      "state" : {
-        "revision" : "a2e184dddb4757bc943e77fbe99ac6786c53f0b2",
-        "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "swiftui-math",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/swiftui-math",
-      "state" : {
-        "revision" : "0b5c2cfaaec8d6193db206f675048eeb5ce95f71",
-        "version" : "0.1.0"
-      }
-    },
-    {
-      "identity" : "textual",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/textual.git",
-      "state" : {
-        "revision" : "5b06b811c0f5313b6b84bbef98c635a630638c38",
-        "version" : "0.3.1"
-      }
-    },
-    {
-      "identity" : "threadlocal",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SchmiedmayerLab/ThreadLocal.git",
-      "state" : {
-        "revision" : "7295e0c1042bb01e72db75b073ebdacb2e50fd41",
-        "version" : "0.1.4"
-      }
-    },
-    {
       "identity" : "tppdf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/techprimate/TPPDF.git",
@@ -454,7 +364,7 @@
     {
       "identity" : "zstd",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/StanfordBDHG/zstd.git",
+      "location" : "https://github.com/SchmiedmayerLab/zstd.git",
       "state" : {
         "revision" : "ae9f20ca2716f2605822ca375995b7d876389b64",
         "version" : "1.5.8-beta.1"
